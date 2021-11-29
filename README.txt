@@ -27,6 +27,7 @@ Editor Controls:
 - Toggle Through Tile Types: (1) Key
 
 - Switch Game Modes: (P) Key
+- Pause/Resume Game: Escape Key (ESC)
 - Quit Game:		Close Window Button (X)
 
 Launching the Program:
