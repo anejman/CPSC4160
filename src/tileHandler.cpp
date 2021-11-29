@@ -69,3 +69,12 @@ void TileHandler::tileHandler_render(SDL_Rect camera_rect)
         tile->tile_render(game_renderer, tile_texture, camera_rect);
     }
 }
+
+void TileHandler::tileHandler_clean()
+{
+    for(auto iter : tileset)
+    {
+        delete iter;
+    }
+    tileset.clear();
+}

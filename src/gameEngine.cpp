@@ -59,6 +59,12 @@ void GameEngine::init()
    {
       foods.push_back(new Food(gameRenderer));
    }
+
+   // Initialize game state
+   game_state = 0;
+
+   //Initialize level editor
+   editor = new levelEditor(gameRenderer);
 }
 
 void GameEngine::handleEvents()
@@ -73,24 +79,77 @@ void GameEngine::handleEvents()
          switch (userInput.key.keysym.sym)
          {
          case SDLK_UP:
-            player->player_set_y_vel(-Y_VEL);
-            player->player_set_state(STATE_UP);
+            if(game_state == STATE_PLAYER) {
+               player->player_set_y_vel(-Y_VEL);
+               player->player_set_state(STATE_UP);
+            }
+            else {
+               if (editor->editor_get_y_pos() > 0){
+                  editor->editor_set_y_pos(editor->editor_get_y_pos()-EDITOR_TILE_HEIGHT);
+               }
+            }
             break;
          case SDLK_DOWN:
-            player->player_set_y_vel(Y_VEL);
-            player->player_set_state(STATE_DOWN);
+            if(game_state == STATE_PLAYER) {
+               player->player_set_y_vel(Y_VEL);
+               player->player_set_state(STATE_DOWN);
+            }
+            else {
+               if (editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT < LEVEL_HEIGHT){
+                  editor->editor_set_y_pos(editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT);
+               }
+            }
             break;
          case SDLK_LEFT:
-            player->player_set_x_vel(-X_VEL);
-            player->player_set_state(STATE_LEFT);
+            if(game_state == STATE_PLAYER) {
+               player->player_set_x_vel(-X_VEL);
+               player->player_set_state(STATE_LEFT);
+            }
+            else {
+               if (editor->editor_get_x_pos() > 0){
+                  editor->editor_set_x_pos(editor->editor_get_x_pos()-EDITOR_TILE_WIDTH);
+               }
+            }
             break;
          case SDLK_RIGHT:
-            player->player_set_x_vel(X_VEL);
-            player->player_set_state(STATE_RIGHT);
+            if(game_state == STATE_PLAYER) {
+               player->player_set_x_vel(X_VEL);
+               player->player_set_state(STATE_RIGHT);
+            }
+            else {
+               if (editor->editor_get_x_pos() + EDITOR_TILE_WIDTH < LEVEL_WIDTH){
+                  editor->editor_set_x_pos(editor->editor_get_x_pos()+EDITOR_TILE_WIDTH);
+               }
+            }
             break;
          case SDLK_SPACE:
-            player->player_set_y_vel(0);
-            player->player_set_state(STATE_FEED);
+            if(game_state == STATE_PLAYER) {
+               player->player_set_y_vel(0);
+               player->player_set_state(STATE_FEED);
+            }
+            else {
+               std::cout<<tile_type<<std::endl;
+               editor->editor_update(tile_type);
+               tileHandler->tileHandler_clean();
+               tileHandler->tileHandler_load();
+            }
+            break;
+         case SDLK_p:
+            game_state = (game_state + 1) % 2;
+            editor->editor_init(0,0);
+            if(game_state == STATE_PLAYER){
+               SDL_SetWindowTitle(gameWindow, "Collection Game");
+            }
+            else {
+               SDL_SetWindowTitle(gameWindow, "Now Editing Game...");
+               tile_type = 0;
+            }
+            break;
+         case SDLK_1:
+            if(game_state == STATE_EDITOR){
+               tile_type = (tile_type + 1) % TILE_TYPE_NUM;
+            }
+            break;
          default:
             break;
          }
@@ -121,30 +180,36 @@ void GameEngine::handleEvents()
 
 void GameEngine::updateMechanics()
 {
-   player->player_update();
-   camera->camera_update(player->player_get_x_pos(), player->player_get_y_pos());
+   if(game_state == STATE_PLAYER){
+      player->player_update();
+      camera->camera_update(player->player_get_x_pos(), player->player_get_y_pos());
    
-   for(auto food_it = begin(foods); food_it != end(foods);)
-   {
-      food_rect = (*food_it)->food_get_rect();
-      camera_rect = camera->camera_get_rect();
-
-      if(checkCollision(player->player_get_rect(), food_rect) && player->player_get_state() == STATE_FEED)
-      {  
-         food_it = foods.erase(food_it);
-
-         // Initialize Particles
-         for (int i = 0; i < FOOD_PARTICLES; i++)
-         {
-            particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
-         }
-
-         particle_iteration = 0;
-      }
-      else
+      for(auto food_it = begin(foods); food_it != end(foods);)
       {
-         ++food_it;
+         food_rect = (*food_it)->food_get_rect();
+         camera_rect = camera->camera_get_rect();
+
+         if(checkCollision(player->player_get_rect(), food_rect) && player->player_get_state() == STATE_FEED)
+         {  
+            food_it = foods.erase(food_it);
+
+            // Initialize Particles
+            for (int i = 0; i < FOOD_PARTICLES; i++)
+            {
+               particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
+            }
+
+            particle_iteration = 0;
+         }
+         else
+         {
+            ++food_it;
+         }
       }
+   }
+   else {
+      //editor->editor_update();
+      camera->camera_update(editor->editor_get_x_pos(), editor->editor_get_y_pos());   
    }  
 }
 
@@ -154,32 +219,36 @@ void GameEngine::render()
    camera_rect = camera->camera_get_rect();
    tileHandler->tileHandler_render(camera_rect);
 
-   for (Food *food : foods)
-   {
-      food->food_render(camera_rect);
-   }
-
-   player->player_render(camera_rect);
-
-   for(auto particle_it = begin(particles); particle_it != end(particles);)
-   {
-      if((*particle_it)->isDead())
+   if(game_state == STATE_PLAYER){
+      for (Food *food : foods)
       {
-         particle_it = particles.erase(particle_it);
+         food->food_render(camera_rect);
+      }
 
-         if(particle_iteration < FOOD_PARTICLES * 5)
+      player->player_render(camera_rect);
+
+      for(auto particle_it = begin(particles); particle_it != end(particles);)
+      {
+         if((*particle_it)->isDead())
          {
-            particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
-            particle_iteration++;
+            particle_it = particles.erase(particle_it);
+
+            if(particle_iteration < FOOD_PARTICLES * 5)
+            {
+               particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
+               particle_iteration++;
+            }
+         }
+         else
+         {
+            (*particle_it)->particleHandler_render(player->player_get_x_pos() - camera_rect.x, player->player_get_y_pos() - camera_rect.y);
+            ++particle_it;
          }
       }
-      else
-      {
-         (*particle_it)->particleHandler_render(player->player_get_x_pos() - camera_rect.x, player->player_get_y_pos() - camera_rect.y);
-         ++particle_it;
-      }
    }
-
+   else {
+      editor->editor_render(camera_rect);
+   } 
    SDL_RenderPresent(gameRenderer);
 }
 

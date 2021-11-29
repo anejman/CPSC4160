@@ -11,6 +11,7 @@
 #include <fstream>
 #include <vector>
 #include <random>
+#include <string>
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
@@ -20,8 +21,8 @@
 #define SCREEN_HEIGHT 480
 
 // Level Dimensions Definition
-#define LEVEL_WIDTH 1280;
-#define LEVEL_HEIGHT 960;
+#define LEVEL_WIDTH 1280
+#define LEVEL_HEIGHT 960
 
 // Player Dimensions Definition
 #define PLAYER_WIDTH 64
@@ -56,4 +57,10 @@
 #define ANIMATION_REST 2
 #define ANIMATION_RUN 3
 
+// Tile Dimensions
+#define EDITOR_TILE_WIDTH 32
+#define EDITOR_TILE_HEIGHT 32
+
+// Number of different tile types
+#define TILE_TYPE_NUM 9
 #endif

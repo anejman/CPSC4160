@@ -15,8 +15,11 @@
 #include "player.h"
 #include "imageHandler.h"
 #include "particleHandler.h"
+#include "levelEditor.h"
 
 #define FOOD_PARTICLES 10
+#define STATE_PLAYER 0
+#define STATE_EDITOR 1
 
 class GameEngine
 {
@@ -38,6 +41,7 @@ class GameEngine
       std::vector<Food *> foods;
       TileHandler *tileHandler;
       Camera *camera;
+      levelEditor *editor;
       SDL_Window *gameWindow;
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;
@@ -48,6 +52,8 @@ class GameEngine
       SDL_Texture *particle_texture; 
       const char *particle_file = "./assets/green.bmp";
       int particle_iteration;
+      int game_state;
+      int tile_type;
 };
 
 #endif

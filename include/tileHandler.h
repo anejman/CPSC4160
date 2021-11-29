@@ -22,6 +22,7 @@ class TileHandler
         void tileHandler_init();
         void tileHandler_load();
         void tileHandler_render(SDL_Rect camera_rect);
+        void tileHandler_clean();
 
     private:
         ImageHandler *imageHandler;

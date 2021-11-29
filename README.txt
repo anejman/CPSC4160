@@ -11,12 +11,22 @@ Project Description:
 - Currently, a playable character is implemented that can move around the screen using the controlls descriped below
 - The playable character is able to interact with the seeds and produce particle effects after consuming them
 
-Controlls:
+Player Controls:
 - Move Character Up: 	Up Arrow Key (↑)
 - Move Character Down:	Down Arrow Key (↓)
 - Move Character Left:	Left Arrow Key (←)
 - Move Character Right: Right Arrow Key (→)
 - Trigger Eat Seeds:	Space Bar
+
+Editor Controls:
+- Move Cursor Up: 	Up Arrow Key (↑)
+- Move Cursor Down:	Down Arrow Key (↓)
+- Move Cursor Left:	Left Arrow Key (←)
+- Move Cursor Right: Right Arrow Key (→)
+- Place Tile:	Space Bar
+- Toggle Through Tile Types: (1) Key
+
+- Switch Game Modes: (P) Key
 - Quit Game:		Close Window Button (X)
 
 Launching the Program:
