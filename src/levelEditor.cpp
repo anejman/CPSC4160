@@ -7,6 +7,8 @@
 
 #include "levelEditor.h"
 
+levelEditor::~levelEditor() {}
+
 levelEditor::levelEditor(SDL_Renderer *gameRenderer)
 {
     game_renderer = gameRenderer;

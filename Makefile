@@ -3,7 +3,7 @@ export DISPLAY=:0
 # Configuration variables
 CC = g++
 CFLAGS = `sdl2-config --cflags` -Wall -g -std=c++17
-LFLAGS = `sdl2-config --libs` -lSDL2_image -lm
+LFLAGS = `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lm
 
 # This slightly modified INCLUDE lets you use #include<SDL.h> instead of #include<SDL/SDL.h>, etc.
 INCLUDE = -I ./include -I `sdl2-config --prefix`/include

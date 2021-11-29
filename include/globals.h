@@ -63,4 +63,12 @@
 
 // Number of different tile types
 #define TILE_TYPE_NUM 9
+
+#define MENU_ITEM_X 220
+
+#define RESUME_Y 110
+#define RESTART_Y 190
+#define QUIT_Y 270
+
+
 #endif

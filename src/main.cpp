@@ -43,6 +43,10 @@ int main()
         {
             SDL_Delay(FRAME_DURATION - this_duration);
         }
+
+        if (gameEngine->getRestart()) {
+            gameEngine->reinit();
+        }
     }
 
     gameEngine->quit();
