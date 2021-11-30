@@ -296,12 +296,8 @@ void GameEngine::render()
 
          score->render();
 
-<<<<<<< HEAD
-         bubbles->phRender(gameRenderer);
-=======
          bubbles->phRender(gameRenderer);
          player->player_render(camera_rect);
->>>>>>> 83dda4d890cbc5f39ce461bd5e8fe600ea4db8f1
       }
       else {
          editor->editor_render(camera_rect);
@@ -343,10 +339,7 @@ void GameEngine::reinit() {
    delete camera;
 
    foods.clear();
-<<<<<<< HEAD
    
-=======
->>>>>>> 83dda4d890cbc5f39ce461bd5e8fe600ea4db8f1
 
    // Initialize Player
    player = new Player(gameRenderer, 0, 0);
