@@ -30,13 +30,11 @@ GameMenu::GameMenu(SDL_Renderer* renderer) {
     fontColor = {255, 255, 255};
     hoverColor = {217, 190, 54};
 
-    if ( TTF_Init() < 0 ) {
-        cout << "Error initializing SDL_ttf: " << TTF_GetError() << endl;
-    }
-
-    font = TTF_OpenFont("./assets/Aquino.ttf", 15);
+    font = TTF_OpenFont("./assets/ShortBaby.ttf", 100);
     if ( !font ) {
         cout << "Failed to load font: " << TTF_GetError() << endl;
+    } else {
+        cout << "Font Loaded!" << endl;
     }
 }
 

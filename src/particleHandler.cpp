@@ -103,12 +103,17 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
 
     if(partType == BUBBLE) {
         //sets a random velocity and lifespan for every particle
-        for(int x = 0; x < maxParticle; x++) {
-            particles[x].objInit(image, ren, startX, startY, width, height);
 
-            particles[x].setXVel(1 - (rand() % 2));
-            particles[x].setYVel(1 - (rand() % 4));
-            particles[x].setLife(30 + (rand() % 10));
+        for (int i = 0; i < maxParticle; i++) {
+            particles.push_back(new particle);
+        }
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objInit(image, ren, startX, startY, width, height);
+
+            particles[x]->setXVel(1 - (rand() % 2));
+            particles[x]->setYVel(1 - (rand() % 4));
+            particles[x]->setLife(30 + (rand() % 10));
         }
     }
 }
@@ -120,7 +125,7 @@ void particleHandler::phUpdate()
     //update every particle
     if(partType == BUBBLE) {
         for(int x = 0; x < maxParticle; x++) {
-            particles[x].objUpdateBubble();
+            particles[x]->objUpdateBubble();
         }
     }
 }
@@ -132,7 +137,7 @@ void particleHandler::phRender(SDL_Renderer* ren)
     //render every particle
     if(partType == BUBBLE) {
         for(int x = 0; x < maxParticle; x++) {
-            particles[x].objRenderBubble(ren);
+            particles[x]->objRenderBubble(ren);
         }
     }
 }
@@ -142,6 +147,6 @@ void particleHandler::quit()
     int maxParticle = MAX_PARTICLE;
 
     for(int x = 0; x < maxParticle; x++) {
-        particles[x].quit();
+        particles.clear();
     }
 }

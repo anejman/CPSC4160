@@ -13,6 +13,8 @@
 #include <random>
 #include <string>
 
+using namespace std;
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -64,6 +66,7 @@
 // Number of different tile types
 #define TILE_TYPE_NUM 9
 
+// Menu Option positions
 #define MENU_ITEM_X 220
 
 #define RESUME_Y 110
@@ -74,5 +77,8 @@
 #define MAX_PARTICLE 10
 #define BUBBLE 0
 
+// Score position
+#define SCORE_X 530
+#define SCORE_Y 15
 
 #endif
