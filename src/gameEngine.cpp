@@ -22,6 +22,12 @@ void GameEngine::init()
       std::cout << "Finished SDL_INIT!" << std::endl;
    }
 
+   if ( TTF_Init() < 0 ) {
+        cout << "Error initializing SDL_ttf: " << TTF_GetError() << endl;
+    } else {
+       cout << "Finished TTF_Init!" << endl;
+    }
+
    // Enable GPU Textures
    IMG_Init(IMG_INIT_PNG);
 
@@ -71,6 +77,10 @@ void GameEngine::init()
    menu->init();
    pause = false;
    restart = false;
+
+   // Initialize score
+   score = new Score(gameRenderer);
+   score->init();
 }
 
 void GameEngine::handleEvents()
@@ -251,7 +261,7 @@ void GameEngine::updateMechanics()
          if(checkCollision(player->player_get_rect(), food_rect) && player->player_get_state() == STATE_FEED)
          {  
             food_it = foods.erase(food_it);
-
+            score->increment();
             // Initialize Particles
             int tempX = player->player_get_x_pos() - camera->camera_get_rect().x;
             int tempY = player->player_get_y_pos() - camera->camera_get_rect().y;
@@ -278,14 +288,20 @@ void GameEngine::render()
       tileHandler->tileHandler_render(camera_rect);
 
       if(game_state == STATE_PLAYER){
+
          for (Food *food : foods)
          {
             food->food_render(camera_rect);
          }
 
-         player->player_render(camera_rect);
+         score->render();
 
+<<<<<<< HEAD
          bubbles->phRender(gameRenderer);
+=======
+         bubbles->phRender(gameRenderer);
+         player->player_render(camera_rect);
+>>>>>>> 83dda4d890cbc5f39ce461bd5e8fe600ea4db8f1
       }
       else {
          editor->editor_render(camera_rect);
@@ -322,27 +338,21 @@ bool GameEngine::checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
 void GameEngine::reinit() {
 
    // Free elements
-
+   cout << "Deleting" << endl;
    delete player;
-   delete tileHandler;
    delete camera;
-   delete editor;
-   delete menu;
 
    foods.clear();
-   bubbles->quit();
-
-   // Reinitialize elements
-
-   tileHandler = new TileHandler(gameRenderer);
-   tileHandler->tileHandler_load();
+<<<<<<< HEAD
+   
+=======
+>>>>>>> 83dda4d890cbc5f39ce461bd5e8fe600ea4db8f1
 
    // Initialize Player
    player = new Player(gameRenderer, 0, 0);
 
    // Initialize Camera
    camera = new Camera();
-
    // Initialize Food
    for (int i = 0; i < MAX_FOOD; i++)
    {
@@ -355,14 +365,13 @@ void GameEngine::reinit() {
    // Initialize game state
    game_state = 0;
 
-   //Initialize level editor
-   editor = new levelEditor(gameRenderer);
-
    // Initialize pause menu
    menu = new GameMenu(gameRenderer);
    menu->init();
    pause = false;
    restart = false;
+
+   score->resetScore();
 
 }
 
