@@ -20,8 +20,8 @@ private:
     
     int life;
 public:
-    Particle();
-    ~Particle();
+    particle();
+    ~particle();
 
     void objInit(const char* image, SDL_Renderer* ren, int x, int y, int w, int h);
     void quit();

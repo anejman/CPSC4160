@@ -16,8 +16,8 @@ private:
     particle particles[MAX_PARTICLE];
     int partType;
 public:
-    ParticleEmitter();
-    ~ParticleEmitter();
+    particleHandler();
+    ~particleHandler();
 
     void phInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type);
 
