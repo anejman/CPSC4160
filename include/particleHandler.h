@@ -10,7 +10,7 @@
 
 #include "particle.h"
 
-class ParticleHandler
+class particleHandler
 {
 private:
     particle particles[MAX_PARTICLE];
