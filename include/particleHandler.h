@@ -13,7 +13,7 @@
 class particleHandler
 {
 private:
-    particle particles[MAX_PARTICLE];
+    vector<particle*> particles;
     int partType;
 public:
     particleHandler();
