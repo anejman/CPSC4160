@@ -17,19 +17,23 @@ class GameMenu {
         vector<string> options;
 
         SDL_Rect resume;
+        bool resumeHover;
         SDL_Surface* resumeSurface;
         SDL_Texture* resumeTexture;
 
         SDL_Rect restart;
+        bool restartHover;
         SDL_Surface* restartSurface;
         SDL_Texture* restartTexture;
 
         SDL_Rect quit;
+        bool quitHover;
         SDL_Surface* quitSurface;
         SDL_Texture* quitTexture;
 
-        SDL_Color fontColor;
         TTF_Font* font;
+        SDL_Color fontColor;
+        SDL_Color hoverColor;
 
     public:
 
@@ -41,7 +45,7 @@ class GameMenu {
 
         void init();
 
-        void handleInput();
+        void hoverEffect(int state);
 
         void render();
 
