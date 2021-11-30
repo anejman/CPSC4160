@@ -1,22 +1,18 @@
-Project 4: Simple Collection Game
+Project 5: Atlantean Adventure
 
 Project Information:
-- Student:	Alex Nejman
+- Students:	Alex Nejman, Caroline Boyt, Wayne Orego, Wayne Orego, and Colt ... Sorry I could not find it
 - Course:	CPSC 4160 Fall 2021
-- Username:	anejman
 - Instructor:	Victor Zordan
 
 Project Description:
-- This project is the beginning of a simple 2D collection game
-- Currently, a playable character is implemented that can move around the screen using the controlls descriped below
-- The playable character is able to interact with the seeds and produce particle effects after consuming them
+- TODO
 
 Player Controls:
 - Move Character Up: 	Up Arrow Key (↑)
 - Move Character Down:	Down Arrow Key (↓)
 - Move Character Left:	Left Arrow Key (←)
 - Move Character Right: Right Arrow Key (→)
-- Trigger Eat Seeds:	Space Bar
 
 Editor Controls:
 - Move Cursor Up: 	Up Arrow Key (↑)
@@ -36,6 +32,4 @@ Launching the Program:
 - How to Clean: Type "make clean"into the terminal and press enter
 
 Resources:
-- Chicken Sprite:	https://pixelplant.itch.io/chicken-sprite-sheet
-- Grass Tileset:	https://pipoya.itch.io/pipoya-rpg-tileset-32x32
-- Food PNG:		https://opengameart.org/content/2d-cereals
+- TODO
