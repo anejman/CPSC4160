@@ -2,6 +2,7 @@
 #define PARTICLE_H
 
 #include "globals.h"
+#include "imageHandler.h"
 
 class particle
 {
@@ -9,6 +10,8 @@ private:
     SDL_Renderer* objRender;
     SDL_Texture* objGraphic;
     SDL_Rect objRect;
+
+    ImageHandler *imageHandler;
 
     int xPos;
     int yPos;
@@ -28,7 +31,7 @@ public:
 
     void objUpdateBubble();
 
-    void objRenderBubble();
+    void objRenderBubble(SDL_Renderer* ren);
 
     void setXVel(int x);
     void setYVel(int y);

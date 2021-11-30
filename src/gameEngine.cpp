@@ -50,9 +50,6 @@ void GameEngine::init()
 
    // Initialize Camera
    camera = new Camera();
-
-   imageHandler = new ImageHandler(gameRenderer);
-   particle_texture = imageHandler->imageHandler_load(particle_file); // NEW
    
    // Initialize Food
    for (int i = 0; i < MAX_FOOD; i++)
@@ -256,7 +253,7 @@ void GameEngine::updateMechanics()
             food_it = foods.erase(food_it);
 
             // Initialize Particles
-            Bubbles->phInit("assets/tempBubble.png", gameRenderer, player->player_get_x_pos, player->player_get_y_pos, 10, 10, BUBBLE);
+            Bubbles->phInit("assets/tempBubble.png", gameRenderer, player->player_get_x_pos(), player->player_get_y_pos(), 10, 10, BUBBLE);
          }
          else
          {
@@ -327,13 +324,10 @@ void GameEngine::reinit() {
    delete tileHandler;
    delete camera;
    delete editor;
-   delete imageHandler;
    delete menu;
 
    foods.clear();
-   particles.clear();
-
-   SDL_DestroyTexture(particle_texture);
+   Bubbles->quit();
 
    // Reinitialize elements
 
@@ -346,14 +340,14 @@ void GameEngine::reinit() {
    // Initialize Camera
    camera = new Camera();
 
-   imageHandler = new ImageHandler(gameRenderer);
-   particle_texture = imageHandler->imageHandler_load(particle_file); // NEW
-   
    // Initialize Food
    for (int i = 0; i < MAX_FOOD; i++)
    {
       foods.push_back(new Food(gameRenderer));
    }
+
+   // Initialized Particle
+   Bubbles = new particleHandler();
 
    // Initialize game state
    game_state = 0;

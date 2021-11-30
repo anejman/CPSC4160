@@ -51,12 +51,7 @@ class GameEngine
       SDL_Event userInput;
       SDL_Rect camera_rect;
       SDL_Rect food_rect;
-      ImageHandler *imageHandler;
-      GameMenu *menu;
-      std::vector<ParticleHandler*> particles;
-      SDL_Texture *particle_texture; 
-      const char *particle_file = "./assets/green.bmp";
-      int particle_iteration;
+      GameMenu *menu; 
       int game_state;
       int tile_type;
       bool pause;

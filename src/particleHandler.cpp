@@ -15,10 +15,10 @@ void particle::objInit(const char* image, SDL_Renderer* ren, int x, int y, int w
 {
     objRender = ren;
 
+    imageHandler = new ImageHandler(objRender);
+
     //load particle image
-    SDL_Surface* objSurface = IMG_Load(image);
-    objGraphic = SDL_CreateTextureFromSurface(objRender, objSurface);
-    SDL_FreeSurface(objSurface);
+    objGraphic = imageHandler->imageHandler_load(image);
 
     xPos = x;
     yPos = y;
@@ -48,7 +48,7 @@ void particle::objUpdateBubble()
     life--;
 }
 
-void particle::objRenderBubble()
+void particle::objRenderBubble(SDL_Renderer* ren)
 {
     if(life > 0) {
         //makes more transparent as time passes
@@ -137,4 +137,11 @@ void particleHandler::phRender(SDL_Renderer* ren)
     }
 }
 
-void particleHandler::quit() {}
+void particleHandler::quit() 
+{
+    int maxParticle = MAX_PARTICLE;
+
+    for(int x = 0; x < maxParticle; x++) {
+        particles[x].quit();
+    }
+}
