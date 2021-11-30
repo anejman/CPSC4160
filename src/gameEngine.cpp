@@ -309,15 +309,15 @@ bool GameEngine::checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
    first_rect_left = first_rect.x;
    first_rect_right = first_rect.x + first_rect.w;
 
-   second_rect_left = second_rect.y;
-   second_rect_right = second_rect.y + second_rect.h;
-   second_rect_top = second_rect.x;
-   second_rect_bottom = second_rect.x + second_rect.w;
+   second_rect_top = second_rect.y;
+   second_rect_bottom = second_rect.y + second_rect.h;
+   second_rect_left = second_rect.x;
+   second_rect_right = second_rect.x + second_rect.w;
 
-   if (first_rect_top > second_rect_right) return false;
-   if (first_rect_bottom < second_rect_left) return false;
-   if (first_rect_left > second_rect_bottom) return false;
-   if (first_rect_right < second_rect_top) return false;
+   if (first_rect_top > second_rect_bottom) return false;
+   if (first_rect_bottom < second_rect_top) return false;
+   if (first_rect_left > second_rect_right) return false;
+   if (first_rect_right < second_rect_left) return false;
    
    return true;
 }

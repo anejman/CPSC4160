@@ -70,5 +70,9 @@
 #define RESTART_Y 190
 #define QUIT_Y 270
 
+// Particle variables
+#define MAX_PARTICLE 10
+#define BUBBLE 0
+
 
 #endif

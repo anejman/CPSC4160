@@ -8,31 +8,23 @@
 #ifndef PARTICLEHANDLER_H
 #define PARTICLEHANDLER_H
 
-#include "globals.h"
+#include "particle.h"
 
 class ParticleHandler
 {
-   public:
-        //Initialize position and animation
-        ParticleHandler(SDL_Renderer* gameRenderer, SDL_Texture* particleTexture, int width, int height, int alpha, int life);
-        ~ParticleHandler();
+private:
+    particle particles[MAX_PARTICLE];
+    int partType;
+public:
+    ParticleEmitter();
+    ~ParticleEmitter();
 
-        //Shows the particle
-        void particleHandler_render(int x_pos, int y_pos);
+    void peInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type);
 
-        //Checks if particle is dead
-        bool isDead();
+    void peUpdate();
+    void peRender(SDL_Renderer* ren);
 
-   private:
-        SDL_Renderer* game_renderer;
-        SDL_Texture* particle_texture;
-        SDL_Rect particle_rect;
-
-        int x_pos_dist;
-        int y_pos_dist;
-        int particle_alpha;
-        int particle_life;
-        int particle_frame = 0;
+    void quit();
 };
 
 #endif
