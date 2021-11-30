@@ -17,6 +17,9 @@
 #include "particleHandler.h"
 #include "levelEditor.h"
 #include "menu.h"
+#include "score.h"
+
+using namespace std;
 
 #define FOOD_PARTICLES 10
 #define STATE_PLAYER 0
@@ -51,7 +54,8 @@ class GameEngine
       SDL_Event userInput;
       SDL_Rect camera_rect;
       SDL_Rect food_rect;
-      GameMenu *menu; 
+      GameMenu *menu;
+      Score *score;
       int game_state;
       int tile_type;
       bool pause;
