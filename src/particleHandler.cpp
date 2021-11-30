@@ -106,9 +106,9 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
         for(int x = 0; x < maxParticle; x++) {
             particles[x].objInit(image, ren, startX, startY, width, height);
 
-            particles[x].setXVel(5 - (rand() % 10));
-            particles[x].setYVel(5 - (rand() % 10));
-            particles[x].setLife(5 + (rand() % 10));
+            particles[x].setXVel(1 - (rand() % 2));
+            particles[x].setYVel(1 - (rand() % 4));
+            particles[x].setLife(30 + (rand() % 10));
         }
     }
 }
