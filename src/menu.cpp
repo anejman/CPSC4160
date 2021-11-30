@@ -28,6 +28,7 @@ GameMenu::GameMenu(SDL_Renderer* renderer) {
     quit.h = 50;
 
     fontColor = {255, 255, 255};
+    hoverColor = {217, 190, 54};
 
     if ( TTF_Init() < 0 ) {
         cout << "Error initializing SDL_ttf: " << TTF_GetError() << endl;
@@ -40,14 +41,75 @@ GameMenu::GameMenu(SDL_Renderer* renderer) {
 }
 
 void GameMenu::init() {
+    resumeHover = false;
     resumeSurface = TTF_RenderText_Solid(font, "Resume", fontColor);
     resumeTexture = SDL_CreateTextureFromSurface(game_renderer, resumeSurface);
+    SDL_FreeSurface(resumeSurface);
 
+    restartHover = false;
     restartSurface = TTF_RenderText_Solid(font, "Restart", fontColor);
     restartTexture = SDL_CreateTextureFromSurface(game_renderer, restartSurface);
+    SDL_FreeSurface(restartSurface);
 
+    quitHover = false;
     quitSurface = TTF_RenderText_Solid(font, "Quit", fontColor);
     quitTexture = SDL_CreateTextureFromSurface(game_renderer, quitSurface);
+    SDL_FreeSurface(quitSurface);
+}
+
+void GameMenu::hoverEffect(int state) {
+    switch (state) {
+        case 1:
+            if(!resumeHover) {
+                resumeHover = true;
+                SDL_DestroyTexture(resumeTexture);
+                resumeSurface = TTF_RenderText_Solid(font, "Resume", hoverColor);
+                resumeTexture = SDL_CreateTextureFromSurface(game_renderer, resumeSurface);
+                SDL_FreeSurface(resumeSurface);
+            }
+            break;
+        case 2:
+            if (!restartHover) {
+                restartHover = true;
+                SDL_DestroyTexture(restartTexture);
+                restartSurface = TTF_RenderText_Solid(font, "Restart", hoverColor);
+                restartTexture = SDL_CreateTextureFromSurface(game_renderer, restartSurface);
+                SDL_FreeSurface(restartSurface);
+            }
+            break;
+        case 3:
+            if (!quitHover) {
+                quitHover = true;
+                SDL_DestroyTexture(quitTexture);
+                quitSurface = TTF_RenderText_Solid(font, "Quit", hoverColor);
+                quitTexture = SDL_CreateTextureFromSurface(game_renderer, quitSurface);
+                SDL_FreeSurface(quitSurface);
+            }
+            break;
+        case 0:
+            if (resumeHover) {
+                resumeHover = false;
+                SDL_DestroyTexture(resumeTexture);
+                resumeSurface = TTF_RenderText_Solid(font, "Resume", fontColor);
+                resumeTexture = SDL_CreateTextureFromSurface(game_renderer, resumeSurface);
+                SDL_FreeSurface(resumeSurface);
+            } else if (restartHover) {
+                restartHover = false;
+                SDL_DestroyTexture(restartTexture);
+                restartSurface = TTF_RenderText_Solid(font, "Restart", fontColor);
+                restartTexture = SDL_CreateTextureFromSurface(game_renderer, restartSurface);
+                SDL_FreeSurface(restartSurface);
+            } else if (quitHover) {
+                quitHover = false;
+                SDL_DestroyTexture(quitTexture);
+                quitSurface = TTF_RenderText_Solid(font, "Quit", fontColor);
+                quitTexture = SDL_CreateTextureFromSurface(game_renderer, quitSurface);
+                SDL_FreeSurface(quitSurface);
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 void GameMenu::render() {

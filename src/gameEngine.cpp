@@ -187,6 +187,22 @@ void GameEngine::handleEvents()
          }
       } else {
          switch (userInput.type) {
+            case SDL_MOUSEMOTION:
+               if (userInput.motion.x > MENU_ITEM_X && userInput.motion.x < MENU_ITEM_X + 200) {
+                  if (userInput.motion.y > RESUME_Y && userInput.motion.y < RESUME_Y + 50) {
+                     menu->hoverEffect(1);
+                  } else if (userInput.motion.y > RESTART_Y && userInput.motion.y < RESTART_Y + 50) {
+                     menu->hoverEffect(2);
+                  } else if (userInput.motion.y > QUIT_Y && userInput.motion.y < QUIT_Y + 50) {
+                     menu->hoverEffect(3);
+                  } else {
+                     menu->hoverEffect(0);
+                  }
+               } else {
+                  menu->hoverEffect(0);
+               }
+               break;
+
             case SDL_MOUSEBUTTONDOWN:
                if (userInput.button.x > MENU_ITEM_X && userInput.button.x < MENU_ITEM_X + 200) {
                   if (userInput.button.y > RESUME_Y && userInput.button.y < RESUME_Y + 50) {
