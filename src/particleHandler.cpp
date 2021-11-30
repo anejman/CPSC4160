@@ -52,7 +52,7 @@ void particle::objRenderBubble(SDL_Renderer* ren)
 {
     if(life > 0) {
         //makes more transparent as time passes
-        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/30);
+        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/50);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     } else {
         SDL_SetTextureAlphaMod(objGraphic, 255);
@@ -91,7 +91,10 @@ void particle::setLife(int newLife)
 
 /*=======================================Particle Handler Section==========================*/
 
-particleHandler::particleHandler() {}
+particleHandler::particleHandler() 
+{
+    partType = DEFAULT_TYPE;
+}
 
 particleHandler::~particleHandler() {}
 
@@ -112,8 +115,8 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
             particles[x]->objInit(image, ren, startX, startY, width, height);
 
             particles[x]->setXVel(1 - (rand() % 2));
-            particles[x]->setYVel(1 - (rand() % 4));
-            particles[x]->setLife(30 + (rand() % 10));
+            particles[x]->setYVel(1 - (rand() % 5));
+            particles[x]->setLife(40 + (rand() % 10));
         }
     }
 }
