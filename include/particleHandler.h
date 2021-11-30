@@ -19,10 +19,10 @@ public:
     ParticleEmitter();
     ~ParticleEmitter();
 
-    void peInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type);
+    void phInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type);
 
-    void peUpdate();
-    void peRender(SDL_Renderer* ren);
+    void phUpdate();
+    void phRender(SDL_Renderer* ren);
 
     void quit();
 };

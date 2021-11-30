@@ -32,9 +32,11 @@ void particle::objInit(const char* image, SDL_Renderer* ren, int x, int y, int w
 
 void particle::objUpdateBubble()
 {
+    //move particle
     xPos += xVel;
     yPos += yVel;
 
+    //makes bubble move upwards
     yPos -= 9.8*100/3600;
 
     if(life > 0) {
@@ -95,10 +97,12 @@ particleHandler::~particleHandler() {}
 
 void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type)
 {
+    //check for particle type
     partType = type;
     int maxParticle = MAX_PARTICLE;
 
     if(partType == BUBBLE) {
+        //sets a random velocity and lifespan for every particle
         for(int x = 0; x < maxParticle; x++) {
             particles[x].objInit(image, ren, startX, startY, width, height);
 
@@ -113,6 +117,7 @@ void particleHandler::phUpdate()
 {
     int maxParticle = MAX_PARTICLE;
 
+    //update every particle
     if(partType == BUBBLE) {
         for(int x = 0; x < maxParticle; x++) {
             particles[x].objUpdateBubble();
@@ -124,6 +129,7 @@ void particleHandler::phRender(SDL_Renderer* ren)
 {
     int maxParticle = MAX_PARTICLE;
 
+    //render every particle
     if(partType == BUBBLE) {
         for(int x = 0; x < maxParticle; x++) {
             particles[x].objRenderBubble(ren);

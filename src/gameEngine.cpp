@@ -60,6 +60,9 @@ void GameEngine::init()
       foods.push_back(new Food(gameRenderer));
    }
 
+   // Initialize particles
+   Bubbles = new particleHandler();
+
    // Initialize game state
    game_state = 0;
 
@@ -253,12 +256,7 @@ void GameEngine::updateMechanics()
             food_it = foods.erase(food_it);
 
             // Initialize Particles
-            for (int i = 0; i < FOOD_PARTICLES; i++)
-            {
-               particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
-            }
-
-            particle_iteration = 0;
+            Bubbles->phInit("assets/tempBubble.png", gameRenderer, player->player_get_x_pos, player->player_get_y_pos, 10, 10, BUBBLE);
          }
          else
          {
@@ -287,24 +285,7 @@ void GameEngine::render()
 
          player->player_render(camera_rect);
 
-         for(auto particle_it = begin(particles); particle_it != end(particles);)
-         {
-            if((*particle_it)->isDead())
-            {
-               particle_it = particles.erase(particle_it);
-
-               if(particle_iteration < FOOD_PARTICLES * 5)
-               {
-                  particles.push_back(new ParticleHandler(gameRenderer, particle_texture, 8, 8, 160, 5));
-                  particle_iteration++;
-               }
-            }
-            else
-            {
-               (*particle_it)->particleHandler_render(player->player_get_x_pos() - camera_rect.x, player->player_get_y_pos() - camera_rect.y);
-               ++particle_it;
-            }
-         }
+         Bubbles->phRender(gameRenderer);
       }
       else {
          editor->editor_render(camera_rect);
