@@ -78,6 +78,20 @@ void particle::objUpdateBubbleBump()
     life--;
 }
 
+void particle::objUpdateWin()
+{
+    xPos += xVel;
+    yPos += yVel;
+
+    if(life > 0) {
+        objRect.x = xPos;
+        objRect.y = yPos;
+        objRect.w = width;
+        objRect.h = height;
+    }
+    life--;
+}
+
 void particle::objRenderBubble(SDL_Renderer* ren)
 {
     if(life > 0) {
@@ -107,6 +121,13 @@ void particle::objRenderBubbleBump(SDL_Renderer* ren)
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     } else {
         SDL_SetTextureAlphaMod(objGraphic, 255);
+    }
+}
+
+void particle::objRenderWin(SDL_Renderer* ren)
+{
+    if(life > 0) {
+        SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     }
 }
 
@@ -223,6 +244,68 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
             particles[x]->setLife(40 + (rand() % 10));
         }
     }
+
+    if(partType == WIN) {
+        maxParticle = MAX_PARTICLE_WIN;
+
+        for (int i = 0; i < maxParticle; i++) {
+            particles.push_back(new particle);
+        }
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->setLife(20 + (rand() % 10));
+
+            switch(x % 8) {
+                case 0:
+                    particles[x]->objInit(image, ren, startX, startY - 17 + rand() % 34, width, height);
+                    particles[x]->setXVel(5 + (rand() % 50)/10);
+                    particles[x]->setYVel(0);
+                    break;
+
+                case 1:
+                    particles[x]->objInit(image, ren, startX, startY + 17 + rand() % 34, width, height);
+                    particles[x]->setXVel(-5 + (rand() % 50)/-10);
+                    particles[x]->setYVel(0);
+                    break;
+
+                case 2:
+                    particles[x]->objInit(image, ren, startX - 17 + rand() % 34, startY, width, height);
+                    particles[x]->setXVel(0);
+                    particles[x]->setYVel(5 + (rand() % 50)/10);
+                    break;
+
+                case 3:
+                    particles[x]->objInit(image, ren, startX + 17 + rand() % 34, startY, width, height);
+                    particles[x]->setXVel(0);
+                    particles[x]->setYVel(-5 + (rand() % 50)/-10);
+                    break;
+                
+                case 4:
+                    particles[x]->objInit(image, ren, startX, startY, width, height);
+                    particles[x]->setXVel(5 + (rand() % 50)/10);
+                    particles[x]->setYVel(-5 + (rand() % 50)/-10);
+                    break;
+
+                case 5:
+                    particles[x]->objInit(image, ren, startX, startY, width, height);
+                    particles[x]->setXVel(-5 + (rand() % 50)/-10);
+                    particles[x]->setYVel(-5 + (rand() % 50)/-10);
+                    break;
+
+                case 6:
+                    particles[x]->objInit(image, ren, startX, startY, width, height);
+                    particles[x]->setXVel(5 + (rand() % 50)/10);
+                    particles[x]->setYVel(5 + (rand() % 50)/10);
+                    break;
+
+                case 7:
+                    particles[x]->objInit(image, ren, startX, startY, width, height);
+                    particles[x]->setXVel(-5 + (rand() % 50)/-10);
+                    particles[x]->setYVel(5 + (rand() % 50)/10);
+                    break;
+            }
+        }
+    }
 }
 
 void particleHandler::phUpdate() 
@@ -249,6 +332,14 @@ void particleHandler::phUpdate()
             particles[x]->objUpdateBubbleBump();
         }
     }
+
+    if(partType == WIN) {
+        maxParticle = MAX_PARTICLE_WIN;
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objUpdateWin();
+        }
+    }
 }
 
 void particleHandler::phRender(SDL_Renderer* ren) 
@@ -273,6 +364,14 @@ void particleHandler::phRender(SDL_Renderer* ren)
     if(partType == BUBBLE_BUMP) {
         for(int x = 0; x < maxParticle; x++) {
             particles[x]->objRenderBubbleBump(ren);
+        }
+    }
+
+    if(partType == WIN) {
+        maxParticle = MAX_PARTICLE_WIN;
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objRenderWin(ren);
         }
     }
 }

@@ -267,7 +267,7 @@ void GameEngine::updateMechanics()
             // Initialize Particles
             int tempX = food_rect.x - camera->camera_get_rect().x;
             int tempY = food_rect.y - camera->camera_get_rect().y;
-            stars->phInit("./assets/star.png", gameRenderer, tempX, tempY, 20, 20, STAR);
+            stars->phInit("./assets/star.png", gameRenderer, tempX, tempY, 25, 25, STAR);
             //bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
             //bubbleBump->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE_BUMP);
          }

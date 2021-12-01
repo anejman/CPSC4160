@@ -32,10 +32,12 @@ public:
     void objUpdateBubble();
     void objUpdateStar();
     void objUpdateBubbleBump();
+    void objUpdateWin();
 
     void objRenderBubble(SDL_Renderer* ren);
     void objRenderStar(SDL_Renderer* ren);
     void objRenderBubbleBump(SDL_Renderer* ren);
+    void objRenderWin(SDL_Renderer* ren);
 
     void setXVel(int x);
     void setYVel(int y);

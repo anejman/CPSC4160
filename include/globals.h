@@ -76,10 +76,12 @@ using namespace std;
 // Particle variables
 #define MAX_PARTICLE 10
 #define MAX_PARTICLE_STAR 5
+#define MAX_PARTICLE_WIN 50
 #define DEFAULT_TYPE 10
 #define BUBBLE 0
 #define STAR 1
 #define BUBBLE_BUMP 2
+#define WIN 3
 
 // Score position
 #define SCORE_X 530
