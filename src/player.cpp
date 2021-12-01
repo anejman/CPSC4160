@@ -35,6 +35,11 @@ void Player::player_init()
    player_sprite = new SpriteHandler(PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, PLAYER_SPRITE_FRAMES, PLAYER_SPRITE_DURATION);
 }
 
+void Player::player_set_sprite(int player_sprite_number)
+{
+   player_sprite->sprite_set_sprite(player_sprite_number);
+}
+
 void Player::player_update()
 {
    unsigned current_frame_time = SDL_GetTicks();
@@ -42,35 +47,20 @@ void Player::player_update()
    // Controls Sprite
    switch (motion_state)
    {
-   case STATE_IDLE:
-      current_frame = player_sprite->sprite_update(ANIMATION_REST);
-      player_flip = (isFlipped) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-      break;
    case STATE_UP:
-      current_frame = player_sprite->sprite_update(ANIMATION_STRUT);
-      player_flip = (isFlipped) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+      current_frame = player_sprite->sprite_update(ANIMATION_UP);
       break;
    case STATE_DOWN:
-      current_frame = player_sprite->sprite_update(ANIMATION_STRUT);
-      player_flip = (isFlipped) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+      current_frame = player_sprite->sprite_update(ANIMATION_DOWN);
       break;
    case STATE_LEFT:
-      current_frame = player_sprite->sprite_update(ANIMATION_STRUT);
-      player_flip = SDL_FLIP_NONE;
-      isFlipped = 0;
+      current_frame = player_sprite->sprite_update(ANIMATION_LEFT);
       break;
    case STATE_RIGHT:
-      current_frame = player_sprite->sprite_update(ANIMATION_STRUT);
-      player_flip = SDL_FLIP_HORIZONTAL;
-      isFlipped = 1;
-      break;
-   case STATE_FEED:
-      current_frame = player_sprite->sprite_update(ANIMATION_FEED);
-      player_flip = (isFlipped) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+      current_frame = player_sprite->sprite_update(ANIMATION_RIGHT);
       break;
    default:
-      current_frame = player_sprite->sprite_update(ANIMATION_REST);
-      player_flip = SDL_FLIP_NONE;
+      current_frame = player_sprite->sprite_update(ANIMATION_DOWN);
    }
 
    // Move the player left or right
@@ -101,5 +91,5 @@ void Player::player_render(SDL_Rect camera_rect)
 
    SDL_Rect render_rect = { player_camera_x, player_camera_y, PLAYER_WIDTH, PLAYER_HEIGHT};
    
-   SDL_RenderCopyEx(game_renderer, player_texture, &current_frame, &render_rect, 0.0, NULL, player_flip);  
+   SDL_RenderCopy(game_renderer, player_texture, &current_frame, &render_rect);  
 }

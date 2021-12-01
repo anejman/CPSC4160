@@ -39,6 +39,6 @@ void Food::food_init()
 
 void Food::food_render(SDL_Rect camera_rect)
 {
-   SDL_Rect render_rect = {(food_rect.x - camera_rect.x), (food_rect.y - camera_rect.y), PLAYER_WIDTH, PLAYER_HEIGHT};
+   SDL_Rect render_rect = {(food_rect.x - camera_rect.x), (food_rect.y - camera_rect.y), FOOD_WIDTH, FOOD_HEIGHT};
    SDL_RenderCopy(game_renderer, food_texture, NULL, &render_rect);
 }

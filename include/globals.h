@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <fstream>
 #include <vector>
@@ -27,8 +28,8 @@ using namespace std;
 #define LEVEL_HEIGHT 960
 
 // Player Dimensions Definition
-#define PLAYER_WIDTH 64
-#define PLAYER_HEIGHT 64
+#define PLAYER_WIDTH 78
+#define PLAYER_HEIGHT 138
 
 // Food Dimensions Definition
 #define FOOD_WIDTH 64
@@ -46,18 +47,16 @@ using namespace std;
 #define Y_VEL 5
 
 // Player States
-#define STATE_IDLE 0
 #define STATE_UP 1
 #define STATE_DOWN 2
 #define STATE_LEFT 3
 #define STATE_RIGHT 4
-#define STATE_FEED 5
 
 // Player Animations
-#define ANIMATION_STRUT 0
-#define ANIMATION_FEED 1
-#define ANIMATION_REST 2
-#define ANIMATION_RUN 3
+#define ANIMATION_DOWN 0
+#define ANIMATION_LEFT 1
+#define ANIMATION_RIGHT 2
+#define ANIMATION_UP 3
 
 // Tile Dimensions
 #define EDITOR_TILE_WIDTH 32
@@ -68,6 +67,11 @@ using namespace std;
 
 // Menu Option positions
 #define MENU_ITEM_X 220
+
+#define TITLE_Y 30
+#define PLAYER_Y 160
+#define SWAPPER_Y 300
+#define START_Y 400
 
 #define RESUME_Y 110
 #define RESTART_Y 190

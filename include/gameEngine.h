@@ -18,6 +18,7 @@
 #include "levelEditor.h"
 #include "menu.h"
 #include "score.h"
+#include "startMenu.h"
 
 using namespace std;
 
@@ -56,10 +57,13 @@ class GameEngine
       SDL_Event userInput;
       SDL_Rect camera_rect;
       SDL_Rect food_rect;
+      StartMenu *startMenu;
       GameMenu *menu;
       Score *score;
+      int sprite_number;
       int game_state;
       int tile_type;
+      bool start;
       bool pause;
       bool restart;
 };
