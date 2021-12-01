@@ -49,9 +49,10 @@ class GameEngine
       TileHandler *tileHandler;
       Camera *camera;
       levelEditor *editor;
-      particleHandler* bubbles;
-      particleHandler* stars;
-      particleHandler* bubbleBump;
+      particleHandler *bubbles;
+      particleHandler *stars;
+      particleHandler *bubbleBump;
+      particleHandler *win;
       SDL_Window *gameWindow;
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;

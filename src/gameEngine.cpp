@@ -73,6 +73,7 @@ void GameEngine::init()
    bubbles = new particleHandler();
    stars = new particleHandler();
    bubbleBump = new particleHandler();
+   win = new particleHandler();
 
    // Initialize game state
    game_state = 0;
@@ -365,19 +366,15 @@ void GameEngine::updateMechanics()
             food_it = foods.erase(food_it);
             score->increment();
             // Initialize Particles
-            int tempX = food_rect.x - camera->camera_get_rect().x;
-            int tempY = food_rect.y - camera->camera_get_rect().y;
+            int tempX = food_rect.x - camera_rect.x;
+            int tempY = food_rect.y - camera_rect.y;
             stars->phInit("./assets/star.png", gameRenderer, tempX, tempY, 25, 25, STAR);
-            //bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
-            //bubbleBump->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE_BUMP);
          }
          else
          {
             ++food_it;
          }
       }
-      //bubbles->phUpdate();
-      //bubbleBump->phUpdate();
       stars->phUpdate();
    }
    else
@@ -412,11 +409,9 @@ void GameEngine::render()
 
          score->render();
 
-         //bubbles->phRender(gameRenderer);
-         //bubbleBump->phRender(gameRenderer);
-         stars->phRender(gameRenderer);
-
          player->player_render(camera_rect);
+
+         stars->phRender(gameRenderer);
       }
       else
       {
