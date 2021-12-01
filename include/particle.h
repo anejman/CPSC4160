@@ -30,8 +30,10 @@ public:
     void quit();
 
     void objUpdateBubble();
+    void objUpdateStar();
 
     void objRenderBubble(SDL_Renderer* ren);
+    void objRenderStar(SDL_Renderer* ren);
 
     void setXVel(int x);
     void setYVel(int y);

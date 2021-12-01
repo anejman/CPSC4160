@@ -48,11 +48,35 @@ void particle::objUpdateBubble()
     life--;
 }
 
+void particle::objUpdateStar()
+{
+    xPos += xVel;
+    yPos += yVel;
+
+    if(life > 0) {
+        objRect.x = xPos;
+        objRect.y = yPos;
+        objRect.w = width;
+        objRect.h = height;
+    }
+    life--;
+}
+
 void particle::objRenderBubble(SDL_Renderer* ren)
 {
     if(life > 0) {
         //makes more transparent as time passes
         SDL_SetTextureAlphaMod(objGraphic, (int)255*life/50);
+        SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
+    } else {
+        SDL_SetTextureAlphaMod(objGraphic, 255);
+    }
+}
+
+void particle::objRenderStar(SDL_Renderer* ren)
+{
+    if(life > 0) {
+        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/25);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     } else {
         SDL_SetTextureAlphaMod(objGraphic, 255);
@@ -106,7 +130,6 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
 
     if(partType == BUBBLE) {
         //sets a random velocity and lifespan for every particle
-
         for (int i = 0; i < maxParticle; i++) {
             particles.push_back(new particle);
         }
@@ -117,6 +140,46 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
             particles[x]->setXVel(1 - (rand() % 2));
             particles[x]->setYVel(1 - (rand() % 5));
             particles[x]->setLife(40 + (rand() % 10));
+        }
+    }
+
+    if(partType == STAR) {
+        maxParticle = MAX_PARTICLE_STAR;
+
+        for(int i = 0; i < maxParticle; i++) {
+            particles.push_back(new particle);
+        }
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objInit(image, ren, startX, startY, width, height);
+            particles[x]->setLife(25);
+
+            switch(x) {
+                case 0:
+                    particles[x]->setXVel(0);
+                    particles[x]->setYVel(-2);
+                    break;
+
+                case 1:
+                    particles[x]->setXVel(2);
+                    particles[x]->setYVel(0);
+                    break;
+
+                case 2:
+                    particles[x]->setXVel(-2);
+                    particles[x]->setYVel(0);
+                    break;
+
+                case 3:
+                    particles[x]->setXVel(2);
+                    particles[x]->setYVel(2);
+                    break;
+                
+                case 4:
+                    particles[x]->setXVel(-2);
+                    particles[x]->setYVel(2);
+                    break;
+            }
         }
     }
 }
@@ -131,6 +194,14 @@ void particleHandler::phUpdate()
             particles[x]->objUpdateBubble();
         }
     }
+
+    if(partType == STAR) {
+        maxParticle = MAX_PARTICLE_STAR;
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objUpdateStar();
+        }
+    }
 }
 
 void particleHandler::phRender(SDL_Renderer* ren) 
@@ -141,6 +212,14 @@ void particleHandler::phRender(SDL_Renderer* ren)
     if(partType == BUBBLE) {
         for(int x = 0; x < maxParticle; x++) {
             particles[x]->objRenderBubble(ren);
+        }
+    }
+
+    if(partType == STAR) {
+        maxParticle = MAX_PARTICLE_STAR;
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objRenderStar(ren);
         }
     }
 }

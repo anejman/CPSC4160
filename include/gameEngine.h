@@ -49,6 +49,7 @@ class GameEngine
       Camera *camera;
       levelEditor *editor;
       particleHandler* bubbles;
+      particleHandler* stars;
       SDL_Window *gameWindow;
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;

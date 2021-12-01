@@ -25,7 +25,7 @@ void GameEngine::init()
    if ( TTF_Init() < 0 ) {
         cout << "Error initializing SDL_ttf: " << TTF_GetError() << endl;
     } else {
-       cout << "Finished TTF_Init!" << endl;
+        cout << "Finished TTF_Init!" << endl;
     }
 
    // Enable GPU Textures
@@ -65,6 +65,7 @@ void GameEngine::init()
 
    // Initialize particles
    bubbles = new particleHandler();
+   stars = new particleHandler();
 
    // Initialize game state
    game_state = 0;
@@ -263,16 +264,18 @@ void GameEngine::updateMechanics()
             food_it = foods.erase(food_it);
             score->increment();
             // Initialize Particles
-            int tempX = player->player_get_x_pos() - camera->camera_get_rect().x;
-            int tempY = player->player_get_y_pos() - camera->camera_get_rect().y;
-            bubbles->phInit("./assets/tempBubble.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
+            int tempX = food_rect.x - camera->camera_get_rect().x;
+            int tempY = food_rect.y - camera->camera_get_rect().y;
+            stars->phInit("./assets/star.png", gameRenderer, tempX, tempY, 20, 20, STAR);
+            //bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
          }
          else
          {
             ++food_it;
          }
       }
-      bubbles->phUpdate();
+      //bubbles->phUpdate();
+      stars->phUpdate();
    } 
    else {
       //editor->editor_update();
@@ -296,7 +299,9 @@ void GameEngine::render()
 
          score->render();
 
-         bubbles->phRender(gameRenderer);
+         //bubbles->phRender(gameRenderer);
+         stars->phRender(gameRenderer);
+
          player->player_render(camera_rect);
       }
       else {
@@ -340,7 +345,6 @@ void GameEngine::reinit() {
 
    foods.clear();
    
-
    // Initialize Player
    player = new Player(gameRenderer, 0, 0);
 
@@ -351,9 +355,6 @@ void GameEngine::reinit() {
    {
       foods.push_back(new Food(gameRenderer));
    }
-
-   // Initialized Particle
-   bubbles = new particleHandler();
 
    // Initialize game state
    game_state = 0;
