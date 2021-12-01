@@ -12,19 +12,20 @@
 
 class particleHandler
 {
-private:
-    vector<particle*> particles;
-    int partType;
-public:
-    particleHandler();
-    ~particleHandler();
+    private:
+        vector<particle *> particles;
+        int partType;
 
-    void phInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type);
+    public:
+        particleHandler();
+        ~particleHandler();
 
-    void phUpdate();
-    void phRender(SDL_Renderer* ren);
+        void phInit(const char *image, SDL_Renderer *ren, int startX, int startY, int width, int height, int type);
 
-    void quit();
+        void phUpdate();
+        void phRender(SDL_Renderer *ren);
+
+        void quit();
 };
 
 #endif

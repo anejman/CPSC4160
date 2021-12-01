@@ -12,10 +12,10 @@
 #include "imageHandler.h"
 #include "spriteHandler.h"
 
-#define PLAYER_SPRITE_WIDTH 32
-#define PLAYER_SPRITE_HEIGHT 32
-#define PLAYER_SPRITE_FRAMES 4
-#define PLAYER_SPRITE_DURATION 100
+#define PLAYER_SPRITE_WIDTH 26
+#define PLAYER_SPRITE_HEIGHT 46
+#define PLAYER_SPRITE_FRAMES 3
+#define PLAYER_SPRITE_DURATION 250
 
 class Player
 {
@@ -24,6 +24,7 @@ class Player
       ~Player();
 
       void player_init();
+      void player_set_sprite(int player_sprite_number);
       void player_update();
       void player_render(SDL_Rect camera_rect);
 
@@ -47,8 +48,7 @@ class Player
       SDL_Texture *player_texture;
       SDL_Rect player_rect;
       SDL_Rect current_frame;
-      SDL_RendererFlip player_flip;
-      const char *player_file = "./assets/chicken.png";
+      const char *player_file = "./assets/merman.png";
       unsigned last_frame_time;
       unsigned motion_state;
       bool isFlipped = 0;

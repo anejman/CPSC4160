@@ -42,4 +42,4 @@ clean:
 
 # Tars the entire directory
 tar:
-	tar -czvf assn4_nejman.tar.gz * 
+	tar -czvf atlanteanAdventure.tar.gz * 

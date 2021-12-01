@@ -17,6 +17,7 @@ class SpriteHandler
       ~SpriteHandler();
 
       void sprite_init();
+      void sprite_set_sprite(int sprite_number);
       SDL_Rect sprite_update(int frame_state);
 
    private:
@@ -26,6 +27,7 @@ class SpriteHandler
       int sprite_frame = 0;
       int frame_count;
       double frame_duration;
+      int sprite_character;
 };
 
 #endif

@@ -6,50 +6,51 @@
 
 class particle
 {
-private:
-    SDL_Renderer* objRender;
-    SDL_Texture* objGraphic;
-    SDL_Rect objRect;
+    private:
+        SDL_Renderer *objRender;
+        SDL_Texture *objGraphic;
+        SDL_Rect objRect;
 
-    ImageHandler *imageHandler;
+        ImageHandler *imageHandler;
 
-    int xPos;
-    int yPos;
-    int xVel;
-    int yVel;
+        int xPos;
+        int yPos;
+        int xVel;
+        int yVel;
 
-    int width;
-    int height;
-    
-    int life;
-public:
-    particle();
-    ~particle();
+        int width;
+        int height;
 
-    void objInit(const char* image, SDL_Renderer* ren, int x, int y, int w, int h);
-    void quit();
+        int life;
 
-    void objUpdateBubble();
-    void objUpdateStar();
-    void objUpdateBubbleBump();
-    void objUpdateWin();
+    public:
+        particle();
+        ~particle();
 
-    void objRenderBubble(SDL_Renderer* ren);
-    void objRenderStar(SDL_Renderer* ren);
-    void objRenderBubbleBump(SDL_Renderer* ren);
-    void objRenderWin(SDL_Renderer* ren);
+        void objInit(const char *image, SDL_Renderer *ren, int x, int y, int w, int h);
+        void quit();
 
-    void setXVel(int x);
-    void setYVel(int y);
-    void setXPos(int x);
-    void setYPos(int y);
-    void setLife(int newLife);
+        void objUpdateBubble();
+        void objUpdateStar();
+        void objUpdateBubbleBump();
+        void objUpdateWin();
 
-    int getXVel() {return xVel;}
-    int getYVel() {return yVel;}
-    int getXPos() {return xPos;}
-    int getYPos() {return yPos;}
-    int getLife() {return life;}
+        void objRenderBubble(SDL_Renderer *ren);
+        void objRenderStar(SDL_Renderer *ren);
+        void objRenderBubbleBump(SDL_Renderer *ren);
+        void objRenderWin(SDL_Renderer *ren);
+
+        void setXVel(int x);
+        void setYVel(int y);
+        void setXPos(int x);
+        void setYPos(int y);
+        void setLife(int newLife);
+
+        int getXVel() { return xVel; }
+        int getYVel() { return yVel; }
+        int getXPos() { return xPos; }
+        int getYPos() { return yPos; }
+        int getLife() { return life; }
 };
 
 #endif

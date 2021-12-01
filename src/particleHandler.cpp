@@ -11,7 +11,7 @@ particle::particle() {}
 
 particle::~particle() {}
 
-void particle::objInit(const char* image, SDL_Renderer* ren, int x, int y, int w, int h)
+void particle::objInit(const char *image, SDL_Renderer *ren, int x, int y, int w, int h)
 {
     objRender = ren;
 
@@ -37,13 +37,14 @@ void particle::objUpdateBubble()
     yPos += yVel;
 
     //makes bubble move upwards
-    yPos -= 9.8*100/3600;
+    yPos -= 9.8 * 100 / 3600;
 
-    if(life > 0) {
+    if (life > 0)
+    {
         objRect.x = xPos;
         objRect.y = yPos;
-        objRect.w = width + width * (int)(10*life/100);
-        objRect.h = height + height * (int)(10*life/100);
+        objRect.w = width + width * (int)(10 * life / 100);
+        objRect.h = height + height * (int)(10 * life / 100);
     }
     life--;
 }
@@ -53,7 +54,8 @@ void particle::objUpdateStar()
     xPos += xVel;
     yPos += yVel;
 
-    if(life > 0) {
+    if (life > 0)
+    {
         objRect.x = xPos;
         objRect.y = yPos;
         objRect.w = width;
@@ -67,13 +69,14 @@ void particle::objUpdateBubbleBump()
     xPos += xVel;
     yPos += yVel;
 
-    yPos -= 9.8*100/3600;
+    yPos -= 9.8 * 100 / 3600;
 
-    if(life > 0) {
+    if (life > 0)
+    {
         objRect.x = xPos;
         objRect.y = yPos;
-        objRect.w = width + width * (int)(10*life/100);
-        objRect.h = height + height * (int)(10*life/100);
+        objRect.w = width + width * (int)(10 * life / 100);
+        objRect.h = height + height * (int)(10 * life / 100);
     }
     life--;
 }
@@ -83,7 +86,8 @@ void particle::objUpdateWin()
     xPos += xVel;
     yPos += yVel;
 
-    if(life > 0) {
+    if(life > 0) 
+    {
         objRect.x = xPos;
         objRect.y = yPos;
         objRect.w = width;
@@ -92,41 +96,51 @@ void particle::objUpdateWin()
     life--;
 }
 
-void particle::objRenderBubble(SDL_Renderer* ren)
+void particle::objRenderBubble(SDL_Renderer *ren)
 {
-    if(life > 0) {
+    if (life > 0)
+    {
         //makes more transparent as time passes
-        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/50);
+        SDL_SetTextureAlphaMod(objGraphic, (int)255 * life / 50);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
-    } else {
+    }
+    else
+    {
         SDL_SetTextureAlphaMod(objGraphic, 255);
     }
 }
 
-void particle::objRenderStar(SDL_Renderer* ren)
+void particle::objRenderStar(SDL_Renderer *ren)
 {
-    if(life > 0) {
-        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/25);
+    if (life > 0)
+    {
+        SDL_SetTextureAlphaMod(objGraphic, (int)255 * life / 25);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
-    } else {
+    }
+    else
+    {
         SDL_SetTextureAlphaMod(objGraphic, 255);
     }
 }
 
-void particle::objRenderBubbleBump(SDL_Renderer* ren)
+void particle::objRenderBubbleBump(SDL_Renderer *ren)
 {
-    if(life > 0) {
+    if (life > 0)
+    {
         //makes more transparent as time passes
-        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/50);
+        SDL_SetTextureAlphaMod(objGraphic, (int)255 * life / 50);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
-    } else {
+    }
+    else
+    {
         SDL_SetTextureAlphaMod(objGraphic, 255);
     }
 }
 
-void particle::objRenderWin(SDL_Renderer* ren)
+void particle::objRenderWin(SDL_Renderer *ren)
 {
-    if(life > 0) {
+    if(life > 0) 
+    {
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     }
 }
@@ -163,26 +177,29 @@ void particle::setLife(int newLife)
 
 /*=======================================Particle Handler Section==========================*/
 
-particleHandler::particleHandler() 
+particleHandler::particleHandler()
 {
     partType = DEFAULT_TYPE;
 }
 
 particleHandler::~particleHandler() {}
 
-void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, int startY, int width, int height, int type)
+void particleHandler::phInit(const char *image, SDL_Renderer *ren, int startX, int startY, int width, int height, int type)
 {
     //check for particle type
     partType = type;
     int maxParticle = MAX_PARTICLE;
 
-    if(partType == BUBBLE) {
+    if (partType == BUBBLE)
+    {
         //sets a random velocity and lifespan for every particle
-        for (int i = 0; i < maxParticle; i++) {
+        for (int i = 0; i < maxParticle; i++)
+        {
             particles.push_back(new particle);
         }
 
-        for(int x = 0; x < maxParticle; x++) {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objInit(image, ren, startX, startY, width, height);
 
             particles[x]->setXVel(1 - (rand() % 2));
@@ -191,52 +208,59 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
         }
     }
 
-    if(partType == STAR) {
+    if (partType == STAR)
+    {
         maxParticle = MAX_PARTICLE_STAR;
 
-        for(int i = 0; i < maxParticle; i++) {
+        for (int i = 0; i < maxParticle; i++)
+        {
             particles.push_back(new particle);
         }
 
-        for(int x = 0; x < maxParticle; x++) {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objInit(image, ren, startX, startY, width, height);
             particles[x]->setLife(25);
 
-            switch(x) {
-                case 0:
-                    particles[x]->setXVel(0);
-                    particles[x]->setYVel(-2);
-                    break;
+            switch (x)
+            {
+            case 0:
+                particles[x]->setXVel(0);
+                particles[x]->setYVel(-2);
+                break;
 
-                case 1:
-                    particles[x]->setXVel(2);
-                    particles[x]->setYVel(0);
-                    break;
+            case 1:
+                particles[x]->setXVel(2);
+                particles[x]->setYVel(0);
+                break;
 
-                case 2:
-                    particles[x]->setXVel(-2);
-                    particles[x]->setYVel(0);
-                    break;
+            case 2:
+                particles[x]->setXVel(-2);
+                particles[x]->setYVel(0);
+                break;
 
-                case 3:
-                    particles[x]->setXVel(2);
-                    particles[x]->setYVel(2);
-                    break;
-                
-                case 4:
-                    particles[x]->setXVel(-2);
-                    particles[x]->setYVel(2);
-                    break;
+            case 3:
+                particles[x]->setXVel(2);
+                particles[x]->setYVel(2);
+                break;
+
+            case 4:
+                particles[x]->setXVel(-2);
+                particles[x]->setYVel(2);
+                break;
             }
         }
     }
 
-    if(partType == BUBBLE_BUMP) {
-        for (int i = 0; i < maxParticle; i++) {
+    if (partType == BUBBLE_BUMP)
+    {
+        for (int i = 0; i < maxParticle; i++)
+        {
             particles.push_back(new particle);
         }
 
-        for(int x = 0; x < maxParticle; x++) {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objInit(image, ren, startX, startY, width, height);
 
             particles[x]->setXVel(1 - (rand() % 2));
@@ -308,27 +332,33 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
     }
 }
 
-void particleHandler::phUpdate() 
+void particleHandler::phUpdate()
 {
     int maxParticle = MAX_PARTICLE;
 
     //update every particle
-    if(partType == BUBBLE) {
-        for(int x = 0; x < maxParticle; x++) {
+    if (partType == BUBBLE)
+    {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objUpdateBubble();
         }
     }
 
-    if(partType == STAR) {
+    if (partType == STAR)
+    {
         maxParticle = MAX_PARTICLE_STAR;
 
-        for(int x = 0; x < maxParticle; x++) {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objUpdateStar();
         }
     }
 
-    if(partType == BUBBLE_BUMP) {
-        for(int x = 0; x < maxParticle; x++) {
+    if (partType == BUBBLE_BUMP)
+    {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objUpdateBubbleBump();
         }
     }
@@ -342,27 +372,33 @@ void particleHandler::phUpdate()
     }
 }
 
-void particleHandler::phRender(SDL_Renderer* ren) 
+void particleHandler::phRender(SDL_Renderer *ren)
 {
     int maxParticle = MAX_PARTICLE;
 
     //render every particle
-    if(partType == BUBBLE) {
-        for(int x = 0; x < maxParticle; x++) {
+    if (partType == BUBBLE)
+    {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objRenderBubble(ren);
         }
     }
 
-    if(partType == STAR) {
+    if (partType == STAR)
+    {
         maxParticle = MAX_PARTICLE_STAR;
 
-        for(int x = 0; x < maxParticle; x++) {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objRenderStar(ren);
         }
     }
 
-    if(partType == BUBBLE_BUMP) {
-        for(int x = 0; x < maxParticle; x++) {
+    if (partType == BUBBLE_BUMP)
+    {
+        for (int x = 0; x < maxParticle; x++)
+        {
             particles[x]->objRenderBubbleBump(ren);
         }
     }
@@ -376,11 +412,12 @@ void particleHandler::phRender(SDL_Renderer* ren)
     }
 }
 
-void particleHandler::quit() 
+void particleHandler::quit()
 {
     int maxParticle = MAX_PARTICLE;
 
-    for(int x = 0; x < maxParticle; x++) {
+    for (int x = 0; x < maxParticle; x++)
+    {
         particles.clear();
     }
 }
