@@ -55,7 +55,7 @@ void GameEngine::init()
    tileHandler->tileHandler_load();
 
    // Initialize Player
-   player = new Player(gameRenderer, (SCREEN_WIDTH/2 - PLAYER_WIDTH/2), PLAYER_Y);
+   player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
 
    // Initialize Sprite Number
    sprite_number = 0;
@@ -86,8 +86,8 @@ void GameEngine::init()
    start = false;
 
    // Initialize pause menu
-   menu = new GameMenu(gameRenderer);
-   menu->init();
+   pauseMenu = new PauseMenu(gameRenderer);
+   pauseMenu->init();
    pause = false;
    restart = false;
 
@@ -282,24 +282,24 @@ void GameEngine::handleEvents()
             {
                if (userInput.motion.y > RESUME_Y && userInput.motion.y < RESUME_Y + 50)
                {
-                  menu->hoverEffect(1);
+                  pauseMenu->hoverEffect(1);
                }
                else if (userInput.motion.y > RESTART_Y && userInput.motion.y < RESTART_Y + 50)
                {
-                  menu->hoverEffect(2);
+                  pauseMenu->hoverEffect(2);
                }
                else if (userInput.motion.y > QUIT_Y && userInput.motion.y < QUIT_Y + 50)
                {
-                  menu->hoverEffect(3);
+                  pauseMenu->hoverEffect(3);
                }
                else
                {
-                  menu->hoverEffect(0);
+                  pauseMenu->hoverEffect(0);
                }
             }
             else
             {
-               menu->hoverEffect(0);
+               pauseMenu->hoverEffect(0);
             }
             break;
 
@@ -390,7 +390,7 @@ void GameEngine::updateMechanics()
 void GameEngine::render()
 {
    SDL_RenderClear(gameRenderer);
-   
+
    if (!start)
    {
       startMenu->render();
@@ -425,7 +425,7 @@ void GameEngine::render()
    }
    else
    {
-      menu->render();
+      pauseMenu->render();
    }
    SDL_RenderPresent(gameRenderer);
 }
@@ -459,7 +459,6 @@ bool GameEngine::checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
 
 void GameEngine::reinit()
 {
-
    // Free elements
    cout << "Deleting" << endl;
    delete player;
@@ -468,7 +467,8 @@ void GameEngine::reinit()
    foods.clear();
 
    // Initialize Player
-   player = new Player(gameRenderer, 0, 0);
+   player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
+   player->player_set_sprite(sprite_number);
 
    // Initialize Camera
    camera = new Camera();
@@ -482,8 +482,8 @@ void GameEngine::reinit()
    game_state = 0;
 
    // Initialize pause menu
-   menu = new GameMenu(gameRenderer);
-   menu->init();
+   pauseMenu = new PauseMenu(gameRenderer);
+   pauseMenu->init();
    pause = false;
    restart = false;
 

@@ -89,7 +89,7 @@ void Player::player_render(SDL_Rect camera_rect)
    player_camera_x = (player_rect.x - camera_rect.x);
    player_camera_y = (player_rect.y - camera_rect.y);
 
-   SDL_Rect render_rect = { player_camera_x, player_camera_y, PLAYER_WIDTH, PLAYER_HEIGHT};
-   
-   SDL_RenderCopy(game_renderer, player_texture, &current_frame, &render_rect);  
+   SDL_Rect render_rect = {player_camera_x, player_camera_y, PLAYER_WIDTH, PLAYER_HEIGHT};
+
+   SDL_RenderCopy(game_renderer, player_texture, &current_frame, &render_rect);
 }

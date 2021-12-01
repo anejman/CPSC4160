@@ -16,7 +16,7 @@
 #include "imageHandler.h"
 #include "particleHandler.h"
 #include "levelEditor.h"
-#include "menu.h"
+#include "pauseMenu.h"
 #include "score.h"
 #include "startMenu.h"
 
@@ -58,7 +58,7 @@ class GameEngine
       SDL_Rect camera_rect;
       SDL_Rect food_rect;
       StartMenu *startMenu;
-      GameMenu *menu;
+      PauseMenu *pauseMenu;
       Score *score;
       int sprite_number;
       int game_state;

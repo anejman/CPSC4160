@@ -47,6 +47,7 @@ using namespace std;
 #define Y_VEL 5
 
 // Player States
+#define STATE_IDLE 0
 #define STATE_UP 1
 #define STATE_DOWN 2
 #define STATE_LEFT 3
@@ -65,14 +66,14 @@ using namespace std;
 // Number of different tile types
 #define TILE_TYPE_NUM 9
 
-// Menu Option positions
-#define MENU_ITEM_X 220
-
+// Start Menu Positions
 #define TITLE_Y 30
 #define PLAYER_Y 160
 #define SWAPPER_Y 300
 #define START_Y 400
 
+// Pause Menu Positions
+#define MENU_ITEM_X 220
 #define RESUME_Y 110
 #define RESTART_Y 190
 #define QUIT_Y 270

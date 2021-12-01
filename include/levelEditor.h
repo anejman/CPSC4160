@@ -38,7 +38,6 @@ class levelEditor
         const char *new_map_file = "./assets/newmap.txt";
         int map_x_index;
         int map_y_index;
-
 };
 
 #endif

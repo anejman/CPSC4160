@@ -1,6 +1,7 @@
 #include "score.h"
 
-Score::Score(SDL_Renderer* renderer) {
+Score::Score(SDL_Renderer *renderer)
+{
 
     game_renderer = renderer;
 
@@ -19,42 +20,48 @@ Score::Score(SDL_Renderer* renderer) {
     text_rect.h = 30;
 
     label_font = TTF_OpenFont("./assets/ShortBaby.ttf", 35);
-    if ( !label_font ) {
+    if (!label_font)
+    {
         cout << "Failed to load font: " << TTF_GetError() << endl;
-    } else {
+    }
+    else
+    {
         cout << "Font Loaded!" << endl;
     }
     score_font = TTF_OpenFont("./assets/ShortBaby.ttf", 45);
-    if ( !score_font ) {
+    if (!score_font)
+    {
         cout << "Failed to load font: " << TTF_GetError() << endl;
-    } else {
+    }
+    else
+    {
         cout << "Font Loaded!" << endl;
     }
 }
 
-void Score::init() {
+void Score::init()
+{
 
     label = " of 5";
     label_surface = TTF_RenderText_Solid(label_font, label, fontColor);
     label_texture = SDL_CreateTextureFromSurface(game_renderer, label_surface);
 
-
     string score_string = to_string(score);
-    const char* score_message = score_string.c_str();
+    const char *score_message = score_string.c_str();
 
     cout << "Score: " << score_message << endl;
 
     text_surface = TTF_RenderText_Solid(score_font, score_message, fontColor);
     text_texture = SDL_CreateTextureFromSurface(game_renderer, text_surface);
-    
 }
 
-void Score::updateTexture() {
+void Score::updateTexture()
+{
     SDL_FreeSurface(text_surface);
     SDL_DestroyTexture(text_texture);
 
     string score_string = to_string(score);
-    const char* score_message = score_string.c_str();
+    const char *score_message = score_string.c_str();
 
     cout << "Score: " << score_message << endl;
 
@@ -62,7 +69,8 @@ void Score::updateTexture() {
     text_texture = SDL_CreateTextureFromSurface(game_renderer, text_surface);
 }
 
-void Score::render() {
+void Score::render()
+{
     SDL_RenderCopy(game_renderer, label_texture, NULL, &label_rect);
     SDL_RenderCopy(game_renderer, text_texture, NULL, &text_rect);
 }

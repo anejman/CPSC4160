@@ -15,17 +15,17 @@ StartMenu::StartMenu(SDL_Renderer *renderer)
     foreground.w = SCREEN_WIDTH;
     foreground.h = SCREEN_HEIGHT;
 
-    title.x = (SCREEN_WIDTH/2 - 200);
+    title.x = (SCREEN_WIDTH / 2 - 200);
     title.y = TITLE_Y;
     title.w = 400;
     title.h = 100;
 
-    swapper.x = (SCREEN_WIDTH/2 - 100);
+    swapper.x = (SCREEN_WIDTH / 2 - 100);
     swapper.y = SWAPPER_Y;
     swapper.w = 200;
     swapper.h = 50;
 
-    start.x = MENU_ITEM_X;
+    start.x = (SCREEN_WIDTH / 2 - 100);
     start.y = START_Y;
     start.w = 200;
     start.h = 50;
@@ -61,7 +61,7 @@ void StartMenu::init()
     swapperSurface = TTF_RenderText_Solid(font, "Change Character", fontColor);
     swapperTexture = SDL_CreateTextureFromSurface(game_renderer, swapperSurface);
     SDL_FreeSurface(swapperSurface);
-    
+
     startHover = false;
     startSurface = TTF_RenderText_Solid(font, "Start", fontColor);
     startTexture = SDL_CreateTextureFromSurface(game_renderer, startSurface);

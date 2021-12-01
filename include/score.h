@@ -9,39 +9,46 @@
 
 using namespace std;
 
-class Score {
+class Score
+{
     private:
         int score;
 
-        SDL_Surface* text_surface;
-        SDL_Texture* text_texture;
+        SDL_Surface *text_surface;
+        SDL_Texture *text_texture;
         SDL_Rect text_rect;
 
-        SDL_Surface* label_surface;
-        SDL_Texture* label_texture;
+        SDL_Surface *label_surface;
+        SDL_Texture *label_texture;
         SDL_Rect label_rect;
-        const char* label;
+        const char *label;
 
-        SDL_Renderer* game_renderer;
+        SDL_Renderer *game_renderer;
 
-        TTF_Font* label_font;
-        TTF_Font* score_font;
+        TTF_Font *label_font;
+        TTF_Font *score_font;
         SDL_Color fontColor;
 
     public:
-
-        Score(SDL_Renderer*);
+        Score(SDL_Renderer *);
 
         void init();
 
-        void increment() { score += 1; updateTexture(); }
+        void increment()
+        {
+            score += 1;
+            updateTexture();
+        }
 
         void updateTexture();
 
-        void resetScore() { score = 0; updateTexture(); }
+        void resetScore()
+        {
+            score = 0;
+            updateTexture();
+        }
 
         void render();
-
 };
 
 #endif
