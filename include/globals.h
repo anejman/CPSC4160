@@ -79,6 +79,7 @@ using namespace std;
 #define DEFAULT_TYPE 10
 #define BUBBLE 0
 #define STAR 1
+#define BUBBLE_BUMP 2
 
 // Score position
 #define SCORE_X 530

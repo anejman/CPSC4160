@@ -62,6 +62,22 @@ void particle::objUpdateStar()
     life--;
 }
 
+void particle::objUpdateBubbleBump()
+{
+    xPos += xVel;
+    yPos += yVel;
+
+    yPos -= 9.8*100/3600;
+
+    if(life > 0) {
+        objRect.x = xPos;
+        objRect.y = yPos;
+        objRect.w = width + width * (int)(10*life/100);
+        objRect.h = height + height * (int)(10*life/100);
+    }
+    life--;
+}
+
 void particle::objRenderBubble(SDL_Renderer* ren)
 {
     if(life > 0) {
@@ -77,6 +93,17 @@ void particle::objRenderStar(SDL_Renderer* ren)
 {
     if(life > 0) {
         SDL_SetTextureAlphaMod(objGraphic, (int)255*life/25);
+        SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
+    } else {
+        SDL_SetTextureAlphaMod(objGraphic, 255);
+    }
+}
+
+void particle::objRenderBubbleBump(SDL_Renderer* ren)
+{
+    if(life > 0) {
+        //makes more transparent as time passes
+        SDL_SetTextureAlphaMod(objGraphic, (int)255*life/50);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     } else {
         SDL_SetTextureAlphaMod(objGraphic, 255);
@@ -182,6 +209,20 @@ void particleHandler::phInit(const char* image, SDL_Renderer* ren, int startX, i
             }
         }
     }
+
+    if(partType == BUBBLE_BUMP) {
+        for (int i = 0; i < maxParticle; i++) {
+            particles.push_back(new particle);
+        }
+
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objInit(image, ren, startX, startY, width, height);
+
+            particles[x]->setXVel(1 - (rand() % 2));
+            particles[x]->setYVel(1 - (rand() % 2));
+            particles[x]->setLife(40 + (rand() % 10));
+        }
+    }
 }
 
 void particleHandler::phUpdate() 
@@ -202,6 +243,12 @@ void particleHandler::phUpdate()
             particles[x]->objUpdateStar();
         }
     }
+
+    if(partType == BUBBLE_BUMP) {
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objUpdateBubbleBump();
+        }
+    }
 }
 
 void particleHandler::phRender(SDL_Renderer* ren) 
@@ -220,6 +267,12 @@ void particleHandler::phRender(SDL_Renderer* ren)
 
         for(int x = 0; x < maxParticle; x++) {
             particles[x]->objRenderStar(ren);
+        }
+    }
+
+    if(partType == BUBBLE_BUMP) {
+        for(int x = 0; x < maxParticle; x++) {
+            particles[x]->objRenderBubbleBump(ren);
         }
     }
 }

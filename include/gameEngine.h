@@ -50,6 +50,7 @@ class GameEngine
       levelEditor *editor;
       particleHandler* bubbles;
       particleHandler* stars;
+      particleHandler* bubbleBump;
       SDL_Window *gameWindow;
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;
