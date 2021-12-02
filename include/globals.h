@@ -101,7 +101,7 @@ using namespace std;
 #define MAX_AI 6
 
 // AI Travel Distance
-#define FLEE_DIST 100
+#define FLEE_DIST 200
 #define WONDER_DIST 50
 
 // Score position

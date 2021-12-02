@@ -389,15 +389,35 @@ void GameEngine::updateMechanics()
          NPCs_rect = (*ai_it)->getRect();
          camera_rect = camera->camera_get_rect();
 
-         if((rand() % 1000) == 0)
+         if ((rand() % 1000) == 0)
          {
             int tempX = NPCs_rect.x - camera_rect.x;
             int tempY = NPCs_rect.y - camera_rect.y;
             bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
          }
 
+         if (checkCollision(player->player_get_rect(), NPCs_rect))
+         {
+            (*ai_it)->setState(FLEE);
+
+            if(player->player_get_rect().x > (*ai_it)->getRect().x)
+            {
+               (*ai_it)->setXVel(-10);
+            }
+            else 
+            {
+               (*ai_it)->setXVel(10);
+            }
+            (*ai_it)->setYVel(2 - (rand() % 4));
+
+            int tempX = NPCs_rect.x - camera_rect.x;
+            int tempY = NPCs_rect.y - camera_rect.y;
+            bubbleBump->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE_BUMP);
+         }
+
          ++ai_it;
       }
+      bubbleBump->phUpdate();
       bubbles->phUpdate();
       stars->phUpdate();
    }
@@ -442,6 +462,7 @@ void GameEngine::render()
 
          stars->phRender(gameRenderer);
          bubbles->phRender(gameRenderer);
+         bubbleBump->phRender(gameRenderer);
       }
       else
       {
@@ -463,12 +484,12 @@ bool GameEngine::checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
    first_rect_top = first_rect.y;
    first_rect_bottom = first_rect.y + first_rect.h;
    first_rect_left = first_rect.x;
-   first_rect_right = first_rect.x + first_rect.w;
+   first_rect_right = first_rect.x + first_rect.w/2;
 
    second_rect_top = second_rect.y;
    second_rect_bottom = second_rect.y + second_rect.h;
    second_rect_left = second_rect.x;
-   second_rect_right = second_rect.x + second_rect.w;
+   second_rect_right = second_rect.x + second_rect.w/2;
 
    if (first_rect_top > second_rect_bottom)
       return false;
