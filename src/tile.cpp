@@ -21,41 +21,117 @@ Tile::Tile(int x, int y, int tile_type)
 
     switch (tile_type)
     {
-    case TILE_TOPLEFT:
+    case TILE_GROUND1:
+        src_rect.x = 32;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND2:
+        src_rect.x = 64;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND3:
+        src_rect.x = 96;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND4:
+        src_rect.x = 128;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND5:
+        src_rect.x = 160;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND6:
+        src_rect.x = 192;
+        src_rect.y = 0;
+        break;
+    case TILE_GROUND7:
+        src_rect.x = 224;
+        src_rect.y = 0;
+        break;
+    case TILE_ROCK1:
         src_rect.x = 0;
         src_rect.y = 32;
         break;
-    case TILE_TOP:
-        src_rect.x = 16;
-        src_rect.y = 32;
-        break;
-    case TILE_TOPRIGHT:
+    case TILE_ROCK2:
         src_rect.x = 32;
         src_rect.y = 32;
         break;
-    case TILE_LEFT:
+    case TILE_WALLPEAK_TOPLEFT:
+        src_rect.x = 96;
+        src_rect.y = 128;
+        break;
+    case TILE_WALLPEAK_TOP:
+        src_rect.x = 128;
+        src_rect.y = 128;
+        break;
+    case TILE_WALLPEAK_TOPRIGHT:
+        src_rect.x = 160;
+        src_rect.y = 128;
+        break;
+    case TILE_WALLPEAK_LEFT:
+        src_rect.x = 96;
+        src_rect.y = 160;
+        break;
+    case TILE_WALLPEAK_CENTER:
+        src_rect.x = 128;
+        src_rect.y = 160;
+        break;
+    case TILE_WALLPEAK_RIGHT:
+        src_rect.x = 160;
+        src_rect.y = 160;
+        break;
+    case TILE_WALLPEAK_BOTTOMLEFT:
+        src_rect.x = 96;
+        src_rect.y = 192;
+        break;
+    case TILE_WALLPEAK_BOTTOMCENTER:
+        src_rect.x = 128;
+        src_rect.y = 192;
+        break;
+    case TILE_WALLPEAK_BOTTOMRIGHT:
+        src_rect.x = 160;
+        src_rect.y = 192;
+        break;
+    case TILE_WALL_LEFT:
         src_rect.x = 0;
-        src_rect.y = 48;
+        src_rect.y = 224;
         break;
-    case TILE_CENTER:
-        src_rect.x = 16;
-        src_rect.y = 48;
-        break;
-    case TILE_RIGHT:
+    case TILE_WALL_CENTER:
         src_rect.x = 32;
-        src_rect.y = 48;
+        src_rect.y = 224;
         break;
-    case TILE_BOTTOMLEFT:
+    case TILE_WALL_RIGHT:
+        src_rect.x = 64;
+        src_rect.y = 224;
+        break;
+    case TILE_WALLBASE_LEFT:
         src_rect.x = 0;
-        src_rect.y = 64;
+        src_rect.y = 256;
         break;
-    case TILE_BOTTOM:
-        src_rect.x = 16;
-        src_rect.y = 64;
-        break;
-    case TILE_BOTTOMRIGHT:
+    case TILE_WALLBASE_CENTER:
         src_rect.x = 32;
-        src_rect.y = 64;
+        src_rect.y = 256;
+        break;
+    case TILE_WALLBASE_RIGHT:
+        src_rect.x = 64;
+        src_rect.y = 256;
+        break;
+    case TILE_WALLPEAK_CORNER1:
+        src_rect.x = 192;
+        src_rect.y = 128;
+        break;
+    case TILE_WALLPEAK_CORNER2:
+        src_rect.x = 224;
+        src_rect.y = 128;
+        break;
+    case TILE_WALLPEAK_CORNER3:
+        src_rect.x = 192;
+        src_rect.y = 160;
+        break;
+    case TILE_WALLPEAK_CORNER4:
+        src_rect.x = 224;
+        src_rect.y = 160;
         break;
     }
 }
