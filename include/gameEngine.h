@@ -9,7 +9,7 @@
 #define GAMEENGINE_H
 
 #include "camera.h"
-#include "food.h"
+#include "trident.h"
 #include "globals.h"
 #include "tileHandler.h"
 #include "player.h"
@@ -23,7 +23,7 @@
 
 using namespace std;
 
-#define FOOD_PARTICLES 10
+#define TRIDENT_PARTICLES 10
 #define STATE_PLAYER 0
 #define STATE_EDITOR 1
 
@@ -46,7 +46,7 @@ class GameEngine
 
    private:
       Player *player;
-      std::vector<Food *> foods;
+      std::vector<Trident *> tridents;
       vector<passiveAI *> NPCs;
       TileHandler *tileHandler;
       Camera *camera;
@@ -59,7 +59,7 @@ class GameEngine
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;
       SDL_Rect camera_rect;
-      SDL_Rect food_rect;
+      SDL_Rect trident_rect;
       SDL_Rect NPCs_rect;
       StartMenu *startMenu;
       PauseMenu *pauseMenu;

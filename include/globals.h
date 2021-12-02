@@ -32,11 +32,11 @@ using namespace std;
 #define PLAYER_HEIGHT 138
 
 // Food Dimensions Definition
-#define FOOD_WIDTH 64
-#define FOOD_HEIGHT 64
+#define TRIDENT_WIDTH 64
+#define TRIDENT_HEIGHT 64
 
-// Max Number of Food Objects
-#define MAX_FOOD 10
+// Max Number of Trident Objects
+#define MAX_TRIDENTS 5
 
 // Frames Per Second Definition
 #define FPS 60

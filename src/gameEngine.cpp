@@ -63,10 +63,10 @@ void GameEngine::init()
    // Initialize Camera
    camera = new Camera();
 
-   // Initialize Food
-   for (int i = 0; i < MAX_FOOD; i++)
+   // Initialize Trident
+   for (int i = 0; i < MAX_TRIDENTS; i++)
    {
-      foods.push_back(new Food(gameRenderer));
+      tridents.push_back(new Trident(gameRenderer));
    }
 
    // Initialize AI
@@ -362,23 +362,23 @@ void GameEngine::updateMechanics()
       player->player_update();
       camera->camera_update(player->player_get_x_pos(), player->player_get_y_pos());
 
-      for (auto food_it = begin(foods); food_it != end(foods);)
+      for (auto trident_it = begin(tridents); trident_it != end(tridents);)
       {
-         food_rect = (*food_it)->food_get_rect();
+         trident_rect = (*trident_it)->trident_get_rect();
          camera_rect = camera->camera_get_rect();
 
-         if (checkCollision(player->player_get_rect(), food_rect) && player->player_get_state())
+         if (checkCollision(player->player_get_rect(), trident_rect) && player->player_get_state())
          {
-            food_it = foods.erase(food_it);
+            trident_it = tridents.erase(trident_it);
             score->increment();
             // Initialize Particles
-            int tempX = food_rect.x - camera_rect.x;
-            int tempY = food_rect.y - camera_rect.y;
+            int tempX = trident_rect.x - camera_rect.x;
+            int tempY = trident_rect.y - camera_rect.y;
             stars->phInit("./assets/star.png", gameRenderer, tempX, tempY, 25, 25, STAR);
          }
          else
          {
-            ++food_it;
+            ++trident_it;
          }
       }
 
@@ -446,9 +446,9 @@ void GameEngine::render()
       if (game_state == STATE_PLAYER)
       {
 
-         for (Food *food : foods)
+         for (Trident *trident : tridents)
          {
-            food->food_render(camera_rect);
+            trident->trident_render(camera_rect);
          }
 
          for (passiveAI *AI : NPCs)
@@ -510,7 +510,7 @@ void GameEngine::reinit()
    delete player;
    delete camera;
 
-   foods.clear();
+   tridents.clear();
    NPCs.clear();
 
    // Initialize Player
@@ -520,10 +520,10 @@ void GameEngine::reinit()
    // Initialize Camera
    camera = new Camera();
 
-   // Initialize Food
-   for (int i = 0; i < MAX_FOOD; i++)
+   // Initialize Trident
+   for (int i = 0; i < MAX_TRIDENTS; i++)
    {
-      foods.push_back(new Food(gameRenderer));
+      tridents.push_back(new Trident(gameRenderer));
    }
 
    // Initialize AI
