@@ -14,12 +14,18 @@ private:
 
     ImageHandler *imageHandler;
 
-    const char *ai_file = "./assets/star.png";
+    const char *lightfish_file = "./assets/lightfish.png";
+    const char *clownfish_file = "./assets/clownFish.png";
+    const char *turtle_file = "./assets/turtle2.png";
+    const char *fish_file = "./assets/fish.png";
 
     int xPos;
     int yPos;
     int xVel;
     int yVel;
+
+    int aiWidth = AI_WIDTH;
+    int aiHeight = AI_HEIGHT;
 
     int state;
     int wonderPos;

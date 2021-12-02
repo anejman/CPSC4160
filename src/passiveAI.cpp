@@ -12,20 +12,51 @@ passiveAI::~passiveAI() {}
 void passiveAI::aiInit()
 {
     imageHandler = new ImageHandler(aiRenderer);
-    aiTexture = imageHandler->imageHandler_load(ai_file);
+    
+    //randomizes ai model with according size
+    switch(rand() % 4)
+    {
+        case 0:
+            aiTexture = imageHandler->imageHandler_load(lightfish_file);
+
+            aiHeight = AI_HEIGHT - AI_HEIGHT/4;
+            aiWidth = AI_WIDTH;
+            break;
+
+        case 1:
+            aiTexture = imageHandler->imageHandler_load(clownfish_file);
+
+            aiHeight = AI_HEIGHT/2;
+            aiWidth = AI_WIDTH/2 + AI_WIDTH/4;
+            break;
+
+        case 2:
+            aiTexture = imageHandler->imageHandler_load(turtle_file);
+
+            aiHeight = AI_HEIGHT + AI_HEIGHT/4;
+            aiWidth = AI_WIDTH + AI_WIDTH/2;
+            break;
+
+        case 3:
+            aiTexture = imageHandler->imageHandler_load(fish_file);
+
+            aiHeight = AI_HEIGHT;
+            aiWidth = AI_WIDTH;
+            break;
+    }
 
     flipAI = SDL_FLIP_NONE;
 
     std::random_device rd;
     std::mt19937 mt(rd());
 
-    std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - AI_WIDTH);
-    std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - AI_HEIGHT);
+    std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
+    std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
 
     xPos = (int)widthDist(mt);
     yPos = (int)heightDist(mt);
-    aiRect.w = AI_WIDTH;
-    aiRect.h = AI_HEIGHT;
+    aiRect.w = aiWidth;
+    aiRect.h = aiHeight;
 
     xVel = 0;
     yVel = 0;
@@ -83,9 +114,9 @@ void passiveAI::aiUpdate(SDL_Rect player)
         flipAI = SDL_FLIP_NONE;
     }
 
-    if(xPos > LEVEL_WIDTH) { xVel *= -1; }
+    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
     if(xPos < 0) { xVel *= -2; }
-    if(yPos > LEVEL_HEIGHT) { yVel *= -1; }
+    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
     if(yPos < 0) { yVel *= -2; }
 
     xPos += xVel;
@@ -97,7 +128,7 @@ void passiveAI::aiUpdate(SDL_Rect player)
 
 void passiveAI::aiRender(SDL_Rect camera) 
 {
-    SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), AI_WIDTH, AI_HEIGHT};
+    SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), aiWidth, aiHeight};
     SDL_RenderCopyEx(aiRenderer, aiTexture, NULL, &renderRect, 0.0, NULL, flipAI);
 }
 
