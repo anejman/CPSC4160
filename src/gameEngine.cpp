@@ -69,6 +69,12 @@ void GameEngine::init()
       foods.push_back(new Food(gameRenderer));
    }
 
+   // Initialize AI
+   for (int i = 0; i < MAX_AI; i++)
+   {
+      NPCs.push_back(new passiveAI(gameRenderer));
+   }
+
    // Initialize particles
    bubbles = new particleHandler();
    stars = new particleHandler();
@@ -375,6 +381,24 @@ void GameEngine::updateMechanics()
             ++food_it;
          }
       }
+
+      for (auto ai_it = begin(NPCs); ai_it != end(NPCs);)
+      {
+         (*ai_it)->aiUpdate(player->player_get_rect());
+
+         NPCs_rect = (*ai_it)->getRect();
+         camera_rect = camera->camera_get_rect();
+
+         if((rand() % 1000) == 0)
+         {
+            int tempX = NPCs_rect.x - camera_rect.x;
+            int tempY = NPCs_rect.y - camera_rect.y;
+            bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
+         }
+
+         ++ai_it;
+      }
+      bubbles->phUpdate();
       stars->phUpdate();
    }
    else
@@ -407,11 +431,17 @@ void GameEngine::render()
             food->food_render(camera_rect);
          }
 
+         for (passiveAI *AI : NPCs)
+         {
+            AI->aiRender(camera_rect);
+         }
+
          score->render();
 
          player->player_render(camera_rect);
 
          stars->phRender(gameRenderer);
+         bubbles->phRender(gameRenderer);
       }
       else
       {
@@ -460,6 +490,7 @@ void GameEngine::reinit()
    delete camera;
 
    foods.clear();
+   NPCs.clear();
 
    // Initialize Player
    player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
@@ -467,10 +498,17 @@ void GameEngine::reinit()
 
    // Initialize Camera
    camera = new Camera();
+
    // Initialize Food
    for (int i = 0; i < MAX_FOOD; i++)
    {
       foods.push_back(new Food(gameRenderer));
+   }
+
+   // Initialize AI
+   for (int i = 0; i < MAX_AI; i++)
+   {
+      NPCs.push_back(new passiveAI(gameRenderer));
    }
 
    // Initialize game state

@@ -78,15 +78,31 @@ using namespace std;
 #define RESTART_Y 190
 #define QUIT_Y 270
 
-// Particle variables
+// Particle Variables
 #define MAX_PARTICLE 10
 #define MAX_PARTICLE_STAR 5
 #define MAX_PARTICLE_WIN 50
+
+// Particle Types
 #define DEFAULT_TYPE 10
 #define BUBBLE 0
 #define STAR 1
 #define BUBBLE_BUMP 2
 #define WIN 3
+
+// AI States
+#define IDLE 0
+#define WONDER 1
+#define FLEE 2
+
+// AI Size
+#define AI_HEIGHT 64
+#define AI_WIDTH 64
+#define MAX_AI 6
+
+// AI Travel Distance
+#define FLEE_DIST 15
+#define WONDER_DIST 50
 
 // Score position
 #define SCORE_X 530

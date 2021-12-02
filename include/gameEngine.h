@@ -19,6 +19,7 @@
 #include "pauseMenu.h"
 #include "score.h"
 #include "startMenu.h"
+#include "passiveAI.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ class GameEngine
    private:
       Player *player;
       std::vector<Food *> foods;
+      vector<passiveAI *> NPCs;
       TileHandler *tileHandler;
       Camera *camera;
       levelEditor *editor;
@@ -58,6 +60,7 @@ class GameEngine
       SDL_Event userInput;
       SDL_Rect camera_rect;
       SDL_Rect food_rect;
+      SDL_Rect NPCs_rect;
       StartMenu *startMenu;
       PauseMenu *pauseMenu;
       Score *score;
