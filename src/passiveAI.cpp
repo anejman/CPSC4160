@@ -19,12 +19,16 @@ void passiveAI::aiInit()
         case 0:
             aiTexture = imageHandler->imageHandler_load(lightfish_file);
 
+            ai_sprite = new SpriteHandler(LIGHT_SPRITE_WIDTH, LIGHT_SPRITE_HEIGHT, LIGHT_SPRITE_FRAMES, AI_SPRITE_DURATION);
+
             aiHeight = AI_HEIGHT - AI_HEIGHT/4;
             aiWidth = AI_WIDTH;
             break;
 
         case 1:
             aiTexture = imageHandler->imageHandler_load(clownfish_file);
+
+            ai_sprite = new SpriteHandler(CLOWN_SPRITE_WIDTH, CLOWN_SPRITE_HEIGHT, CLOWN_SPRITE_FRAMES, AI_SPRITE_DURATION);
 
             aiHeight = AI_HEIGHT/2;
             aiWidth = AI_WIDTH/2 + AI_WIDTH/4;
@@ -33,15 +37,19 @@ void passiveAI::aiInit()
         case 2:
             aiTexture = imageHandler->imageHandler_load(turtle_file);
 
-            aiHeight = AI_HEIGHT + AI_HEIGHT/4;
-            aiWidth = AI_WIDTH + AI_WIDTH/2;
-            break;
-
-        case 3:
-            aiTexture = imageHandler->imageHandler_load(fish_file);
+            ai_sprite = new SpriteHandler(TURTLE_SPRITE_WIDTH, TURTLE_SPRITE_HEIGHT, TURTLE_SPRITE_FRAMES, AI_SPRITE_DURATION);
 
             aiHeight = AI_HEIGHT;
             aiWidth = AI_WIDTH;
+            break;
+
+        case 3:
+            aiTexture = imageHandler->imageHandler_load(whale_file);
+
+            ai_sprite = new SpriteHandler(WHALE_SPRITE_WIDTH, WHALE_SPRITE_HEIGHT, WHALE_SPRITE_FRAMES, AI_SPRITE_DURATION);
+
+            aiHeight = AI_HEIGHT + AI_HEIGHT/4;
+            aiWidth = AI_WIDTH + AI_WIDTH/2;
             break;
     }
 
@@ -73,17 +81,21 @@ void passiveAI::aiUpdate(SDL_Rect player)
         xVel = 0;
         yVel = 0;
 
-        if((rand() % 100) == 0)
+        currentFrame = ai_sprite->sprite_update(IDLE);
+
+        if((rand() % 50) == 0)
         {
             state = WONDER;
             wonderPos = xPos;
 
-            xVel = 2 - (rand() % 4);
-            yVel = 1 - (rand() % 2);
+            xVel = 3 - (rand() % 6);
+            yVel = 3 - (rand() % 6);
         }
         break;
     
     case WONDER:
+        currentFrame = ai_sprite->sprite_update(WONDER);
+
         if(abs(xPos - wonderPos) > WONDER_DIST)
         {
             state = IDLE;
@@ -96,6 +108,8 @@ void passiveAI::aiUpdate(SDL_Rect player)
         break;
 
     case FLEE:
+        currentFrame = ai_sprite->sprite_update(WONDER);
+
         if(abs(player.x - xPos) > FLEE_DIST) 
         {
             state = IDLE;
@@ -129,7 +143,7 @@ void passiveAI::aiUpdate(SDL_Rect player)
 void passiveAI::aiRender(SDL_Rect camera) 
 {
     SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), aiWidth, aiHeight};
-    SDL_RenderCopyEx(aiRenderer, aiTexture, NULL, &renderRect, 0.0, NULL, flipAI);
+    SDL_RenderCopyEx(aiRenderer, aiTexture, &currentFrame, &renderRect, 0.0, NULL, flipAI);
 }
 
 void passiveAI::setState(int newState) 

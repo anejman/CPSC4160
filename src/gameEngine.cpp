@@ -408,7 +408,7 @@ void GameEngine::updateMechanics()
             {
                (*ai_it)->setXVel(10);
             }
-            (*ai_it)->setYVel(2 - (rand() % 4));
+            (*ai_it)->setYVel(5 - (rand() % 10));
 
             int tempX = NPCs_rect.x - camera_rect.x;
             int tempY = NPCs_rect.y - camera_rect.y;

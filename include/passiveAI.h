@@ -3,6 +3,25 @@
 
 #include "globals.h"
 #include "imageHandler.h"
+#include "spriteHandler.h"
+
+#define TURTLE_SPRITE_WIDTH 306
+#define TURTLE_SPRITE_HEIGHT 216
+#define TURTLE_SPRITE_FRAMES 2
+
+#define WHALE_SPRITE_WIDTH 320
+#define WHALE_SPRITE_HEIGHT 242
+#define WHALE_SPRITE_FRAMES 4
+
+#define CLOWN_SPRITE_WIDTH 245
+#define CLOWN_SPRITE_HEIGHT 167
+#define CLOWN_SPRITE_FRAMES 2
+
+#define LIGHT_SPRITE_WIDTH 701
+#define LIGHT_SPRITE_HEIGHT 477
+#define LIGHT_SPRITE_FRAMES 2
+
+#define AI_SPRITE_DURATION 100
 
 class passiveAI
 {
@@ -10,14 +29,16 @@ private:
     SDL_Renderer *aiRenderer;
     SDL_Texture *aiTexture;
     SDL_Rect aiRect;
+    SDL_Rect currentFrame;
     SDL_RendererFlip flipAI;
 
+    SpriteHandler *ai_sprite;
     ImageHandler *imageHandler;
 
-    const char *lightfish_file = "./assets/lightfish.png";
-    const char *clownfish_file = "./assets/clownFish.png";
-    const char *turtle_file = "./assets/turtle2.png";
-    const char *fish_file = "./assets/fish.png";
+    const char *lightfish_file = "./assets/lightfishs.png";
+    const char *clownfish_file = "./assets/clownfishs.png";
+    const char *turtle_file = "./assets/turtles.png";
+    const char *whale_file = "./assets/whales.png";
 
     int xPos;
     int yPos;
