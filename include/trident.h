@@ -5,28 +5,28 @@
  * Instructor: Victor Zordan
  ******************************/
 
-#ifndef FOOD_H
-#define FOOD_H
+#ifndef TRIDENT_H
+#define TRIDENT_H
 
 #include "globals.h"
 #include "imageHandler.h"
 
-class Food
+class Trident
 {
    public:
-      Food(SDL_Renderer *foodRenderer);
-      ~Food();
+      Trident(SDL_Renderer *tridentRenderer);
+      ~Trident();
 
-      void food_init();
-      void food_render(SDL_Rect camera_rect);
-      SDL_Rect food_get_rect() { return food_rect; };
+      void trident_init();
+      void trident_render(SDL_Rect camera_rect);
+      SDL_Rect trident_get_rect() { return trident_rect; };
 
    private:
       ImageHandler *imageHandler;
       SDL_Renderer *game_renderer;
-      SDL_Texture *food_texture;
-      SDL_Rect food_rect;
-      const char *food_file = "./assets/seed.png";
+      SDL_Texture *trident_texture;
+      SDL_Rect trident_rect;
+      const char *trident_file = "./assets/trident.png";
       int level_width = LEVEL_WIDTH;
       int level_height = LEVEL_HEIGHT;
 };
