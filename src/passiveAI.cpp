@@ -14,7 +14,7 @@ void passiveAI::aiInit()
     imageHandler = new ImageHandler(aiRenderer);
     
     //randomizes ai model with according size
-    switch(rand() % 4)
+    switch((rand()+1) % 4)
     {
         case 0:
             aiTexture = imageHandler->imageHandler_load(lightfish_file);
@@ -40,7 +40,7 @@ void passiveAI::aiInit()
             ai_sprite = new SpriteHandler(TURTLE_SPRITE_WIDTH, TURTLE_SPRITE_HEIGHT, TURTLE_SPRITE_FRAMES, AI_SPRITE_DURATION);
 
             aiHeight = AI_HEIGHT;
-            aiWidth = AI_WIDTH;
+            aiWidth = AI_WIDTH + AI_WIDTH/4;
             break;
 
         case 3:
@@ -48,8 +48,8 @@ void passiveAI::aiInit()
 
             ai_sprite = new SpriteHandler(WHALE_SPRITE_WIDTH, WHALE_SPRITE_HEIGHT, WHALE_SPRITE_FRAMES, AI_SPRITE_DURATION);
 
-            aiHeight = AI_HEIGHT + AI_HEIGHT/4;
-            aiWidth = AI_WIDTH + AI_WIDTH/2;
+            aiHeight = AI_HEIGHT*2;
+            aiWidth = AI_WIDTH*2 + AI_WIDTH/4;
             break;
     }
 
@@ -142,7 +142,7 @@ void passiveAI::aiUpdate(SDL_Rect player)
 
 void passiveAI::aiRender(SDL_Rect camera) 
 {
-    SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), aiWidth, aiHeight};
+    SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), aiRect.w, aiRect.h};
     SDL_RenderCopyEx(aiRenderer, aiTexture, &currentFrame, &renderRect, 0.0, NULL, flipAI);
 }
 

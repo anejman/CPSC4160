@@ -20,6 +20,7 @@
 #include "score.h"
 #include "startMenu.h"
 #include "passiveAI.h"
+#include "enemyAI.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ class GameEngine
       Player *player;
       std::vector<Trident *> tridents;
       vector<passiveAI *> NPCs;
+      vector<enemyAI *> enemys;
       TileHandler *tileHandler;
       Camera *camera;
       levelEditor *editor;
@@ -61,6 +63,7 @@ class GameEngine
       SDL_Rect camera_rect;
       SDL_Rect trident_rect;
       SDL_Rect NPCs_rect;
+      SDL_Rect enemy_rect;
       StartMenu *startMenu;
       PauseMenu *pauseMenu;
       Score *score;

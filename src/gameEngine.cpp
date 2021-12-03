@@ -75,6 +75,12 @@ void GameEngine::init()
       NPCs.push_back(new passiveAI(gameRenderer));
    }
 
+   // Initialize Enemy
+   for (int i = 0; i < MAX_ENEMY; i++)
+   {
+      enemys.push_back(new enemyAI(gameRenderer));
+   }
+
    // Initialize particles
    bubbles = new particleHandler();
    stars = new particleHandler();
@@ -387,9 +393,8 @@ void GameEngine::updateMechanics()
          (*ai_it)->aiUpdate(player->player_get_rect());
 
          NPCs_rect = (*ai_it)->getRect();
-         camera_rect = camera->camera_get_rect();
 
-         if ((rand() % 1000) == 0)
+         if (((rand() + 1) % 1000) == 0)
          {
             int tempX = NPCs_rect.x - camera_rect.x;
             int tempY = NPCs_rect.y - camera_rect.y;
@@ -400,7 +405,7 @@ void GameEngine::updateMechanics()
          {
             (*ai_it)->setState(FLEE);
 
-            if(player->player_get_rect().x > (*ai_it)->getRect().x)
+            if(player->player_get_x_pos() > (*ai_it)->getRect().x)
             {
                (*ai_it)->setXVel(-10);
             }
@@ -417,6 +422,48 @@ void GameEngine::updateMechanics()
 
          ++ai_it;
       }
+
+      for (auto ai_it = begin(enemys); ai_it != end(enemys);)
+      {
+         enemy_rect = (*ai_it)->getRect();
+
+         int attCondX = abs(((*ai_it)->getXPos() - camera_rect.x) - (player->player_get_x_pos() - camera_rect.x));
+         int attCondY = abs(((*ai_it)->getYPos() - camera_rect.y) - (player->player_get_y_pos() - camera_rect.y));
+         if(attCondX < ATTACK_DIST && attCondY < ATTACK_DIST)
+         {
+            (*ai_it)->setState(ATTACK);
+
+            if(player->player_get_x_pos() > (*ai_it)->getXPos())
+            {
+               (*ai_it)->setXVel(2);
+            }
+            else 
+            {
+               (*ai_it)->setXVel(-2);
+            }
+
+            if(player->player_get_y_pos() > (*ai_it)->getYPos())
+            {
+               (*ai_it)->setYVel(2);
+            }
+            else
+            {
+               (*ai_it)->setYVel(-2);
+            }
+         }
+
+         if (checkCollision(player->player_get_rect(), enemy_rect))
+         {
+            (*ai_it)->setState(IDLE);
+
+            (*ai_it)->setReturning(1);
+         }
+
+         (*ai_it)->aiUpdate(player->player_get_rect());
+
+         ++ai_it;
+      }
+
       bubbleBump->phUpdate();
       bubbles->phUpdate();
       stars->phUpdate();
@@ -454,6 +501,11 @@ void GameEngine::render()
          for (passiveAI *AI : NPCs)
          {
             AI->aiRender(camera_rect);
+         }
+
+         for (enemyAI *enemy : enemys)
+         {
+            enemy->aiRender(camera_rect);
          }
 
          score->render();
@@ -530,6 +582,12 @@ void GameEngine::reinit()
    for (int i = 0; i < MAX_AI; i++)
    {
       NPCs.push_back(new passiveAI(gameRenderer));
+   }
+
+   // Initialize Enemy
+   for (int i = 0; i < MAX_ENEMY; i++)
+   {
+      enemys.push_back(new enemyAI(gameRenderer));
    }
 
    // Initialize game state

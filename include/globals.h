@@ -94,15 +94,19 @@ using namespace std;
 #define IDLE 0
 #define WONDER 1
 #define FLEE 2
+#define ATTACK 3
 
 // AI Size
 #define AI_HEIGHT 64
 #define AI_WIDTH 64
 #define MAX_AI 6
+#define MAX_ENEMY 3
 
 // AI Travel Distance
 #define FLEE_DIST 200
 #define WONDER_DIST 50
+#define ATTACK_DIST 200
+#define ESCAPE_DIST 400
 
 // Score position
 #define SCORE_X 530
