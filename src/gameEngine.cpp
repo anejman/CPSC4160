@@ -86,6 +86,7 @@ void GameEngine::init()
    stars = new particleHandler();
    bubbleBump = new particleHandler();
    win = new particleHandler();
+   blood = new particleHandler();
 
    // Initialize game state
    game_state = 0;
@@ -429,7 +430,7 @@ void GameEngine::updateMechanics()
 
          int attCondX = abs(((*ai_it)->getXPos() - camera_rect.x) - (player->player_get_x_pos() - camera_rect.x));
          int attCondY = abs(((*ai_it)->getYPos() - camera_rect.y) - (player->player_get_y_pos() - camera_rect.y));
-         if(attCondX < ATTACK_DIST && attCondY < ATTACK_DIST)
+         if(attCondX < ATTACK_DIST && attCondY < ATTACK_DIST && !(*ai_it)->getReturning())
          {
             (*ai_it)->setState(ATTACK);
 
@@ -457,6 +458,10 @@ void GameEngine::updateMechanics()
             (*ai_it)->setState(IDLE);
 
             (*ai_it)->setReturning(1);
+
+            int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
+            int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
+            blood->phInit("./assets/blood.png", gameRenderer, tempX, tempY, 25, 25, BLOOD);
          }
 
          (*ai_it)->aiUpdate(player->player_get_rect());
@@ -464,6 +469,7 @@ void GameEngine::updateMechanics()
          ++ai_it;
       }
 
+      blood->phUpdate();
       bubbleBump->phUpdate();
       bubbles->phUpdate();
       stars->phUpdate();
@@ -515,6 +521,7 @@ void GameEngine::render()
          stars->phRender(gameRenderer);
          bubbles->phRender(gameRenderer);
          bubbleBump->phRender(gameRenderer);
+         blood->phRender(gameRenderer);
       }
       else
       {

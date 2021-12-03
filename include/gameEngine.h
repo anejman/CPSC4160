@@ -57,6 +57,7 @@ class GameEngine
       particleHandler *stars;
       particleHandler *bubbleBump;
       particleHandler *win;
+      particleHandler *blood;
       SDL_Window *gameWindow;
       SDL_Renderer *gameRenderer;
       SDL_Event userInput;

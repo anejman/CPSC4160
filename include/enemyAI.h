@@ -5,9 +5,9 @@
 #include "imageHandler.h"
 #include "spriteHandler.h"
 
-#define SHARK_SPRITE_WIDTH 92
-#define SHARK_SPRITE_HEIGHT 39
-#define SHARK_SPRITE_FRAMES 3
+#define SHARK_SPRITE_WIDTH 209
+#define SHARK_SPRITE_HEIGHT 102
+#define SHARK_SPRITE_FRAMES 2
 
 #define SHARK_SPRITE_DURATION 200
 
@@ -23,7 +23,7 @@ private:
     SpriteHandler *ai_sprite;
     ImageHandler *imageHandler;
 
-    const char *shark_file = "./assets/sharks.png";
+    const char *shark_file = "./assets/sharksprite.png";
 
     int xPos;
     int yPos;
@@ -56,6 +56,7 @@ public:
 
     int getXPos() { return xPos; }
     int getYPos() { return yPos; }
+    int getReturning() { return returning; }
 };
 
 #endif

@@ -96,6 +96,21 @@ void particle::objUpdateWin()
     life--;
 }
 
+void particle::objUpdateBlood()
+{
+    xPos += xVel;
+    yPos += yVel;
+
+    if(life > 0)
+    {
+        objRect.x = xPos;
+        objRect.y = yPos;
+        objRect.w = width/2 + width * (int)(10*life/100);
+        objRect.h = height/2 + height * (int)(10*life/100);
+    }
+    life--;
+}
+
 void particle::objRenderBubble(SDL_Renderer *ren)
 {
     if (life > 0)
@@ -167,6 +182,20 @@ void particle::objRenderWin(SDL_Renderer *ren)
 
         //makes more transparent as time passes
         SDL_SetTextureAlphaMod(objGraphic, (int)255 * life / 60);
+        SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
+    }
+    else
+    {
+        SDL_SetTextureAlphaMod(objGraphic, 255);
+    }
+}
+
+void particle::objRenderBlood(SDL_Renderer *ren)
+{
+    if (life > 0)
+    {
+        //makes more transparent as time passes
+        SDL_SetTextureAlphaMod(objGraphic, (int)255 * life / 15);
         SDL_RenderCopy(ren, objGraphic, NULL, &objRect);
     }
     else
@@ -317,6 +346,23 @@ void particleHandler::phInit(const char *image, SDL_Renderer *ren, int startX, i
             particles[x]->setLife(50 + (rand() % 10));
         }
     }
+
+    if (partType == BLOOD)
+    {
+        for (int i = 0; i < maxParticle; i++)
+        {
+            particles.push_back(new particle);
+        }
+
+        for (int x = 0; x < maxParticle; x++)
+        {
+            particles[x]->objInit(image, ren, startX, startY, width, height);
+
+            particles[x]->setXVel(5 - (rand() % 10));
+            particles[x]->setYVel(5 - (rand() % 10));
+            particles[x]->setLife(5 + (rand() % 10));
+        }
+    }
 }
 
 void particleHandler::phUpdate()
@@ -359,6 +405,14 @@ void particleHandler::phUpdate()
             particles[x]->objUpdateWin();
         }
     }
+
+    if (partType == BLOOD)
+    {
+        for (int x = 0; x < maxParticle; x++) 
+        {
+            particles[x]->objUpdateBlood();
+        }
+    }
 }
 
 void particleHandler::phRender(SDL_Renderer *ren)
@@ -399,6 +453,14 @@ void particleHandler::phRender(SDL_Renderer *ren)
         for (int x = 0; x < maxParticle; x++) 
         {
             particles[x]->objRenderWin(ren);
+        }
+    }
+
+    if (partType == BLOOD)
+    {
+        for (int x = 0; x < maxParticle; x++)
+        {
+            particles[x]->objRenderBlood(ren);
         }
     }
 }

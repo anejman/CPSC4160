@@ -33,11 +33,13 @@ class particle
         void objUpdateBubble();
         void objUpdateStar();
         void objUpdateBubbleBump();
+        void objUpdateBlood();
         void objUpdateWin();
 
         void objRenderBubble(SDL_Renderer *ren);
         void objRenderStar(SDL_Renderer *ren);
         void objRenderBubbleBump(SDL_Renderer *ren);
+        void objRenderBlood(SDL_Renderer *ren);
         void objRenderWin(SDL_Renderer *ren);
 
         void setXVel(int x);

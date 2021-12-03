@@ -89,6 +89,7 @@ using namespace std;
 #define STAR 1
 #define BUBBLE_BUMP 2
 #define WIN 3
+#define BLOOD 4
 
 // AI States
 #define IDLE 0
