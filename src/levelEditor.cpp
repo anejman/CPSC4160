@@ -23,13 +23,13 @@ void levelEditor::editor_init(int x_pos, int y_pos)
    editor_rect.h = EDITOR_TILE_HEIGHT;
 }
 
-void levelEditor::editor_update(int new_tile_type)
+void levelEditor::editor_update(int new_tile_type, int layer)
 {
     map_x_index = editor_rect.x  / EDITOR_TILE_WIDTH;
     map_y_index = editor_rect.y / EDITOR_TILE_HEIGHT;
-    std::cout << map_x_index << ": " << map_y_index << std::endl;
+    std::cout << "Position:"<<map_x_index << ": " << map_y_index << std::endl;
     
-    std::ifstream map(map_file);
+    std::ifstream map(map_files[layer]);
     std::ofstream new_map(new_map_file);
     
     if (map.fail() || new_map.fail())
@@ -73,9 +73,8 @@ void levelEditor::editor_update(int new_tile_type)
     map.close();
     new_map.close();
 
-    std::remove("./assets/map.txt");
-    std::rename("./assets/newmap.txt", "./assets/map.txt");
-
+    std::remove(map_files[layer]);
+    std::rename(new_map_file, map_files[layer]);
 }
 
 void levelEditor::editor_render(SDL_Rect camera_rect)

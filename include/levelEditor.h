@@ -17,7 +17,7 @@ class levelEditor
         ~levelEditor();
 
         void editor_init(int x_pos, int y_pos);
-        void editor_update(int new_tile_type);
+        void editor_update(int new_tile_type, int layer);
         void editor_render(SDL_Rect camera_rect);
 
         // Getters
@@ -34,7 +34,7 @@ class levelEditor
         SDL_Rect editor_rect;
         int editor_camera_x;
         int editor_camera_y;
-        const char *map_file = "./assets/map.txt";
+        std::vector<const char *> map_files {"./assets/map.txt", "./assets/map2.txt", "./assets/map3.txt"};
         const char *new_map_file = "./assets/newmap.txt";
         int map_x_index;
         int map_y_index;

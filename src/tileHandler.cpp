@@ -19,62 +19,77 @@ TileHandler::~TileHandler() {}
 void TileHandler::tileHandler_init()
 {
     imageHandler = new ImageHandler(game_renderer);
-    tile_texture = imageHandler->imageHandler_load(tiles_file);
+    for(int i = 0; i < LAYER_NUM; i++){
+        tile_textures.push_back(imageHandler->imageHandler_load(tiles_files[i]));
+    }
 }
 
 void TileHandler::tileHandler_load()
 {
+    std::vector<Tile *> tileset;
+    int x;
+    int y;
+    int tile_type;
 
-    // Tile offsets
-    int x = 0;
-    int y = 0;
-    int tile_type = -1;
+    for(int i = 0; i < LAYER_NUM; i++){
 
-    std::ifstream map(map_file);
+        // Tile offsets
+        x = 0;
+        y = 0;
+        tile_type = -1;
 
-    if (map.fail())
-    {
-        std::cerr << "Error Opening Map File: " << SDL_GetError() << std::endl;
-    }
-    else
-    {
-        std::cout << "Opened Map File Successfully!" << std::endl;
-    }
+        std::ifstream map(map_files[i]);
 
-    while (!map.eof())
-    {
-        map >> tile_type;
-
-        if (tile_type >= 0)
+        if (map.fail())
         {
-            tileset.push_back(new Tile(x, y, tile_type));
+            std::cerr << "Error Opening Map File: " << SDL_GetError() << std::endl;
+        }
+        else
+        {
+            std::cout << "Opened Map File Successfully!" << std::endl;
         }
 
-        x += TILE_WIDTH;
-
-        if (x >= level_width)
+        while (!map.eof())
         {
-            x = 0;
-            y += TILE_HEIGHT;
-        }
-    }
+            map >> tile_type;
 
-    map.close();
+            if (tile_type >= 0)
+            {
+                tileset.push_back(new Tile(x, y, tile_type, i));
+            }
+
+            x += TILE_WIDTH;
+
+            if (x >= level_width)
+            {
+                x = 0;
+                y += TILE_HEIGHT;
+            }
+        }
+
+        map.close();
+        tilesets.push_back(tileset);
+        tileset.clear();
+    }
 }
 
-void TileHandler::tileHandler_render(SDL_Rect camera_rect)
+void TileHandler::tileHandler_render(SDL_Rect camera_rect, int layer)
 {
-    for (Tile *tile : tileset)
+    for (auto tile : tilesets[layer])
     {
-        tile->tile_render(game_renderer, tile_texture, camera_rect);
+        tile->tile_render(game_renderer, tile_textures[layer], camera_rect);
     }
 }
 
 void TileHandler::tileHandler_clean()
 {
-    for (auto iter : tileset)
+    for(auto tileset : tilesets) 
     {
-        delete iter;
+        for (auto tile : tileset)
+        {
+            delete tile;
+        }
+        tileset.clear();
     }
-    tileset.clear();
+    tilesets.clear();
 }
