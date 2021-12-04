@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "imageHandler.h"
 #include "spriteHandler.h"
+#include "tile.h"
 
 #define SHARK_SPRITE_WIDTH 209
 #define SHARK_SPRITE_HEIGHT 102
@@ -38,8 +39,10 @@ private:
     int guardPosY;
     int returning;
 
+    std::vector<Tile *> walls;
+
 public:
-    enemyAI(SDL_Renderer *ren);
+    enemyAI(SDL_Renderer *ren, std::vector<Tile *> wallPos);
     ~enemyAI();
 
     void aiInit();

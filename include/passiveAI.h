@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "imageHandler.h"
 #include "spriteHandler.h"
+#include "tile.h"
 
 #define TURTLE_SPRITE_WIDTH 306
 #define TURTLE_SPRITE_HEIGHT 216
@@ -51,8 +52,10 @@ private:
     int state;
     int wonderPos;
 
+    std::vector<Tile *> walls;
+
 public:
-    passiveAI(SDL_Renderer *ren);
+    passiveAI(SDL_Renderer *ren, std::vector<Tile *> wallPos);
     ~passiveAI();
 
     void aiInit();

@@ -1,8 +1,38 @@
 #include "enemyAI.h"
 
-enemyAI::enemyAI(SDL_Renderer *ren) 
+//collision check helper func
+bool checkCollisionEAI(SDL_Rect first_rect, SDL_Rect second_rect)
+{
+   int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
+   int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
+
+   first_rect_top = first_rect.y;
+   first_rect_bottom = first_rect.y + first_rect.h;
+   first_rect_left = first_rect.x;
+   first_rect_right = first_rect.x + first_rect.w/2;
+
+   second_rect_top = second_rect.y;
+   second_rect_bottom = second_rect.y + second_rect.h;
+   second_rect_left = second_rect.x;
+   second_rect_right = second_rect.x + second_rect.w/2;
+
+   if (first_rect_top > second_rect_bottom)
+      return false;
+   if (first_rect_bottom < second_rect_top)
+      return false;
+   if (first_rect_left > second_rect_right)
+      return false;
+   if (first_rect_right < second_rect_left)
+      return false;
+
+   return true;
+}
+
+enemyAI::enemyAI(SDL_Renderer *ren, std::vector<Tile *> wallPos) 
 {
     aiRenderer = ren;
+
+    walls = wallPos;
 
     aiInit();
 }
@@ -21,11 +51,29 @@ void enemyAI::aiInit()
     std::random_device rd;
     std::mt19937 mt(rd());
 
-    std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
-    std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
+    int validCord = false;
 
-    xPos = (int)widthDist(mt);
-    yPos = (int)heightDist(mt);
+    while(!validCord)
+    {
+        std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
+        std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
+
+        xPos = (int)widthDist(mt);
+        yPos = (int)heightDist(mt);
+
+        SDL_Rect temp = {xPos, yPos, aiWidth, aiHeight};
+
+        validCord = true;
+
+        for(int x = 0; x < (int)walls.size(); x++)
+        {
+            if(checkCollisionEAI(temp, walls[x]->getRect()))
+            {
+                validCord = false;
+            }
+        }
+    }
+    
     aiRect.w = aiWidth;
     aiRect.h = aiHeight;
 
@@ -49,12 +97,12 @@ void enemyAI::aiUpdate(SDL_Rect player)
 
         currentFrame = ai_sprite->sprite_update(IDLE);
 
-        if((rand() % 1000) == 0 && !returning)
+        if((rand() % 500) == 0 && !returning)
         {
             state = WONDER;
 
-            xVel = 3 - (rand() % 6);
-            yVel = 3 - (rand() % 6);
+            xVel = 3 - (rand() % 7);
+            yVel = 3 - (rand() % 7);
         }
         break;
     
@@ -100,16 +148,25 @@ void enemyAI::aiUpdate(SDL_Rect player)
         if(xPos == guardPosX && yPos == guardPosY) { returning = 0; }
     }
 
+    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
+    if(xPos < 0) { xVel *= -2; }
+    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
+    if(yPos < 0) { yVel *= -2; }
+
+    for(int x = 0; x < (int)walls.size(); x++)
+    {
+        if(checkCollisionEAI(aiRect, walls[x]->getRect())) 
+        {  
+            state = IDLE; 
+            returning = 1;
+        }
+    }
+
     if(xVel < 0) {
         flipAI = SDL_FLIP_HORIZONTAL;
     } else {
         flipAI = SDL_FLIP_NONE;
     }
-
-    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
-    if(xPos < 0) { xVel *= -2; }
-    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
-    if(yPos < 0) { yVel *= -2; }
 
     xPos += xVel;
     yPos += yVel;

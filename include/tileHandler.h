@@ -24,11 +24,14 @@ class TileHandler
         void tileHandler_render(SDL_Rect camera_rect, int layer);
         void tileHandler_clean();
 
+        std::vector<Tile *> getWalls() { return walls; }
+
     private:
         ImageHandler *imageHandler;
         SDL_Renderer *game_renderer;
         std::vector<SDL_Texture *> tile_textures;
         std::vector<vector<Tile *>> tilesets;
+        std::vector<Tile *> walls;
         std::vector<const char *> map_files {"./assets/map.txt", "./assets/map2.txt", "./assets/map3.txt"};
         std::vector<const char *> tiles_files = {"./assets/tiles.png", "./assets/objTiles.png", "./assets/tiles.png"};
         int level_width = LEVEL_WIDTH;

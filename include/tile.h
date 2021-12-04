@@ -73,6 +73,12 @@ class Tile
 
         void tile_render(SDL_Renderer *game_renderer, SDL_Texture *tile_texture, SDL_Rect camera_rect);
 
+        int getXPos() { return dest_rect.x; }
+        int getYPos() { return dest_rect.y; }
+        int getWidth() { return dest_rect.w; }
+        int getHeight() { return dest_rect.h; }
+        SDL_Rect getRect() { return dest_rect; }
+
     private:
         SDL_Rect dest_rect;
         SDL_Rect src_rect;

@@ -56,6 +56,21 @@ void TileHandler::tileHandler_load()
             if (tile_type >= 0)
             {
                 tileset.push_back(new Tile(x, y, tile_type, i));
+
+                if (i == 0 && tile_type >= 10 && tile_type <= 15)
+                {
+                    walls.push_back(new Tile(x, y, tile_type, i));
+                }
+
+                if (i == 0 && tile_type == 0)
+                {
+                    walls.push_back(new Tile(x, y, tile_type, i));
+                }
+
+                if (i == 2 && tile_type >= 1)
+                {
+                    walls.push_back(new Tile(x, y, tile_type, i));
+                }
             }
 
             x += TILE_WIDTH;

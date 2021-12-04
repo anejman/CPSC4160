@@ -28,8 +28,8 @@ using namespace std;
 #define LEVEL_HEIGHT 960
 
 // Player Dimensions Definition
-#define PLAYER_WIDTH 78
-#define PLAYER_HEIGHT 138
+#define PLAYER_WIDTH 58
+#define PLAYER_HEIGHT 98
 
 // Food Dimensions Definition
 #define TRIDENT_WIDTH 64

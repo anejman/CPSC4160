@@ -50,6 +50,7 @@ class GameEngine
       std::vector<Trident *> tridents;
       vector<passiveAI *> NPCs;
       vector<enemyAI *> enemys;
+      vector<Tile *> walls;
       TileHandler *tileHandler;
       Camera *camera;
       levelEditor *editor;

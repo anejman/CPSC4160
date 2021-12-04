@@ -1,8 +1,38 @@
 #include "passiveAI.h"
 
-passiveAI::passiveAI(SDL_Renderer *ren) 
+//collision check helper func
+bool checkCollisionPAI(SDL_Rect first_rect, SDL_Rect second_rect)
+{
+   int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
+   int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
+
+   first_rect_top = first_rect.y;
+   first_rect_bottom = first_rect.y + first_rect.h;
+   first_rect_left = first_rect.x;
+   first_rect_right = first_rect.x + first_rect.w/2;
+
+   second_rect_top = second_rect.y;
+   second_rect_bottom = second_rect.y + second_rect.h;
+   second_rect_left = second_rect.x;
+   second_rect_right = second_rect.x + second_rect.w/2;
+
+   if (first_rect_top > second_rect_bottom)
+      return false;
+   if (first_rect_bottom < second_rect_top)
+      return false;
+   if (first_rect_left > second_rect_right)
+      return false;
+   if (first_rect_right < second_rect_left)
+      return false;
+
+   return true;
+}
+
+passiveAI::passiveAI(SDL_Renderer *ren, std::vector<Tile *> wallPos) 
 {
     aiRenderer = ren;
+
+    walls = wallPos;
 
     aiInit();
 }
@@ -14,7 +44,7 @@ void passiveAI::aiInit()
     imageHandler = new ImageHandler(aiRenderer);
     
     //randomizes ai model with according size
-    switch((rand()+1) % 4)
+    switch(rand() % 4)
     {
         case 0:
             aiTexture = imageHandler->imageHandler_load(lightfish_file);
@@ -26,15 +56,6 @@ void passiveAI::aiInit()
             break;
 
         case 1:
-            aiTexture = imageHandler->imageHandler_load(clownfish_file);
-
-            ai_sprite = new SpriteHandler(CLOWN_SPRITE_WIDTH, CLOWN_SPRITE_HEIGHT, CLOWN_SPRITE_FRAMES, AI_SPRITE_DURATION);
-
-            aiHeight = AI_HEIGHT/2;
-            aiWidth = AI_WIDTH/2 + AI_WIDTH/4;
-            break;
-
-        case 2:
             aiTexture = imageHandler->imageHandler_load(turtle_file);
 
             ai_sprite = new SpriteHandler(TURTLE_SPRITE_WIDTH, TURTLE_SPRITE_HEIGHT, TURTLE_SPRITE_FRAMES, AI_SPRITE_DURATION);
@@ -43,13 +64,22 @@ void passiveAI::aiInit()
             aiWidth = AI_WIDTH + AI_WIDTH/4;
             break;
 
-        case 3:
+        case 2:
             aiTexture = imageHandler->imageHandler_load(whale_file);
 
             ai_sprite = new SpriteHandler(WHALE_SPRITE_WIDTH, WHALE_SPRITE_HEIGHT, WHALE_SPRITE_FRAMES, AI_SPRITE_DURATION);
 
             aiHeight = AI_HEIGHT*2;
             aiWidth = AI_WIDTH*2 + AI_WIDTH/4;
+            break;
+
+        case 3:
+            aiTexture = imageHandler->imageHandler_load(clownfish_file);
+
+            ai_sprite = new SpriteHandler(CLOWN_SPRITE_WIDTH, CLOWN_SPRITE_HEIGHT, CLOWN_SPRITE_FRAMES, AI_SPRITE_DURATION);
+
+            aiHeight = AI_HEIGHT/2;
+            aiWidth = AI_WIDTH/2 + AI_WIDTH/4;
             break;
     }
 
@@ -58,11 +88,29 @@ void passiveAI::aiInit()
     std::random_device rd;
     std::mt19937 mt(rd());
 
-    std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
-    std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
+    int validCord = false;
 
-    xPos = (int)widthDist(mt);
-    yPos = (int)heightDist(mt);
+    while(!validCord)
+    {
+        std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
+        std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
+
+        xPos = (int)widthDist(mt);
+        yPos = (int)heightDist(mt);
+
+        SDL_Rect temp = {xPos, yPos, aiWidth, aiHeight};
+
+        validCord = true;
+
+        for(int x = 0; x < (int)walls.size(); x++)
+        {
+            if(checkCollisionPAI(temp, walls[x]->getRect()))
+            {
+                validCord = false;
+            }
+        }
+    }
+    
     aiRect.w = aiWidth;
     aiRect.h = aiHeight;
 
@@ -88,8 +136,8 @@ void passiveAI::aiUpdate(SDL_Rect player)
             state = WONDER;
             wonderPos = xPos;
 
-            xVel = 3 - (rand() % 6);
-            yVel = 3 - (rand() % 6);
+            xVel = 3 - (rand() % 7);
+            yVel = 3 - (rand() % 7);
         }
         break;
     
@@ -122,16 +170,34 @@ void passiveAI::aiUpdate(SDL_Rect player)
         break;
     }
 
+    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
+    if(xPos < 0) { xVel *= -2; }
+    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
+    if(yPos < 0) { yVel *= -2; }
+
+    bool collision = false;
+
+    for(int x = 0; x < (int)walls.size(); x++)
+    {
+        if(checkCollisionPAI(aiRect, walls[x]->getRect())) 
+        { 
+            collision = true;
+        }
+    }
+
+    if(collision)
+    {
+        xVel *= -2;
+        yVel *= -2;
+        state = IDLE; 
+        collision = false;
+    }
+
     if(xVel < 0) {
         flipAI = SDL_FLIP_HORIZONTAL;
     } else {
         flipAI = SDL_FLIP_NONE;
     }
-
-    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
-    if(xPos < 0) { xVel *= -2; }
-    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
-    if(yPos < 0) { yVel *= -2; }
 
     xPos += xVel;
     yPos += yVel;

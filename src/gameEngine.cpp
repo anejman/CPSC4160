@@ -54,6 +54,9 @@ void GameEngine::init()
    tileHandler = new TileHandler(gameRenderer);
    tileHandler->tileHandler_load();
 
+   //get wall cord
+   walls = tileHandler->getWalls();
+
    // Initialize Player
    player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
 
@@ -72,13 +75,13 @@ void GameEngine::init()
    // Initialize AI
    for (int i = 0; i < MAX_AI; i++)
    {
-      NPCs.push_back(new passiveAI(gameRenderer));
+      NPCs.push_back(new passiveAI(gameRenderer, walls));
    }
 
    // Initialize Enemy
    for (int i = 0; i < MAX_ENEMY; i++)
    {
-      enemys.push_back(new enemyAI(gameRenderer));
+      enemys.push_back(new enemyAI(gameRenderer, walls));
    }
 
    // Initialize particles
@@ -434,7 +437,7 @@ void GameEngine::updateMechanics()
             {
                (*ai_it)->setXVel(10);
             }
-            (*ai_it)->setYVel(5 - (rand() % 10));
+            (*ai_it)->setYVel(5 - (rand() % 11));
 
             int tempX = NPCs_rect.x - camera_rect.x;
             int tempY = NPCs_rect.y - camera_rect.y;
@@ -495,6 +498,15 @@ void GameEngine::updateMechanics()
          (*ai_it)->aiUpdate(player->player_get_rect());
 
          ++ai_it;
+      }
+
+      for(int x = 0; x < (int)walls.size(); x++)
+      {
+         if(checkCollision(player->player_get_rect(), walls[x]->getRect()))
+         {
+            cout << "XPos" << player->player_get_x_pos() << " " << walls[x]->getXPos() << endl;
+            cout << "YPos" << player->player_get_y_pos() << " " << walls[x]->getYPos() << endl;
+         }
       }
 
       blood->phUpdate();
@@ -603,6 +615,7 @@ void GameEngine::reinit()
 
    tridents.clear();
    NPCs.clear();
+   enemys.clear();
 
    // Initialize Player
    player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
@@ -620,13 +633,13 @@ void GameEngine::reinit()
    // Initialize AI
    for (int i = 0; i < MAX_AI; i++)
    {
-      NPCs.push_back(new passiveAI(gameRenderer));
+      NPCs.push_back(new passiveAI(gameRenderer, walls));
    }
 
    // Initialize Enemy
    for (int i = 0; i < MAX_ENEMY; i++)
    {
-      enemys.push_back(new enemyAI(gameRenderer));
+      enemys.push_back(new enemyAI(gameRenderer, walls));
    }
 
    // Initialize game state
