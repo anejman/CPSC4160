@@ -31,6 +31,8 @@ class Player
       // Getters
       int player_get_x_pos() { return player_rect.x; };
       int player_get_y_pos() { return player_rect.y; };
+      double player_get_x_vel() { return x_vel; }
+      double player_get_y_vel() { return y_vel; }
       int player_get_state() { return motion_state; };
       SDL_Rect player_get_rect() { return player_rect; };
 

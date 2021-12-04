@@ -459,6 +459,14 @@ void GameEngine::updateMechanics()
 
             (*ai_it)->setReturning(1);
 
+            //rebound player on collision by shark
+            player->player_set_x_pos(player->player_get_x_pos() + 5*(*ai_it)->getXVel());
+            player->player_set_y_pos(player->player_get_y_pos() + 5*(*ai_it)->getYVel());
+
+            //rebound player when player hits shark
+            player->player_set_x_pos(player->player_get_x_pos() - 5*player->player_get_x_vel());
+            player->player_set_y_pos(player->player_get_y_pos() - 5*player->player_get_y_vel());
+
             int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
             int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
             blood->phInit("./assets/blood.png", gameRenderer, tempX, tempY, 25, 25, BLOOD);

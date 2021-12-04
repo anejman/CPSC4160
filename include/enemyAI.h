@@ -56,6 +56,8 @@ public:
 
     int getXPos() { return xPos; }
     int getYPos() { return yPos; }
+    int getXVel() { return xVel; }
+    int getYVel() { return yVel; }
     int getReturning() { return returning; }
 };
 
