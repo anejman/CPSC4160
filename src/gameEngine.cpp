@@ -239,14 +239,16 @@ void GameEngine::handleEvents()
             case SDLK_SPACE:
                if (game_state != STATE_PLAYER)
                {
-                  std::cout << tile_type << std::endl;
-                  editor->editor_update(tile_type);
+                  std::cout <<"Tile Type:"<< tile_type << std::endl;
+                  std::cout <<"Layer:"<< curr_layer << std::endl;
+                  editor->editor_update(tile_type, curr_layer);
                   tileHandler->tileHandler_clean();
                   tileHandler->tileHandler_load();
                }
                break;
             case SDLK_p:
                game_state = (game_state + 1) % 2;
+               curr_layer = 0;
                editor->editor_init(0, 0);
                if (game_state == STATE_PLAYER)
                {
@@ -258,7 +260,25 @@ void GameEngine::handleEvents()
                   tile_type = 0;
                }
                break;
-            case SDLK_1:
+            case SDLK_w:
+               if (game_state == STATE_EDITOR)
+               {
+                   curr_layer = (curr_layer + 1) % LAYER_NUM;
+               }
+               break;
+            case SDLK_a:
+               if (game_state == STATE_EDITOR)
+               {
+                  tile_type = ((tile_type - 1) % TILE_TYPE_NUM + TILE_TYPE_NUM) % TILE_TYPE_NUM;
+               }
+               break;
+            case SDLK_s:
+               if (game_state == STATE_EDITOR)
+               {
+                  tile_type = 0;
+               }
+               break;
+            case SDLK_d:
                if (game_state == STATE_EDITOR)
                {
                   tile_type = (tile_type + 1) % TILE_TYPE_NUM;
@@ -484,7 +504,6 @@ void GameEngine::updateMechanics()
    }
    else
    {
-      //editor->editor_update();
       camera->camera_update(editor->editor_get_x_pos(), editor->editor_get_y_pos());
    }
 }
@@ -502,7 +521,8 @@ void GameEngine::render()
    else if (!pause)
    {
       camera_rect = camera->camera_get_rect();
-      tileHandler->tileHandler_render(camera_rect);
+      tileHandler->tileHandler_render(camera_rect, 0);
+      tileHandler->tileHandler_render(camera_rect, 1);
 
       if (game_state == STATE_PLAYER)
       {
@@ -522,9 +542,11 @@ void GameEngine::render()
             enemy->aiRender(camera_rect);
          }
 
-         score->render();
-
          player->player_render(camera_rect);
+
+         tileHandler->tileHandler_render(camera_rect, 2);
+
+         score->render();
 
          stars->phRender(gameRenderer);
          bubbles->phRender(gameRenderer);
@@ -533,6 +555,8 @@ void GameEngine::render()
       }
       else
       {
+         if(curr_layer > 1)
+            tileHandler->tileHandler_render(camera_rect, 2);
          editor->editor_render(camera_rect);
       }
    }

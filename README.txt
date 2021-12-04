@@ -15,16 +15,19 @@ Player Controls:
 - Move Character Right: Right Arrow Key (→)
 
 Editor Controls:
-- Move Cursor Up: 	Up Arrow Key (↑)
-- Move Cursor Down:	Down Arrow Key (↓)
-- Move Cursor Left:	Left Arrow Key (←)
+- Move Cursor Up:    Up Arrow Key (↑)
+- Move Cursor Down:	 Down Arrow Key (↓)
+- Move Cursor Left:  Left Arrow Key (←)
 - Move Cursor Right: Right Arrow Key (→)
-- Place Tile:	Space Bar
-- Toggle Through Tile Types: (1) Key
+- Place Tile:	     Space Bar
+- Switch layers:                      (W) Key
+- Toggle Backward Through Tile Types: (A) Key
+- Jump to the first Tile Type:        (S) Key
+- Toggle Forward Through Tile Types:  (D) Key
 
 - Switch Game Modes: (P) Key
 - Pause/Resume Game: Escape Key (ESC)
-- Quit Game:		Close Window Button (X)
+- Quit Game:		 Close Window Button (X)
 
 Launching the Program:
 - How to Build:	Type "make" into the terminal and press enter

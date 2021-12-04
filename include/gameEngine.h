@@ -71,6 +71,7 @@ class GameEngine
       int sprite_number;
       int game_state;
       int tile_type;
+      int curr_layer;
       bool start;
       bool pause;
       bool restart;

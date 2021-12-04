@@ -64,7 +64,10 @@ using namespace std;
 #define EDITOR_TILE_HEIGHT 32
 
 // Number of different tile types
-#define TILE_TYPE_NUM 28
+#define TILE_TYPE_NUM 16
+
+//Number of backgroundlayers
+#define LAYER_NUM 3
 
 // Start Menu Positions
 #define TITLE_Y 30
