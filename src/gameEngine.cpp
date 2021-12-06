@@ -447,6 +447,9 @@ void GameEngine::updateMechanics()
          ++ai_it;
       }
 
+      int collisionXVel = 0;
+      int collisionYVel = 0;
+
       for (auto ai_it = begin(enemys); ai_it != end(enemys);)
       {
          enemy_rect = (*ai_it)->getRect();
@@ -476,7 +479,7 @@ void GameEngine::updateMechanics()
             }
          }
 
-         if (checkCollision(player->player_get_rect(), enemy_rect))
+         if (checkCollision(player->player_get_rect(), enemy_rect) && !(*ai_it)->getReturning())
          {
             (*ai_it)->setState(IDLE);
 
@@ -485,10 +488,15 @@ void GameEngine::updateMechanics()
             //rebound player on collision by shark
             player->player_set_x_pos(player->player_get_x_pos() + 5*(*ai_it)->getXVel());
             player->player_set_y_pos(player->player_get_y_pos() + 5*(*ai_it)->getYVel());
+            collisionXVel = 5*(*ai_it)->getXVel();
+            collisionYVel = 5*(*ai_it)->getYVel();
 
             //rebound player when player hits shark
             player->player_set_x_pos(player->player_get_x_pos() - 5*player->player_get_x_vel());
             player->player_set_y_pos(player->player_get_y_pos() - 5*player->player_get_y_vel());
+
+            player->player_set_x_vel(0);
+            player->player_set_y_vel(0);
 
             int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
             int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
@@ -504,8 +512,16 @@ void GameEngine::updateMechanics()
       {
          if(checkCollision(player->player_get_rect(), walls[x]->getRect()))
          {
-            cout << "XPos" << player->player_get_x_pos() << " " << walls[x]->getXPos() << endl;
-            cout << "YPos" << player->player_get_y_pos() << " " << walls[x]->getYPos() << endl;
+            if (player->player_get_x_vel() == 0 && player->player_get_y_vel() == 0)
+            {
+               player->player_set_x_pos(player->player_get_x_pos() - collisionXVel);
+               player->player_set_y_pos(player->player_get_y_pos() - collisionYVel);
+            }
+            else
+            {
+               player->player_set_x_pos(player->player_get_x_pos() - player->player_get_x_vel());
+               player->player_set_y_pos(player->player_get_y_pos() - player->player_get_y_vel());
+            }
          }
       }
 
