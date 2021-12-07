@@ -1,12 +1,13 @@
-#ifndef PAUSEMENU_H
-#define PAUSEMENU_H
+#ifndef ENDMENU_H
+#define ENDMENU_H
 
 #include "globals.h"
 #include "imageHandler.h"
 
-class PauseMenu
-{
+class EndMenu {
     private:
+        int game_state;
+
         SDL_Renderer *game_renderer;
         ImageHandler *imageHandler;
 
@@ -18,15 +19,20 @@ class PauseMenu
         SDL_Texture *foregroundTexture;
         const char *foreground_file = "./assets/foreground.png";
 
-        SDL_Rect resume;
-        SDL_Surface *resumeSurface;
-        SDL_Texture *resumeTexture;
-        bool resumeHover;
+        SDL_Rect title;
+        SDL_Surface *titleWinSurface;
+        SDL_Texture *titleWinTexture;
+
+        SDL_Surface *titleLoseSurface;
+        SDL_Texture *titleLoseTexture;
 
         SDL_Rect restart;
         SDL_Surface *restartSurface;
         SDL_Texture *restartTexture;
         bool restartHover;
+
+        SDL_Surface *retrySurface;
+        SDL_Texture *retryTexture;
 
         SDL_Rect quit;
         SDL_Surface *quitSurface;
@@ -36,19 +42,22 @@ class PauseMenu
         TTF_Font *font;
         SDL_Color fontColor;
         SDL_Color hoverColor;
-
+    
     public:
-        PauseMenu();
+        EndMenu();
 
-        PauseMenu(SDL_Renderer *);
+        EndMenu(SDL_Renderer *);
 
-        ~PauseMenu();
+        ~EndMenu();
 
         void init();
+
+        void setState(int val) { game_state = val; }
 
         void hoverEffect(int state);
 
         void render();
+
 };
 
 #endif

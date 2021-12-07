@@ -34,10 +34,12 @@ class Score
 
         void init();
 
-        void increment()
+        bool increment()
         {
             score += 1;
             updateTexture();
+            
+            return (score == 5);
         }
 
         void updateTexture();

@@ -1,5 +1,4 @@
 #include "startMenu.h"
-#include "globals.h"
 
 StartMenu::StartMenu(SDL_Renderer *renderer)
 {
@@ -30,8 +29,8 @@ StartMenu::StartMenu(SDL_Renderer *renderer)
     start.w = 200;
     start.h = 50;
 
-    fontColor = {255, 255, 255};
-    hoverColor = {217, 190, 54};
+    fontColor = WHITE;
+    hoverColor = HOVER_COLOR;
 
     if (TTF_Init() < 0)
     {

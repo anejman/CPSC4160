@@ -22,6 +22,7 @@
 #include "passiveAI.h"
 #include "enemyAI.h"
 #include "health.h"
+#include "endMenu.h"
 
 using namespace std;
 
@@ -70,6 +71,7 @@ class GameEngine
       SDL_Rect enemy_rect;
       StartMenu *startMenu;
       PauseMenu *pauseMenu;
+      EndMenu *endMenu;
       Score *score;
       int sprite_number;
       int game_state;
@@ -81,6 +83,8 @@ class GameEngine
       bool pause;
       bool restart;
       bool destroy_health;
+      bool winner;
+      bool loser;
       
 };
 

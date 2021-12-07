@@ -7,10 +7,15 @@ PauseMenu::PauseMenu(SDL_Renderer *renderer)
 {
     game_renderer = renderer;
 
-    menuContainer.x = 0;
-    menuContainer.y = 0;
-    menuContainer.w = SCREEN_WIDTH;
-    menuContainer.h = SCREEN_HEIGHT;
+    background.x = 0;
+    background.y = 0;
+    background.w = SCREEN_WIDTH;
+    background.h = SCREEN_HEIGHT;
+
+    foreground.x = 0;
+    foreground.y = 0;
+    foreground.w = SCREEN_WIDTH;
+    foreground.h = SCREEN_HEIGHT;
 
     resume.x = MENU_ITEM_X;
     resume.y = RESUME_Y;
@@ -27,8 +32,8 @@ PauseMenu::PauseMenu(SDL_Renderer *renderer)
     quit.w = 120;
     quit.h = 50;
 
-    fontColor = {255, 255, 255};
-    hoverColor = {217, 190, 54};
+    fontColor = WHITE;
+    hoverColor = HOVER_COLOR;
 
     font = TTF_OpenFont("./assets/ShortBaby.ttf", 100);
     if (!font)
@@ -43,6 +48,10 @@ PauseMenu::PauseMenu(SDL_Renderer *renderer)
 
 void PauseMenu::init()
 {
+    imageHandler = new ImageHandler(game_renderer);
+    backgroundTexture = imageHandler->imageHandler_load(background_file);
+    foregroundTexture = imageHandler->imageHandler_load(foreground_file);
+
     resumeHover = false;
     resumeSurface = TTF_RenderText_Solid(font, "Resume", fontColor);
     resumeTexture = SDL_CreateTextureFromSurface(game_renderer, resumeSurface);
@@ -126,8 +135,8 @@ void PauseMenu::hoverEffect(int state)
 
 void PauseMenu::render()
 {
-    SDL_SetRenderDrawColor(game_renderer, 89, 123, 216, 255);
-    SDL_RenderFillRect(game_renderer, &menuContainer);
+    SDL_RenderCopy(game_renderer, backgroundTexture, NULL, &background);
+    SDL_RenderCopy(game_renderer, foregroundTexture, NULL, &foreground);
 
     SDL_RenderCopy(game_renderer, resumeTexture, NULL, &resume);
     SDL_RenderCopy(game_renderer, restartTexture, NULL, &restart);

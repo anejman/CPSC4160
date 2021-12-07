@@ -125,4 +125,8 @@ using namespace std;
 #define SCORE_X 530
 #define SCORE_Y 15
 
+// Font colors
+#define WHITE {255, 255, 255}
+#define HOVER_COLOR {252, 204, 76}
+
 #endif

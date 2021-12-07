@@ -117,6 +117,12 @@ void GameEngine::init()
    pause = false;
    restart = false;
 
+   // Initialize end menu
+   endMenu = new EndMenu(gameRenderer);
+   endMenu->init();
+   winner = false;
+   loser = false;
+
    // Initialize score
    score = new Score(gameRenderer);
    score->init();
@@ -185,138 +191,187 @@ void GameEngine::handleEvents()
       }
       else if (!pause)
       {
-         switch (userInput.type)
-         {
-         case SDL_QUIT:
-            runGame = false;
-         case SDL_KEYDOWN:
-            switch (userInput.key.keysym.sym)
+         if (winner || loser) {
+            switch (userInput.type)
             {
-            case SDLK_UP:
-               if (game_state == STATE_PLAYER)
+            case SDL_MOUSEMOTION:
+               if (userInput.motion.x > MENU_ITEM_X && userInput.motion.x < MENU_ITEM_X + 200)
                {
-                  player->player_set_y_vel(-Y_VEL);
-                  player->player_set_state(STATE_UP);
+                  if (userInput.motion.y > RESTART_Y + 60 && userInput.motion.y < RESTART_Y + 110)
+                  {
+                     endMenu->hoverEffect(1);
+                  }
+                  else if (userInput.motion.y > QUIT_Y + 60 && userInput.motion.y < QUIT_Y + 110)
+                  {
+                     endMenu->hoverEffect(2);
+                  }
+                  else
+                  {
+                     endMenu->hoverEffect(0);
+                  }
                }
                else
                {
-                  if (editor->editor_get_y_pos() > 0)
+                  endMenu->hoverEffect(0);
+               }
+               break;
+
+            case SDL_MOUSEBUTTONDOWN:
+               if (userInput.button.x > MENU_ITEM_X && userInput.button.x < MENU_ITEM_X + 200)
+               {
+                  if (userInput.button.y > RESTART_Y + 60 && userInput.button.y < RESTART_Y + 110)
                   {
-                     editor->editor_set_y_pos(editor->editor_get_y_pos() - EDITOR_TILE_HEIGHT);
+                     restart = true;
+                     cout << "Restart" << endl;
+                  }
+                  else if (userInput.button.y > QUIT_Y + 60 && userInput.button.y < QUIT_Y + 110)
+                  {
+                     runGame = false;
+                     cout << "Quit" << endl;
                   }
                }
                break;
-            case SDLK_DOWN:
-               if (game_state == STATE_PLAYER)
-               {
-                  player->player_set_y_vel(Y_VEL);
-                  player->player_set_state(STATE_DOWN);
-               }
-               else
-               {
-                  if (editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT < LEVEL_HEIGHT)
-                  {
-                     editor->editor_set_y_pos(editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT);
-                  }
-               }
-               break;
-            case SDLK_LEFT:
-               if (game_state == STATE_PLAYER)
-               {
-                  player->player_set_x_vel(-X_VEL);
-                  player->player_set_state(STATE_LEFT);
-               }
-               else
-               {
-                  if (editor->editor_get_x_pos() > 0)
-                  {
-                     editor->editor_set_x_pos(editor->editor_get_x_pos() - EDITOR_TILE_WIDTH);
-                  }
-               }
-               break;
-            case SDLK_RIGHT:
-               if (game_state == STATE_PLAYER)
-               {
-                  player->player_set_x_vel(X_VEL);
-                  player->player_set_state(STATE_RIGHT);
-               }
-               else
-               {
-                  if (editor->editor_get_x_pos() + EDITOR_TILE_WIDTH < LEVEL_WIDTH)
-                  {
-                     editor->editor_set_x_pos(editor->editor_get_x_pos() + EDITOR_TILE_WIDTH);
-                  }
-               }
-               break;
-            case SDLK_SPACE:
-               if (game_state != STATE_PLAYER)
-               {
-                  std::cout <<"Tile Type:"<< tile_type << std::endl;
-                  std::cout <<"Layer:"<< curr_layer << std::endl;
-                  editor->editor_update(tile_type, curr_layer);
-                  tileHandler->tileHandler_clean();
-                  tileHandler->tileHandler_load();
-               }
-               break;
-            case SDLK_p:
-               game_state = (game_state + 1) % 2;
-               curr_layer = 0;
-               editor->editor_init(0, 0);
-               if (game_state == STATE_PLAYER)
-               {
-                  SDL_SetWindowTitle(gameWindow, "Collection Game");
-               }
-               else
-               {
-                  SDL_SetWindowTitle(gameWindow, "Now Editing Game...");
-                  tile_type = 0;
-               }
-               break;
-            case SDLK_w:
-               if (game_state == STATE_EDITOR)
-               {
-                   curr_layer = (curr_layer + 1) % LAYER_NUM;
-               }
-               break;
-            case SDLK_a:
-               if (game_state == STATE_EDITOR)
-               {
-                  tile_type = ((tile_type - 1) % TILE_TYPE_NUM + TILE_TYPE_NUM) % TILE_TYPE_NUM;
-               }
-               break;
-            case SDLK_s:
-               if (game_state == STATE_EDITOR)
-               {
-                  tile_type = 0;
-               }
-               break;
-            case SDLK_d:
-               if (game_state == STATE_EDITOR)
-               {
-                  tile_type = (tile_type + 1) % TILE_TYPE_NUM;
-               }
-               break;
-            case SDLK_ESCAPE:
-               pause = true;
+            case SDL_QUIT:
+               runGame = false;
                break;
             default:
                break;
             }
-            break;
-
-         case SDL_KEYUP:
-            switch (userInput.key.keysym.sym)
+         } else
+         {
+            switch (userInput.type)
             {
-            case SDLK_UP:
-            case SDLK_DOWN:
-               player->player_set_y_vel(0);
+            case SDL_QUIT:
+               runGame = false;
+            case SDL_KEYDOWN:
+               switch (userInput.key.keysym.sym)
+               {
+               case SDLK_UP:
+                  if (game_state == STATE_PLAYER)
+                  {
+                     player->player_set_y_vel(-Y_VEL);
+                     player->player_set_state(STATE_UP);
+                  }
+                  else
+                  {
+                     if (editor->editor_get_y_pos() > 0)
+                     {
+                        editor->editor_set_y_pos(editor->editor_get_y_pos() - EDITOR_TILE_HEIGHT);
+                     }
+                  }
+                  break;
+               case SDLK_DOWN:
+                  if (game_state == STATE_PLAYER)
+                  {
+                     player->player_set_y_vel(Y_VEL);
+                     player->player_set_state(STATE_DOWN);
+                  }
+                  else
+                  {
+                     if (editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT < LEVEL_HEIGHT)
+                     {
+                        editor->editor_set_y_pos(editor->editor_get_y_pos() + EDITOR_TILE_HEIGHT);
+                     }
+                  }
+                  break;
+               case SDLK_LEFT:
+                  if (game_state == STATE_PLAYER)
+                  {
+                     player->player_set_x_vel(-X_VEL);
+                     player->player_set_state(STATE_LEFT);
+                  }
+                  else
+                  {
+                     if (editor->editor_get_x_pos() > 0)
+                     {
+                        editor->editor_set_x_pos(editor->editor_get_x_pos() - EDITOR_TILE_WIDTH);
+                     }
+                  }
+                  break;
+               case SDLK_RIGHT:
+                  if (game_state == STATE_PLAYER)
+                  {
+                     player->player_set_x_vel(X_VEL);
+                     player->player_set_state(STATE_RIGHT);
+                  }
+                  else
+                  {
+                     if (editor->editor_get_x_pos() + EDITOR_TILE_WIDTH < LEVEL_WIDTH)
+                     {
+                        editor->editor_set_x_pos(editor->editor_get_x_pos() + EDITOR_TILE_WIDTH);
+                     }
+                  }
+                  break;
+               case SDLK_SPACE:
+                  if (game_state != STATE_PLAYER)
+                  {
+                     std::cout <<"Tile Type:"<< tile_type << std::endl;
+                     std::cout <<"Layer:"<< curr_layer << std::endl;
+                     editor->editor_update(tile_type, curr_layer);
+                     tileHandler->tileHandler_clean();
+                     tileHandler->tileHandler_load();
+                  }
+                  break;
+               case SDLK_p:
+                  game_state = (game_state + 1) % 2;
+                  curr_layer = 0;
+                  editor->editor_init(0, 0);
+                  if (game_state == STATE_PLAYER)
+                  {
+                     SDL_SetWindowTitle(gameWindow, "Collection Game");
+                  }
+                  else
+                  {
+                     SDL_SetWindowTitle(gameWindow, "Now Editing Game...");
+                     tile_type = 0;
+                  }
+                  break;
+               case SDLK_w:
+                  if (game_state == STATE_EDITOR)
+                  {
+                     curr_layer = (curr_layer + 1) % LAYER_NUM;
+                  }
+                  break;
+               case SDLK_a:
+                  if (game_state == STATE_EDITOR)
+                  {
+                     tile_type = ((tile_type - 1) % TILE_TYPE_NUM + TILE_TYPE_NUM) % TILE_TYPE_NUM;
+                  }
+                  break;
+               case SDLK_s:
+                  if (game_state == STATE_EDITOR)
+                  {
+                     tile_type = 0;
+                  }
+                  break;
+               case SDLK_d:
+                  if (game_state == STATE_EDITOR)
+                  {
+                     tile_type = (tile_type + 1) % TILE_TYPE_NUM;
+                  }
+                  break;
+               case SDLK_ESCAPE:
+                  pause = true;
+                  break;
+               default:
+                  break;
+               }
                break;
-            case SDLK_RIGHT:
-            case SDLK_LEFT:
-               player->player_set_x_vel(0);
+
+            case SDL_KEYUP:
+               switch (userInput.key.keysym.sym)
+               {
+               case SDLK_UP:
+               case SDLK_DOWN:
+                  player->player_set_y_vel(0);
+                  break;
+               case SDLK_RIGHT:
+               case SDLK_LEFT:
+                  player->player_set_x_vel(0);
+                  break;
+               }
                break;
             }
-            break;
          }
       }
       else
@@ -396,7 +451,7 @@ void GameEngine::updateMechanics()
    {
       player->player_update();
    }
-   else if (game_state == STATE_PLAYER && !pause)
+   else if (game_state == STATE_PLAYER && !pause && !(winner || loser))
    {
       player->player_update();
       camera->camera_update(player->player_get_x_pos(), player->player_get_y_pos());
@@ -416,7 +471,8 @@ void GameEngine::updateMechanics()
 
             if (total_health - 1 == 0)
             {
-               runGame = false;
+               loser = true;
+               cout << "Loser :(" << endl;
             }
          }
       }
@@ -429,7 +485,11 @@ void GameEngine::updateMechanics()
          if (checkCollision(player->player_get_rect(), trident_rect) && player->player_get_state())
          {
             trident_it = tridents.erase(trident_it);
-            score->increment();
+            if (score->increment()) {
+               winner = true;
+               endMenu->setState(1);
+               cout << "Winner!" << endl;
+            }
             // Initialize Particles
             int tempX = trident_rect.x - camera_rect.x;
             int tempY = trident_rect.y - camera_rect.y;
@@ -579,48 +639,53 @@ void GameEngine::render()
    }
    else if (!pause)
    {
-      camera_rect = camera->camera_get_rect();
-      tileHandler->tileHandler_render(camera_rect, 0);
-      tileHandler->tileHandler_render(camera_rect, 1);
-
-      if (game_state == STATE_PLAYER)
+      if (winner || loser)
       {
-         for (Trident *trident : tridents)
+         endMenu->render();
+      } else {
+         camera_rect = camera->camera_get_rect();
+         tileHandler->tileHandler_render(camera_rect, 0);
+         tileHandler->tileHandler_render(camera_rect, 1);
+
+         if (game_state == STATE_PLAYER)
          {
-            trident->trident_render(camera_rect);
-         }
+            for (Trident *trident : tridents)
+            {
+               trident->trident_render(camera_rect);
+            }
 
-         for (passiveAI *AI : NPCs)
-         {
-            AI->aiRender(camera_rect);
-         }
+            for (passiveAI *AI : NPCs)
+            {
+               AI->aiRender(camera_rect);
+            }
 
-         for (enemyAI *enemy : enemys)
-         {
-            enemy->aiRender(camera_rect);
-         }
+            for (enemyAI *enemy : enemys)
+            {
+               enemy->aiRender(camera_rect);
+            }
 
-         player->player_render(camera_rect);
+            player->player_render(camera_rect);
 
-         tileHandler->tileHandler_render(camera_rect, 2);
-
-         score->render();
-
-         stars->phRender(gameRenderer);
-         bubbles->phRender(gameRenderer);
-         bubbleBump->phRender(gameRenderer);
-         blood->phRender(gameRenderer);
-
-         for (Health *health : healths)
-         {
-            health->health_render();
-         }
-      }
-      else
-      {
-         if(curr_layer > 1)
             tileHandler->tileHandler_render(camera_rect, 2);
-         editor->editor_render(camera_rect);
+
+            score->render();
+
+            stars->phRender(gameRenderer);
+            bubbles->phRender(gameRenderer);
+            bubbleBump->phRender(gameRenderer);
+            blood->phRender(gameRenderer);
+
+            for (Health *health : healths)
+            {
+               health->health_render();
+            }
+         }
+         else
+         {
+            if(curr_layer > 1)
+               tileHandler->tileHandler_render(camera_rect, 2);
+            editor->editor_render(camera_rect);
+         }
       }
    }
    else
@@ -706,11 +771,12 @@ void GameEngine::reinit()
    // Initialize game state
    game_state = 0;
 
-   // Initialize pause menu
-   pauseMenu = new PauseMenu(gameRenderer);
-   pauseMenu->init();
    pause = false;
    restart = false;
+   winner = false;
+   loser = false;
+
+   endMenu->setState(0);
 
    score->resetScore();
 }
