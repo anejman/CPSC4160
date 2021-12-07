@@ -71,6 +71,11 @@ void enemyAI::aiInit()
             {
                 validCord = false;
             }
+
+            if(xPos <= 400 && yPos <= 400)
+            {
+                validCord = false;
+            }
         }
     }
     
