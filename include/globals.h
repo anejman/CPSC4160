@@ -38,6 +38,15 @@ using namespace std;
 // Max Number of Trident Objects
 #define MAX_TRIDENTS 5
 
+// Health Dimensions Definition
+#define HEALTH_X 10
+#define HEALTH_Y 10
+#define HEALTH_WIDTH 64
+#define HEALTH_HEIGHT 64
+
+// Max Number of Lives
+#define MAX_HEALTH 3
+
 // Frames Per Second Definition
 #define FPS 60
 #define FRAME_DURATION 1000 / FPS

@@ -57,6 +57,15 @@ void GameEngine::init()
    //get wall cord
    walls = tileHandler->getWalls();
 
+   // Initialize Health
+   for (int i = 0; i < MAX_HEALTH; i++)
+   {
+      healths.push_back(new Health(gameRenderer, HEALTH_WIDTH * i));
+   }
+   total_health = 3;
+   health_frame = 0;
+   destroy_health = false;
+
    // Initialize Player
    player = new Player(gameRenderer, (SCREEN_WIDTH / 2 - PLAYER_WIDTH / 2), PLAYER_Y);
 
@@ -392,6 +401,26 @@ void GameEngine::updateMechanics()
       player->player_update();
       camera->camera_update(player->player_get_x_pos(), player->player_get_y_pos());
 
+      if (destroy_health)
+      {
+         if (health_frame > 3)
+         {
+            destroy_health = false;
+            total_health--;
+            health_frame = 0;
+         }
+         else
+         {
+            health_frame++;
+            healths[total_health - 1]->health_update(health_frame);
+
+            if (total_health - 1 == 0)
+            {
+               runGame = false;
+            }
+         }
+      }
+
       for (auto trident_it = begin(tridents); trident_it != end(tridents);)
       {
          trident_rect = (*trident_it)->trident_get_rect();
@@ -501,6 +530,8 @@ void GameEngine::updateMechanics()
             int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
             int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
             blood->phInit("./assets/blood.png", gameRenderer, tempX, tempY, 25, 25, BLOOD);
+
+            destroy_health = true;
          }
 
          (*ai_it)->aiUpdate(player->player_get_rect());
@@ -554,7 +585,6 @@ void GameEngine::render()
 
       if (game_state == STATE_PLAYER)
       {
-
          for (Trident *trident : tridents)
          {
             trident->trident_render(camera_rect);
@@ -580,6 +610,11 @@ void GameEngine::render()
          bubbles->phRender(gameRenderer);
          bubbleBump->phRender(gameRenderer);
          blood->phRender(gameRenderer);
+
+         for (Health *health : healths)
+         {
+            health->health_render();
+         }
       }
       else
       {
@@ -629,6 +664,7 @@ void GameEngine::reinit()
    delete player;
    delete camera;
 
+   healths.clear();
    tridents.clear();
    NPCs.clear();
    enemys.clear();
@@ -639,6 +675,15 @@ void GameEngine::reinit()
 
    // Initialize Camera
    camera = new Camera();
+
+   // Initialize Health
+   for (int i = 0; i < MAX_HEALTH; i++)
+   {
+      healths.push_back(new Health(gameRenderer, HEALTH_WIDTH * i));
+   }
+   total_health = 3;
+   health_frame = 0;
+   destroy_health = false;
 
    // Initialize Trident
    for (int i = 0; i < MAX_TRIDENTS; i++)

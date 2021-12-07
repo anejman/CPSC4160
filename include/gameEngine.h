@@ -21,6 +21,7 @@
 #include "startMenu.h"
 #include "passiveAI.h"
 #include "enemyAI.h"
+#include "health.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ class GameEngine
    private:
       Player *player;
       std::vector<Trident *> tridents;
+      std::vector<Health *> healths;
       vector<passiveAI *> NPCs;
       vector<enemyAI *> enemys;
       vector<Tile *> walls;
@@ -73,9 +75,13 @@ class GameEngine
       int game_state;
       int tile_type;
       int curr_layer;
+      int total_health;
+      int health_frame;
       bool start;
       bool pause;
       bool restart;
+      bool destroy_health;
+      
 };
 
 #endif
