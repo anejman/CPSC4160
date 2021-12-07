@@ -10,11 +10,12 @@
 
 #include "globals.h"
 #include "imageHandler.h"
+#include "tile.h"
 
 class Trident
 {
    public:
-      Trident(SDL_Renderer *tridentRenderer);
+      Trident(SDL_Renderer *tridentRenderer, std::vector<Tile *> wallPos);
       ~Trident();
 
       void trident_init();
@@ -29,6 +30,7 @@ class Trident
       const char *trident_file = "./assets/trident.png";
       int level_width = LEVEL_WIDTH;
       int level_height = LEVEL_HEIGHT;
+      std::vector<Tile *> walls;
 };
 
 #endif

@@ -56,7 +56,6 @@ public:
     void setReturning(int x);
 
     SDL_Rect getRect() { return aiRect; }
-
     int getXPos() { return xPos; }
     int getYPos() { return yPos; }
     int getXVel() { return xVel; }

@@ -78,7 +78,7 @@ void GameEngine::init()
    // Initialize Trident
    for (int i = 0; i < MAX_TRIDENTS; i++)
    {
-      tridents.push_back(new Trident(gameRenderer));
+      tridents.push_back(new Trident(gameRenderer, walls));
    }
 
    // Initialize AI
@@ -489,6 +489,8 @@ void GameEngine::updateMechanics()
                winner = true;
                endMenu->setState(1);
                cout << "Winner!" << endl;
+
+               win->phInit("./assets/star.png", gameRenderer, 0, 0, 25, 25, WIN);
             }
             // Initialize Particles
             int tempX = trident_rect.x - camera_rect.x;
@@ -625,6 +627,11 @@ void GameEngine::updateMechanics()
    {
       camera->camera_update(editor->editor_get_x_pos(), editor->editor_get_y_pos());
    }
+
+   if(winner)
+   {
+      win->phUpdate();
+   }
 }
 
 void GameEngine::render()
@@ -642,6 +649,12 @@ void GameEngine::render()
       if (winner || loser)
       {
          endMenu->render();
+         
+         if (winner)
+         {
+            win->phRender(gameRenderer);
+         }
+
       } else {
          camera_rect = camera->camera_get_rect();
          tileHandler->tileHandler_render(camera_rect, 0);
@@ -753,7 +766,7 @@ void GameEngine::reinit()
    // Initialize Trident
    for (int i = 0; i < MAX_TRIDENTS; i++)
    {
-      tridents.push_back(new Trident(gameRenderer));
+      tridents.push_back(new Trident(gameRenderer, walls));
    }
 
    // Initialize AI
