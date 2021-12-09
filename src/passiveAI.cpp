@@ -1,7 +1,7 @@
 #include "passiveAI.h"
 
 //collision check helper func
-bool checkCollisionPAI(SDL_Rect first_rect, SDL_Rect second_rect)
+bool checkCollisionP(SDL_Rect first_rect, SDL_Rect second_rect)
 {
    int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
    int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
@@ -32,6 +32,7 @@ passiveAI::passiveAI(SDL_Renderer *ren, std::vector<Tile *> wallPos)
 {
     aiRenderer = ren;
 
+    //store wall positions
     walls = wallPos;
 
     aiInit();
@@ -43,8 +44,8 @@ void passiveAI::aiInit()
 {
     imageHandler = new ImageHandler(aiRenderer);
     
-    //randomizes ai model with according size
-    switch(rand() % 4)
+    //randomizes ai sprite with according sizes
+    switch (rand() % 4)
     {
         case 0:
             aiTexture = imageHandler->imageHandler_load(lightfish_file);
@@ -90,7 +91,8 @@ void passiveAI::aiInit()
 
     int validCord = false;
 
-    while(!validCord)
+    //loops until a valid spawn position
+    while (!validCord)
     {
         std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
         std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
@@ -102,9 +104,10 @@ void passiveAI::aiInit()
 
         validCord = true;
 
-        for(int x = 0; x < (int)walls.size(); x++)
+        //checks to make sure spawn position is not a wall
+        for (int x = 0; x < (int)walls.size(); x++)
         {
-            if(checkCollisionPAI(temp, walls[x]->getRect()))
+            if (checkCollisionP(temp, walls[x]->getRect()))
             {
                 validCord = false;
             }
@@ -123,6 +126,7 @@ void passiveAI::aiInit()
 
 void passiveAI::aiUpdate(SDL_Rect player) 
 {
+    //FSM
     switch (state)
     {
     case IDLE:
@@ -131,7 +135,8 @@ void passiveAI::aiUpdate(SDL_Rect player)
 
         currentFrame = ai_sprite->sprite_update(IDLE);
 
-        if((rand() % 50) == 0)
+        //randomly switches to wonder state
+        if ((rand() % 50) == 0)
         {
             state = WONDER;
             wonderPos = xPos;
@@ -144,12 +149,15 @@ void passiveAI::aiUpdate(SDL_Rect player)
     case WONDER:
         currentFrame = ai_sprite->sprite_update(WONDER);
 
-        if(abs(xPos - wonderPos) > WONDER_DIST)
+        //wonders until a certain distance is hit, switches to idle
+        if (abs(xPos - wonderPos) > WONDER_DIST)
         {
             state = IDLE;
         }
 
-        if(xVel == 0)
+        //if randomized xVel is zero, switch to idle
+        //prevents infinite wonder
+        if (xVel == 0)
         {
             state = IDLE;
         }
@@ -158,34 +166,39 @@ void passiveAI::aiUpdate(SDL_Rect player)
     case FLEE:
         currentFrame = ai_sprite->sprite_update(WONDER);
 
-        if(abs(player.x - xPos) > FLEE_DIST) 
+        //flees until a certain distance is hit, switches to idle 
+        if (abs(player.x - xPos) > FLEE_DIST) 
         {
             state = IDLE;
         }
 
-        if(xVel == 0)
+        //if randomized xVel is zero, switch to idle
+        if (xVel == 0)
         {
             state = IDLE;
         }
         break;
     }
 
-    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
-    if(xPos < 0) { xVel *= -2; }
-    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
-    if(yPos < 0) { yVel *= -2; }
+    //makes sure ai stays inbounds
+    if (xPos > LEVEL_WIDTH) { xVel *= -2; }
+    if (xPos < 0) { xVel *= -2; }
+    if (yPos > LEVEL_HEIGHT) { yVel *= -2; }
+    if (yPos < 0) { yVel *= -2; }
 
     bool collision = false;
 
-    for(int x = 0; x < (int)walls.size(); x++)
+    //checks for collisions with walls
+    for (int x = 0; x < (int)walls.size(); x++)
     {
-        if(checkCollisionPAI(aiRect, walls[x]->getRect())) 
+        if (checkCollisionP(aiRect, walls[x]->getRect())) 
         { 
             collision = true;
         }
     }
 
-    if(collision)
+    //on collision bounces player back and switch to idle
+    if (collision)
     {
         xVel *= -2;
         yVel *= -2;
@@ -193,9 +206,12 @@ void passiveAI::aiUpdate(SDL_Rect player)
         collision = false;
     }
 
-    if(xVel < 0) {
+    //makes sprite face the correct direction
+    if (xVel < 0) {
         flipAI = SDL_FLIP_HORIZONTAL;
-    } else {
+    } 
+    else 
+    {
         flipAI = SDL_FLIP_NONE;
     }
 

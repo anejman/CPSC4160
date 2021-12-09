@@ -39,10 +39,13 @@ void particle::objUpdateBubble()
     //makes bubble move upwards
     yPos -= 9.8 * 100 / 3600;
 
+    //updates bubble while it's still alive
     if (life > 0)
     {
         objRect.x = xPos;
         objRect.y = yPos;
+
+        //randomize bubble sizes
         objRect.w = width + width * (int)(10 * life / 100);
         objRect.h = height + height * (int)(10 * life / 100);
     }
@@ -86,7 +89,7 @@ void particle::objUpdateWin()
     xPos += xVel;
     yPos += yVel;
 
-    if(life > 0) 
+    if (life > 0) 
     {
         objRect.x = xPos;
         objRect.y = yPos;
@@ -101,7 +104,7 @@ void particle::objUpdateBlood()
     xPos += xVel;
     yPos += yVel;
 
-    if(life > 0)
+    if (life > 0)
     {
         objRect.x = xPos;
         objRect.y = yPos;
@@ -156,8 +159,8 @@ void particle::objRenderWin(SDL_Renderer *ren)
 {
     if (life > 0)
     {
-        //randomize color
-        switch(rand() % 5)
+        //randomize color of particles
+        switch (rand() % 5)
         {
             case 0:
                 SDL_SetTextureColorMod(objGraphic, 234, 194, 254);
@@ -257,6 +260,7 @@ void particleHandler::phInit(const char *image, SDL_Renderer *ren, int startX, i
             particles.push_back(new particle);
         }
 
+        //initialize and set values for every particle
         for (int x = 0; x < maxParticle; x++)
         {
             particles[x]->objInit(image, ren, startX, startY, width, height);
@@ -281,6 +285,7 @@ void particleHandler::phInit(const char *image, SDL_Renderer *ren, int startX, i
             particles[x]->objInit(image, ren, startX, startY, width, height);
             particles[x]->setLife(25);
 
+            //sets particle vel to make particle effect look like a star
             switch (x)
             {
             case 0:
@@ -369,7 +374,7 @@ void particleHandler::phUpdate()
 {
     int maxParticle = MAX_PARTICLE;
 
-    //update every particle
+    //updates every particle
     if (partType == BUBBLE)
     {
         for (int x = 0; x < maxParticle; x++)
@@ -419,7 +424,7 @@ void particleHandler::phRender(SDL_Renderer *ren)
 {
     int maxParticle = MAX_PARTICLE;
 
-    //render every particle
+    //renders every particle
     if (partType == BUBBLE)
     {
         for (int x = 0; x < maxParticle; x++)
@@ -467,10 +472,5 @@ void particleHandler::phRender(SDL_Renderer *ren)
 
 void particleHandler::quit()
 {
-    int maxParticle = MAX_PARTICLE;
-
-    for (int x = 0; x < maxParticle; x++)
-    {
-        particles.clear();
-    }
+    particles.clear();
 }

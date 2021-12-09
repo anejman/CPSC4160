@@ -503,12 +503,14 @@ void GameEngine::updateMechanics()
          }
       }
 
+      //loops through every NPC
       for (auto ai_it = begin(NPCs); ai_it != end(NPCs);)
       {
          (*ai_it)->aiUpdate(player->player_get_rect());
 
          NPCs_rect = (*ai_it)->getRect();
 
+         //randomly display a bubble effect with NPCs
          if (((rand() + 1) % 1000) == 0)
          {
             int tempX = NPCs_rect.x - camera_rect.x;
@@ -516,11 +518,14 @@ void GameEngine::updateMechanics()
             bubbles->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE);
          }
 
+         //checks for collision with player
+         //if collision detected, set NPC to flee state
          if (checkCollision(player->player_get_rect(), NPCs_rect))
          {
             (*ai_it)->setState(FLEE);
 
-            if(player->player_get_x_pos() > (*ai_it)->getRect().x)
+            //makes NPC flee opposite of player position
+            if (player->player_get_x_pos() > (*ai_it)->getRect().x)
             {
                (*ai_it)->setXVel(-10);
             }
@@ -530,6 +535,7 @@ void GameEngine::updateMechanics()
             }
             (*ai_it)->setYVel(5 - (rand() % 11));
 
+            //initialize a bubble bump effect
             int tempX = NPCs_rect.x - camera_rect.x;
             int tempY = NPCs_rect.y - camera_rect.y;
             bubbleBump->phInit("./assets/BUBBLES.png", gameRenderer, tempX, tempY, 10, 10, BUBBLE_BUMP);
@@ -538,20 +544,24 @@ void GameEngine::updateMechanics()
          ++ai_it;
       }
 
+      //store collision vel of shark
       int collisionXVel = 0;
       int collisionYVel = 0;
 
+      //loops through all sharks
       for (auto ai_it = begin(enemys); ai_it != end(enemys);)
       {
          enemy_rect = (*ai_it)->getRect();
 
+         //sets shark to attack state when player position is within a certain distance of shark
          int attCondX = abs(((*ai_it)->getXPos() - camera_rect.x) - (player->player_get_x_pos() - camera_rect.x));
          int attCondY = abs(((*ai_it)->getYPos() - camera_rect.y) - (player->player_get_y_pos() - camera_rect.y));
-         if(attCondX < ATTACK_DIST && attCondY < ATTACK_DIST && !(*ai_it)->getReturning())
+         if (attCondX < ATTACK_DIST && attCondY < ATTACK_DIST && !(*ai_it)->getReturning())
          {
             (*ai_it)->setState(ATTACK);
 
-            if(player->player_get_x_pos() > (*ai_it)->getXPos())
+            //makes shark swim towards player position
+            if (player->player_get_x_pos() > (*ai_it)->getXPos())
             {
                (*ai_it)->setXVel(2);
             }
@@ -560,7 +570,7 @@ void GameEngine::updateMechanics()
                (*ai_it)->setXVel(-2);
             }
 
-            if(player->player_get_y_pos() > (*ai_it)->getYPos())
+            if (player->player_get_y_pos() > (*ai_it)->getYPos())
             {
                (*ai_it)->setYVel(2);
             }
@@ -570,6 +580,8 @@ void GameEngine::updateMechanics()
             }
          }
 
+         //on collision, switch shark back to idle state
+         //makes shark return to it's original position
          if (checkCollision(player->player_get_rect(), enemy_rect) && !(*ai_it)->getReturning())
          {
             (*ai_it)->setState(IDLE);
@@ -586,9 +598,11 @@ void GameEngine::updateMechanics()
             player->player_set_x_pos(player->player_get_x_pos() - 5*player->player_get_x_vel());
             player->player_set_y_pos(player->player_get_y_pos() - 5*player->player_get_y_vel());
 
+            //stun player
             player->player_set_x_vel(0);
             player->player_set_y_vel(0);
 
+            //initialize blood effect
             int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
             int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
             blood->phInit("./assets/blood.png", gameRenderer, tempX, tempY, 25, 25, BLOOD);
@@ -601,10 +615,13 @@ void GameEngine::updateMechanics()
          ++ai_it;
       }
 
-      for(int x = 0; x < (int)walls.size(); x++)
+      //loops through every wall position
+      for (int x = 0; x < (int)walls.size(); x++)
       {
-         if(checkCollision(player->player_get_rect(), walls[x]->getRect()))
-         {
+         //on collision stops player from moving
+         if (checkCollision(player->player_get_rect(), walls[x]->getRect()))
+         {  
+            //if player is knocked into wall by shark with 0 vel, makes sure player does not move past wall
             if (player->player_get_x_vel() == 0 && player->player_get_y_vel() == 0)
             {
                player->player_set_x_pos(player->player_get_x_pos() - collisionXVel);
@@ -628,7 +645,8 @@ void GameEngine::updateMechanics()
       camera->camera_update(editor->editor_get_x_pos(), editor->editor_get_y_pos());
    }
 
-   if(winner)
+   //updates win effect when player wins
+   if (winner)
    {
       win->phUpdate();
    }
@@ -650,6 +668,7 @@ void GameEngine::render()
       {
          endMenu->render();
          
+         //render win effect when players win
          if (winner)
          {
             win->phRender(gameRenderer);
@@ -667,11 +686,13 @@ void GameEngine::render()
                trident->trident_render(camera_rect);
             }
 
+            //render NPCs
             for (passiveAI *AI : NPCs)
             {
                AI->aiRender(camera_rect);
             }
 
+            //render Enemies
             for (enemyAI *enemy : enemys)
             {
                enemy->aiRender(camera_rect);
@@ -682,7 +703,7 @@ void GameEngine::render()
             tileHandler->tileHandler_render(camera_rect, 2);
 
             score->render();
-
+            
             stars->phRender(gameRenderer);
             bubbles->phRender(gameRenderer);
             bubbleBump->phRender(gameRenderer);
@@ -695,7 +716,7 @@ void GameEngine::render()
          }
          else
          {
-            if(curr_layer > 1)
+            if (curr_layer > 1)
                tileHandler->tileHandler_render(camera_rect, 2);
             editor->editor_render(camera_rect);
          }

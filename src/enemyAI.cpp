@@ -1,7 +1,7 @@
 #include "enemyAI.h"
 
 //collision check helper func
-bool checkCollisionEAI(SDL_Rect first_rect, SDL_Rect second_rect)
+bool checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
 {
    int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
    int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
@@ -32,6 +32,7 @@ enemyAI::enemyAI(SDL_Renderer *ren, std::vector<Tile *> wallPos)
 {
     aiRenderer = ren;
 
+    //store wall positions
     walls = wallPos;
 
     aiInit();
@@ -53,7 +54,8 @@ void enemyAI::aiInit()
 
     int validCord = false;
 
-    while(!validCord)
+    //loops until a valid spawn point
+    while (!validCord)
     {
         std::uniform_real_distribution<double> widthDist(0, LEVEL_WIDTH - aiWidth);
         std::uniform_real_distribution<double> heightDist(0, LEVEL_HEIGHT - aiHeight);
@@ -65,14 +67,16 @@ void enemyAI::aiInit()
 
         validCord = true;
 
-        for(int x = 0; x < (int)walls.size(); x++)
+        //check if position is not a wall
+        for (int x = 0; x < (int)walls.size(); x++)
         {
-            if(checkCollisionEAI(temp, walls[x]->getRect()))
+            if (checkCollision(temp, walls[x]->getRect()))
             {
                 validCord = false;
             }
 
-            if(xPos <= 400 && yPos <= 400)
+            //makes sure sharks are not spawned in player spawn zone
+            if (xPos <= 400 && yPos <= 400)
             {
                 validCord = false;
             }
@@ -94,6 +98,7 @@ void enemyAI::aiInit()
 
 void enemyAI::aiUpdate(SDL_Rect player) 
 {
+    //FSM
     switch (state)
     {
     case IDLE:
@@ -102,7 +107,8 @@ void enemyAI::aiUpdate(SDL_Rect player)
 
         currentFrame = ai_sprite->sprite_update(IDLE);
 
-        if((rand() % 500) == 0 && !returning)
+        //randomly switch to wonderstate
+        if ((rand() % 500) == 0 && !returning)
         {
             state = WONDER;
 
@@ -114,12 +120,13 @@ void enemyAI::aiUpdate(SDL_Rect player)
     case WONDER:
         currentFrame = ai_sprite->sprite_update(WONDER);
 
-        if(abs(xPos - guardPosX) > (WONDER_DIST*2))
+        //wonders until a certain distance is hit, switches back to idle
+        if (abs(xPos - guardPosX) > (WONDER_DIST*2))
         {
             state = IDLE;
             returning = 1;
         }
-        else if(abs(yPos - guardPosY) > (WONDER_DIST*2))
+        else if (abs(yPos - guardPosY) > (WONDER_DIST*2))
         {
             state = IDLE;
             returning = 1;
@@ -129,13 +136,14 @@ void enemyAI::aiUpdate(SDL_Rect player)
     case ATTACK:
         currentFrame = ai_sprite->sprite_update(WONDER);
 
-        if(abs(player.x - xPos) > ATTACK_DIST || abs(player.y - yPos) > ATTACK_DIST) 
+        //attacks until player is a certain distance away from shark, switches back to idle
+        if (abs(player.x - xPos) > ATTACK_DIST || abs(player.y - yPos) > ATTACK_DIST) 
         {
             state = IDLE;
             returning = 1;
         }
 
-        if(abs(player.x - guardPosX) > ESCAPE_DIST || abs(player.y - guardPosY) > ESCAPE_DIST)
+        if (abs(player.x - guardPosX) > ESCAPE_DIST || abs(player.y - guardPosY) > ESCAPE_DIST)
         {
             state = IDLE;
             returning = 1;
@@ -143,33 +151,39 @@ void enemyAI::aiUpdate(SDL_Rect player)
         break;
     }
 
-    if(returning)
+    //makes shark return to it's guarding spot
+    if (returning)
     {
-        if(xPos > guardPosX) { xVel = -1; }
-        if(xPos < guardPosX) { xVel = 1; }
-        if(yPos > guardPosY) { yVel = -1; }
-        if(yPos < guardPosY) { yVel = 1; }
+        if (xPos > guardPosX) { xVel = -1; }
+        if (xPos < guardPosX) { xVel = 1; }
+        if (yPos > guardPosY) { yVel = -1; }
+        if (yPos < guardPosY) { yVel = 1; }
 
-        if(xPos == guardPosX && yPos == guardPosY) { returning = 0; }
+        if (xPos == guardPosX && yPos == guardPosY) { returning = 0; }
     }
 
-    if(xPos > LEVEL_WIDTH) { xVel *= -2; }
-    if(xPos < 0) { xVel *= -2; }
-    if(yPos > LEVEL_HEIGHT) { yVel *= -2; }
-    if(yPos < 0) { yVel *= -2; }
+    //makes sure sharks stay within bounds
+    if (xPos > LEVEL_WIDTH) { xVel *= -2; }
+    if (xPos < 0) { xVel *= -2; }
+    if (yPos > LEVEL_HEIGHT) { yVel *= -2; }
+    if (yPos < 0) { yVel *= -2; }
 
-    for(int x = 0; x < (int)walls.size(); x++)
+    //checks for wall collision, return to guard position
+    for (int x = 0; x < (int)walls.size(); x++)
     {
-        if(checkCollisionEAI(aiRect, walls[x]->getRect())) 
+        if (checkCollision(aiRect, walls[x]->getRect())) 
         {  
             state = IDLE; 
             returning = 1;
         }
     }
 
-    if(xVel < 0) {
+    //keeps ai sprite facing the correct position
+    if (xVel < 0) {
         flipAI = SDL_FLIP_HORIZONTAL;
-    } else {
+    } 
+    else 
+    {
         flipAI = SDL_FLIP_NONE;
     }
 
