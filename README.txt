@@ -49,8 +49,9 @@ Resources:
 - Tileset / Player Sprite:  https://finalbossblues.itch.io/atlantis-tileset
 - Hearts:                   https://fliflifly.itch.io/hearts-and-health-bar
 - TrueType Font:
-- NPC Sprites:
 - Trident Collectable:      https://www.kindpng.com/imgv/iRThJmT_minecraft-trident-pixel-art-hd-png-download/
-- Bubble Particle:
-- Blood Particle:
-- Star Particle:
+- Bubble Particle:          http://pixelartmaker.com/offshoot/81014d7413debef
+- Blood Particle:           http://pixelartmaker.com/art/a3c176205942be4
+- Star Particle:            https://www.pngitem.com/middle/iRimoTb_transparent-star-shine-png-transparent-pixel-star-gif/
+- Angular fish:             https://www.clipartmax.com/middle/m2H7d3G6N4b1b1A0_angler-fish-minecraft-flint-and-steel-pixel-art/
+- Sea Animals:              https://dribbble.com/shots/1555428-Sea-Animals
