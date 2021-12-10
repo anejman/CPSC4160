@@ -1,7 +1,7 @@
 Project 5: Atlantean Adventure
 
 Project Information:
-- Students:	Alex Nejman, Caroline Boyt, Wayne Orego, and Giang Vu
+- Students:	Alex Nejman, Caroline Boyt, Wayne Orego, Colt Currie, and Giang Vu
 - Course:	CPSC 4160 Fall 2021
 - Instructor:	Victor Zordan
 
