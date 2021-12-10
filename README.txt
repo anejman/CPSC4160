@@ -52,5 +52,5 @@ Resources:
 - NPC Sprites:
 - Trident Collectable:      https://www.kindpng.com/imgv/iRThJmT_minecraft-trident-pixel-art-hd-png-download/
 - Bubble Particle:
-- Blood ParticleX:
-- Star ParticleX:
+- Blood Particle:
+- Star Particle:
