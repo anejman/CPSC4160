@@ -1,18 +1,32 @@
 Project 5: Atlantean Adventure
 
 Project Information:
-- Students:	Alex Nejman, Caroline Boyt, Wayne Orego, Colt Currie, and Giang Vu
+- Students:	Alex Nejman, Caroline Boyt, Wayne Orego, and Giang Vu
 - Course:	CPSC 4160 Fall 2021
 - Instructor:	Victor Zordan
 
 Project Description:
-- TODO
+- Play as an Atlantean of your choice
+    * Left Click "Change Character" in Start Menu
+- Explore the lost city of Atlantis
+    * Navigate the cave with the player controls below
+- Avoid dangerous creatures
+    * Territoral sharks will attack if you get too close
+- Collect missing the trident pieces 
+    * 5 trirdents are randomly scattered across the map
+- Restore Atlantis to its former glory
+    * Win the game by collecting all 5 trident pieces!
 
 Player Controls:
 - Move Character Up: 	Up Arrow Key (↑)
 - Move Character Down:	Down Arrow Key (↓)
 - Move Character Left:	Left Arrow Key (←)
 - Move Character Right: Right Arrow Key (→)
+
+Additional Controls:
+- Switch Game Modes: (P) Key
+- Pause/Resume Game: Escape Key (ESC)
+- Quit Game:		 Close Window Button (X)
 
 Editor Controls:
 - Move Cursor Up:       Up Arrow Key (↑)
@@ -24,10 +38,6 @@ Editor Controls:
 - Toggle Backward Through Tile Types: (A) Key
 - Jump to the first Tile Type:        (S) Key
 - Toggle Forward Through Tile Types:  (D) Key
-
-- Switch Game Modes: (P) Key
-- Pause/Resume Game: Escape Key (ESC)
-- Quit Game:		 Close Window Button (X)
 
 Launching the Program:
 - How to Build:	Type "make" into the terminal and press enter
