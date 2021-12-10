@@ -26,48 +26,48 @@
 
 class passiveAI
 {
-private:
-    SDL_Renderer *aiRenderer;
-    SDL_Texture *aiTexture;
-    SDL_Rect aiRect;
-    SDL_Rect currentFrame;
-    SDL_RendererFlip flipAI;
+    private:
+        SDL_Renderer *aiRenderer;
+        SDL_Texture *aiTexture;
+        SDL_Rect aiRect;
+        SDL_Rect currentFrame;
+        SDL_RendererFlip flipAI;
 
-    SpriteHandler *ai_sprite;
-    ImageHandler *imageHandler;
+        SpriteHandler *ai_sprite;
+        ImageHandler *imageHandler;
 
-    const char *lightfish_file = "./assets/lightfishs.png";
-    const char *clownfish_file = "./assets/clownfishs.png";
-    const char *turtle_file = "./assets/turtles.png";
-    const char *whale_file = "./assets/whales.png";
+        const char *lightfish_file = "./assets/lightfishs.png";
+        const char *clownfish_file = "./assets/clownfishs.png";
+        const char *turtle_file = "./assets/turtles.png";
+        const char *whale_file = "./assets/whales.png";
 
-    int xPos;
-    int yPos;
-    int xVel;
-    int yVel;
+        int xPos;
+        int yPos;
+        int xVel;
+        int yVel;
 
-    int aiWidth = AI_WIDTH;
-    int aiHeight = AI_HEIGHT;
+        int aiWidth = AI_WIDTH;
+        int aiHeight = AI_HEIGHT;
 
-    int state;
-    int wonderPos;
+        int state;
+        int wonderPos;
 
-    std::vector<Tile *> walls;
+        std::vector<Tile *> walls;
 
-public:
-    passiveAI(SDL_Renderer *ren, std::vector<Tile *> wallPos);
-    ~passiveAI();
+    public:
+        passiveAI(SDL_Renderer *ren, std::vector<Tile *> wallPos);
+        ~passiveAI();
 
-    void aiInit();
+        void aiInit();
 
-    void aiUpdate(SDL_Rect player);
-    void aiRender(SDL_Rect camera);
+        void aiUpdate(SDL_Rect player);
+        void aiRender(SDL_Rect camera);
 
-    void setState(int newState);
-    void setXVel(int vel);
-    void setYVel(int vel);
+        void setState(int newState);
+        void setXVel(int vel);
+        void setYVel(int vel);
 
-    SDL_Rect getRect() { return aiRect; }
+        SDL_Rect getRect() { return aiRect; }
 };
 
 #endif

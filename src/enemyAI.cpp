@@ -3,32 +3,32 @@
 //collision check helper func
 bool checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
 {
-   int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
-   int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
+    int first_rect_top, first_rect_bottom, first_rect_left, first_rect_right;
+    int second_rect_top, second_rect_bottom, second_rect_left, second_rect_right;
 
-   first_rect_top = first_rect.y;
-   first_rect_bottom = first_rect.y + first_rect.h;
-   first_rect_left = first_rect.x;
-   first_rect_right = first_rect.x + first_rect.w/2;
+    first_rect_top = first_rect.y;
+    first_rect_bottom = first_rect.y + first_rect.h;
+    first_rect_left = first_rect.x;
+    first_rect_right = first_rect.x + first_rect.w / 2;
 
-   second_rect_top = second_rect.y;
-   second_rect_bottom = second_rect.y + second_rect.h;
-   second_rect_left = second_rect.x;
-   second_rect_right = second_rect.x + second_rect.w/2;
+    second_rect_top = second_rect.y;
+    second_rect_bottom = second_rect.y + second_rect.h;
+    second_rect_left = second_rect.x;
+    second_rect_right = second_rect.x + second_rect.w / 2;
 
-   if (first_rect_top > second_rect_bottom)
-      return false;
-   if (first_rect_bottom < second_rect_top)
-      return false;
-   if (first_rect_left > second_rect_right)
-      return false;
-   if (first_rect_right < second_rect_left)
-      return false;
+    if (first_rect_top > second_rect_bottom)
+        return false;
+    if (first_rect_bottom < second_rect_top)
+        return false;
+    if (first_rect_left > second_rect_right)
+        return false;
+    if (first_rect_right < second_rect_left)
+        return false;
 
-   return true;
+    return true;
 }
 
-enemyAI::enemyAI(SDL_Renderer *ren, std::vector<Tile *> wallPos) 
+enemyAI::enemyAI(SDL_Renderer *ren, std::vector<Tile *> wallPos)
 {
     aiRenderer = ren;
 
@@ -82,7 +82,7 @@ void enemyAI::aiInit()
             }
         }
     }
-    
+
     aiRect.w = aiWidth;
     aiRect.h = aiHeight;
 
@@ -96,7 +96,7 @@ void enemyAI::aiInit()
     returning = 0;
 }
 
-void enemyAI::aiUpdate(SDL_Rect player) 
+void enemyAI::aiUpdate(SDL_Rect player)
 {
     //FSM
     switch (state)
@@ -116,17 +116,17 @@ void enemyAI::aiUpdate(SDL_Rect player)
             yVel = 3 - (rand() % 7);
         }
         break;
-    
+
     case WONDER:
         currentFrame = ai_sprite->sprite_update(WONDER);
 
         //wonders until a certain distance is hit, switches back to idle
-        if (abs(xPos - guardPosX) > (WONDER_DIST*2))
+        if (abs(xPos - guardPosX) > (WONDER_DIST * 2))
         {
             state = IDLE;
             returning = 1;
         }
-        else if (abs(yPos - guardPosY) > (WONDER_DIST*2))
+        else if (abs(yPos - guardPosY) > (WONDER_DIST * 2))
         {
             state = IDLE;
             returning = 1;
@@ -137,7 +137,7 @@ void enemyAI::aiUpdate(SDL_Rect player)
         currentFrame = ai_sprite->sprite_update(WONDER);
 
         //attacks until player is a certain distance away from shark, switches back to idle
-        if (abs(player.x - xPos) > ATTACK_DIST || abs(player.y - yPos) > ATTACK_DIST) 
+        if (abs(player.x - xPos) > ATTACK_DIST || abs(player.y - yPos) > ATTACK_DIST)
         {
             state = IDLE;
             returning = 1;
@@ -154,35 +154,63 @@ void enemyAI::aiUpdate(SDL_Rect player)
     //makes shark return to it's guarding spot
     if (returning)
     {
-        if (xPos > guardPosX) { xVel = -1; }
-        if (xPos < guardPosX) { xVel = 1; }
-        if (yPos > guardPosY) { yVel = -1; }
-        if (yPos < guardPosY) { yVel = 1; }
+        if (xPos > guardPosX)
+        {
+            xVel = -1;
+        }
+        if (xPos < guardPosX)
+        {
+            xVel = 1;
+        }
+        if (yPos > guardPosY)
+        {
+            yVel = -1;
+        }
+        if (yPos < guardPosY)
+        {
+            yVel = 1;
+        }
 
-        if (xPos == guardPosX && yPos == guardPosY) { returning = 0; }
+        if (xPos == guardPosX && yPos == guardPosY)
+        {
+            returning = 0;
+        }
     }
 
     //makes sure sharks stay within bounds
-    if (xPos > LEVEL_WIDTH) { xVel *= -2; }
-    if (xPos < 0) { xVel *= -2; }
-    if (yPos > LEVEL_HEIGHT) { yVel *= -2; }
-    if (yPos < 0) { yVel *= -2; }
+    if (xPos > LEVEL_WIDTH)
+    {
+        xVel *= -2;
+    }
+    if (xPos < 0)
+    {
+        xVel *= -2;
+    }
+    if (yPos > LEVEL_HEIGHT)
+    {
+        yVel *= -2;
+    }
+    if (yPos < 0)
+    {
+        yVel *= -2;
+    }
 
     //checks for wall collision, return to guard position
     for (int x = 0; x < (int)walls.size(); x++)
     {
-        if (checkCollision(aiRect, walls[x]->getRect())) 
-        {  
-            state = IDLE; 
+        if (checkCollision(aiRect, walls[x]->getRect()))
+        {
+            state = IDLE;
             returning = 1;
         }
     }
 
     //keeps ai sprite facing the correct position
-    if (xVel < 0) {
+    if (xVel < 0)
+    {
         flipAI = SDL_FLIP_HORIZONTAL;
-    } 
-    else 
+    }
+    else
     {
         flipAI = SDL_FLIP_NONE;
     }
@@ -194,13 +222,13 @@ void enemyAI::aiUpdate(SDL_Rect player)
     aiRect.y = yPos;
 }
 
-void enemyAI::aiRender(SDL_Rect camera) 
+void enemyAI::aiRender(SDL_Rect camera)
 {
     SDL_Rect renderRect = {(aiRect.x - camera.x), (aiRect.y - camera.y), aiRect.w, aiRect.h};
     SDL_RenderCopyEx(aiRenderer, aiTexture, &currentFrame, &renderRect, 0.0, NULL, flipAI);
 }
 
-void enemyAI::setState(int newState) 
+void enemyAI::setState(int newState)
 {
     state = newState;
 }

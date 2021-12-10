@@ -191,7 +191,8 @@ void GameEngine::handleEvents()
       }
       else if (!pause)
       {
-         if (winner || loser) {
+         if (winner || loser)
+         {
             switch (userInput.type)
             {
             case SDL_MOUSEMOTION:
@@ -237,7 +238,8 @@ void GameEngine::handleEvents()
             default:
                break;
             }
-         } else
+         }
+         else
          {
             switch (userInput.type)
             {
@@ -305,8 +307,8 @@ void GameEngine::handleEvents()
                case SDLK_SPACE:
                   if (game_state != STATE_PLAYER)
                   {
-                     std::cout <<"Tile Type:"<< tile_type << std::endl;
-                     std::cout <<"Layer:"<< curr_layer << std::endl;
+                     std::cout << "Tile Type:" << tile_type << std::endl;
+                     std::cout << "Layer:" << curr_layer << std::endl;
                      editor->editor_update(tile_type, curr_layer);
                      tileHandler->tileHandler_clean();
                      tileHandler->tileHandler_load();
@@ -485,7 +487,8 @@ void GameEngine::updateMechanics()
          if (checkCollision(player->player_get_rect(), trident_rect) && player->player_get_state())
          {
             trident_it = tridents.erase(trident_it);
-            if (score->increment()) {
+            if (score->increment())
+            {
                winner = true;
                endMenu->setState(1);
                cout << "Winner!" << endl;
@@ -529,7 +532,7 @@ void GameEngine::updateMechanics()
             {
                (*ai_it)->setXVel(-10);
             }
-            else 
+            else
             {
                (*ai_it)->setXVel(10);
             }
@@ -565,7 +568,7 @@ void GameEngine::updateMechanics()
             {
                (*ai_it)->setXVel(2);
             }
-            else 
+            else
             {
                (*ai_it)->setXVel(-2);
             }
@@ -589,22 +592,22 @@ void GameEngine::updateMechanics()
             (*ai_it)->setReturning(1);
 
             //rebound player on collision by shark
-            player->player_set_x_pos(player->player_get_x_pos() + 5*(*ai_it)->getXVel());
-            player->player_set_y_pos(player->player_get_y_pos() + 5*(*ai_it)->getYVel());
-            collisionXVel = 5*(*ai_it)->getXVel();
-            collisionYVel = 5*(*ai_it)->getYVel();
+            player->player_set_x_pos(player->player_get_x_pos() + 5 * (*ai_it)->getXVel());
+            player->player_set_y_pos(player->player_get_y_pos() + 5 * (*ai_it)->getYVel());
+            collisionXVel = 5 * (*ai_it)->getXVel();
+            collisionYVel = 5 * (*ai_it)->getYVel();
 
             //rebound player when player hits shark
-            player->player_set_x_pos(player->player_get_x_pos() - 5*player->player_get_x_vel());
-            player->player_set_y_pos(player->player_get_y_pos() - 5*player->player_get_y_vel());
+            player->player_set_x_pos(player->player_get_x_pos() - 5 * player->player_get_x_vel());
+            player->player_set_y_pos(player->player_get_y_pos() - 5 * player->player_get_y_vel());
 
             //stun player
             player->player_set_x_vel(0);
             player->player_set_y_vel(0);
 
             //initialize blood effect
-            int tempX = ((player->player_get_x_pos() + enemy_rect.x)/2 - camera_rect.x);
-            int tempY = ((player->player_get_y_pos() + enemy_rect.y)/2 - camera_rect.y);
+            int tempX = ((player->player_get_x_pos() + enemy_rect.x) / 2 - camera_rect.x);
+            int tempY = ((player->player_get_y_pos() + enemy_rect.y) / 2 - camera_rect.y);
             blood->phInit("./assets/blood.png", gameRenderer, tempX, tempY, 25, 25, BLOOD);
 
             destroy_health = true;
@@ -620,7 +623,7 @@ void GameEngine::updateMechanics()
       {
          //on collision stops player from moving
          if (checkCollision(player->player_get_rect(), walls[x]->getRect()))
-         {  
+         {
             //if player is knocked into wall by shark with 0 vel, makes sure player does not move past wall
             if (player->player_get_x_vel() == 0 && player->player_get_y_vel() == 0)
             {
@@ -667,14 +670,15 @@ void GameEngine::render()
       if (winner || loser)
       {
          endMenu->render();
-         
+
          //render win effect when players win
          if (winner)
          {
             win->phRender(gameRenderer);
          }
-
-      } else {
+      }
+      else
+      {
          camera_rect = camera->camera_get_rect();
          tileHandler->tileHandler_render(camera_rect, 0);
          tileHandler->tileHandler_render(camera_rect, 1);
@@ -703,7 +707,7 @@ void GameEngine::render()
             tileHandler->tileHandler_render(camera_rect, 2);
 
             score->render();
-            
+
             stars->phRender(gameRenderer);
             bubbles->phRender(gameRenderer);
             bubbleBump->phRender(gameRenderer);
@@ -737,12 +741,12 @@ bool GameEngine::checkCollision(SDL_Rect first_rect, SDL_Rect second_rect)
    first_rect_top = first_rect.y;
    first_rect_bottom = first_rect.y + first_rect.h;
    first_rect_left = first_rect.x;
-   first_rect_right = first_rect.x + first_rect.w/2;
+   first_rect_right = first_rect.x + first_rect.w / 2;
 
    second_rect_top = second_rect.y;
    second_rect_bottom = second_rect.y + second_rect.h;
    second_rect_left = second_rect.x;
-   second_rect_right = second_rect.x + second_rect.w/2;
+   second_rect_right = second_rect.x + second_rect.w / 2;
 
    if (first_rect_top > second_rect_bottom)
       return false;

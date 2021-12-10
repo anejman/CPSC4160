@@ -1,6 +1,6 @@
 #include "endMenu.h"
 
-EndMenu::EndMenu(SDL_Renderer* renderer)
+EndMenu::EndMenu(SDL_Renderer *renderer)
 {
     game_renderer = renderer;
 
@@ -75,7 +75,8 @@ void EndMenu::init()
     SDL_FreeSurface(quitSurface);
 }
 
-void EndMenu::hoverEffect(int state) {
+void EndMenu::hoverEffect(int state)
+{
     switch (state)
     {
     case 1:
@@ -83,18 +84,20 @@ void EndMenu::hoverEffect(int state) {
         {
             restartHover = true;
 
-            if (game_state == 0) {
+            if (game_state == 0)
+            {
                 SDL_DestroyTexture(retryTexture);
                 retrySurface = TTF_RenderText_Solid(font, "Try Again", hoverColor);
                 retryTexture = SDL_CreateTextureFromSurface(game_renderer, retrySurface);
                 SDL_FreeSurface(retrySurface);
-            } else {
+            }
+            else
+            {
                 SDL_DestroyTexture(restartTexture);
                 restartSurface = TTF_RenderText_Solid(font, "Play Again", hoverColor);
                 restartTexture = SDL_CreateTextureFromSurface(game_renderer, restartSurface);
                 SDL_FreeSurface(restartSurface);
             }
-            
         }
         break;
     case 2:
@@ -111,12 +114,15 @@ void EndMenu::hoverEffect(int state) {
         if (restartHover)
         {
             restartHover = false;
-            if (game_state == 0) {
+            if (game_state == 0)
+            {
                 SDL_DestroyTexture(retryTexture);
                 retrySurface = TTF_RenderText_Solid(font, "Try Again", fontColor);
                 retryTexture = SDL_CreateTextureFromSurface(game_renderer, retrySurface);
                 SDL_FreeSurface(retrySurface);
-            } else {
+            }
+            else
+            {
                 SDL_DestroyTexture(restartTexture);
                 restartSurface = TTF_RenderText_Solid(font, "Play Again", fontColor);
                 restartTexture = SDL_CreateTextureFromSurface(game_renderer, restartSurface);
@@ -137,17 +143,21 @@ void EndMenu::hoverEffect(int state) {
     }
 }
 
-void EndMenu::render() {
+void EndMenu::render()
+{
     SDL_RenderCopy(game_renderer, backgroundTexture, NULL, &background);
     SDL_RenderCopy(game_renderer, foregroundTexture, NULL, &foreground);
 
-    if (game_state == 0) {
+    if (game_state == 0)
+    {
         SDL_RenderCopy(game_renderer, titleLoseTexture, NULL, &title);
         SDL_RenderCopy(game_renderer, retryTexture, NULL, &restart);
-    } else {
+    }
+    else
+    {
         SDL_RenderCopy(game_renderer, titleWinTexture, NULL, &title);
         SDL_RenderCopy(game_renderer, restartTexture, NULL, &restart);
     }
-    
+
     SDL_RenderCopy(game_renderer, quitTexture, NULL, &quit);
 }

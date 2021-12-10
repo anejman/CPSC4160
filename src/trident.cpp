@@ -16,12 +16,12 @@ bool checkCollisionTri(SDL_Rect first_rect, SDL_Rect second_rect)
    first_rect_top = first_rect.y;
    first_rect_bottom = first_rect.y + first_rect.h;
    first_rect_left = first_rect.x;
-   first_rect_right = first_rect.x + first_rect.w/2;
+   first_rect_right = first_rect.x + first_rect.w / 2;
 
    second_rect_top = second_rect.y;
    second_rect_bottom = second_rect.y + second_rect.h;
    second_rect_left = second_rect.x;
-   second_rect_right = second_rect.x + second_rect.w/2;
+   second_rect_right = second_rect.x + second_rect.w / 2;
 
    if (first_rect_top > second_rect_bottom)
       return false;
@@ -60,7 +60,7 @@ void Trident::trident_init()
    int xPos, yPos;
    int validCord = false;
 
-   while(!validCord)
+   while (!validCord)
    {
       std::uniform_real_distribution<double> widthDist(0, level_width - TRIDENT_WIDTH);
       std::uniform_real_distribution<double> heightDist(0, level_height - TRIDENT_HEIGHT);
@@ -72,12 +72,12 @@ void Trident::trident_init()
 
       validCord = true;
 
-      for(int x = 0; x < (int)walls.size(); x++)
+      for (int x = 0; x < (int)walls.size(); x++)
       {
-         if(checkCollisionTri(temp, walls[x]->getRect()))
-            {
-                validCord = false;
-            }
+         if (checkCollisionTri(temp, walls[x]->getRect()))
+         {
+            validCord = false;
+         }
       }
    }
 

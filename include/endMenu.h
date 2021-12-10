@@ -4,7 +4,8 @@
 #include "globals.h"
 #include "imageHandler.h"
 
-class EndMenu {
+class EndMenu
+{
     private:
         int game_state;
 
@@ -42,7 +43,7 @@ class EndMenu {
         TTF_Font *font;
         SDL_Color fontColor;
         SDL_Color hoverColor;
-    
+
     public:
         EndMenu();
 
@@ -57,7 +58,6 @@ class EndMenu {
         void hoverEffect(int state);
 
         void render();
-
 };
 
 #endif

@@ -15,11 +15,11 @@ Player Controls:
 - Move Character Right: Right Arrow Key (→)
 
 Editor Controls:
-- Move Cursor Up:    Up Arrow Key (↑)
-- Move Cursor Down:	 Down Arrow Key (↓)
-- Move Cursor Left:  Left Arrow Key (←)
-- Move Cursor Right: Right Arrow Key (→)
-- Place Tile:	     Space Bar
+- Move Cursor Up:       Up Arrow Key (↑)
+- Move Cursor Down:	    Down Arrow Key (↓)
+- Move Cursor Left:     Left Arrow Key (←)
+- Move Cursor Right:    Right Arrow Key (→)
+- Place Tile:	        Space Bar
 - Switch layers:                      (W) Key
 - Toggle Backward Through Tile Types: (A) Key
 - Jump to the first Tile Type:        (S) Key
@@ -35,4 +35,12 @@ Launching the Program:
 - How to Clean: Type "make clean"into the terminal and press enter
 
 Resources:
-- TODO
+- Menu Backgrounds:         https://olgas-lab.itch.io/underwater-background
+- Tileset / Player Sprite:  https://finalbossblues.itch.io/atlantis-tileset
+- Hearts:                   https://fliflifly.itch.io/hearts-and-health-bar
+- TrueType Font:
+- NPC Sprites:
+- Trident Collectable:      https://www.kindpng.com/imgv/iRThJmT_minecraft-trident-pixel-art-hd-png-download/
+- Bubble Particle:
+- Blood ParticleX:
+- Star ParticleX:

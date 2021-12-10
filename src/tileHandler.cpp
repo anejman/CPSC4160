@@ -19,7 +19,8 @@ TileHandler::~TileHandler() {}
 void TileHandler::tileHandler_init()
 {
     imageHandler = new ImageHandler(game_renderer);
-    for(int i = 0; i < LAYER_NUM; i++){
+    for (int i = 0; i < LAYER_NUM; i++)
+    {
         tile_textures.push_back(imageHandler->imageHandler_load(tiles_files[i]));
     }
 }
@@ -31,7 +32,8 @@ void TileHandler::tileHandler_load()
     int y;
     int tile_type;
 
-    for(int i = 0; i < LAYER_NUM; i++){
+    for (int i = 0; i < LAYER_NUM; i++)
+    {
 
         // Tile offsets
         x = 0;
@@ -88,7 +90,7 @@ void TileHandler::tileHandler_render(SDL_Rect camera_rect, int layer)
 
 void TileHandler::tileHandler_clean()
 {
-    for(auto tileset : tilesets) 
+    for (auto tileset : tilesets)
     {
         for (auto tile : tileset)
         {

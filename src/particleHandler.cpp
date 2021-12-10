@@ -89,7 +89,7 @@ void particle::objUpdateWin()
     xPos += xVel;
     yPos += yVel;
 
-    if (life > 0) 
+    if (life > 0)
     {
         objRect.x = xPos;
         objRect.y = yPos;
@@ -108,8 +108,8 @@ void particle::objUpdateBlood()
     {
         objRect.x = xPos;
         objRect.y = yPos;
-        objRect.w = width/2 + width * (int)(10*life/100);
-        objRect.h = height/2 + height * (int)(10*life/100);
+        objRect.w = width / 2 + width * (int)(10 * life / 100);
+        objRect.h = height / 2 + height * (int)(10 * life / 100);
     }
     life--;
 }
@@ -162,25 +162,25 @@ void particle::objRenderWin(SDL_Renderer *ren)
         //randomize color of particles
         switch (rand() % 5)
         {
-            case 0:
-                SDL_SetTextureColorMod(objGraphic, 234, 194, 254);
-                break;
-            
-            case 1:
-                SDL_SetTextureColorMod(objGraphic, 250, 172, 208);
-                break;
+        case 0:
+            SDL_SetTextureColorMod(objGraphic, 234, 194, 254);
+            break;
 
-            case 2:
-                SDL_SetTextureColorMod(objGraphic, 255, 221, 102);
-                break;
+        case 1:
+            SDL_SetTextureColorMod(objGraphic, 250, 172, 208);
+            break;
 
-            case 3:
-                SDL_SetTextureColorMod(objGraphic, 155, 255, 145);
-                break;
+        case 2:
+            SDL_SetTextureColorMod(objGraphic, 255, 221, 102);
+            break;
 
-            case 4:
-                SDL_SetTextureColorMod(objGraphic, 153, 217, 234);
-                break;
+        case 3:
+            SDL_SetTextureColorMod(objGraphic, 155, 255, 145);
+            break;
+
+        case 4:
+            SDL_SetTextureColorMod(objGraphic, 153, 217, 234);
+            break;
         }
 
         //makes more transparent as time passes
@@ -333,7 +333,7 @@ void particleHandler::phInit(const char *image, SDL_Renderer *ren, int startX, i
         }
     }
 
-    if (partType == WIN) 
+    if (partType == WIN)
     {
         maxParticle = MAX_PARTICLE_WIN;
 
@@ -401,11 +401,11 @@ void particleHandler::phUpdate()
         }
     }
 
-    if (partType == WIN) 
+    if (partType == WIN)
     {
         maxParticle = MAX_PARTICLE_WIN;
 
-        for (int x = 0; x < maxParticle; x++) 
+        for (int x = 0; x < maxParticle; x++)
         {
             particles[x]->objUpdateWin();
         }
@@ -413,7 +413,7 @@ void particleHandler::phUpdate()
 
     if (partType == BLOOD)
     {
-        for (int x = 0; x < maxParticle; x++) 
+        for (int x = 0; x < maxParticle; x++)
         {
             particles[x]->objUpdateBlood();
         }
@@ -451,11 +451,11 @@ void particleHandler::phRender(SDL_Renderer *ren)
         }
     }
 
-    if (partType == WIN) 
+    if (partType == WIN)
     {
         maxParticle = MAX_PARTICLE_WIN;
 
-        for (int x = 0; x < maxParticle; x++) 
+        for (int x = 0; x < maxParticle; x++)
         {
             particles[x]->objRenderWin(ren);
         }
